@@ -577,4 +577,4 @@ Once all phases are complete, the CMS will enable users to:
 - **Should Phase 1 be done before releasing as open source?**
 - **Do you want analytics/contact features in Phase 2 or later?**
 
-For feedback or discussion, open an issue on GitHub or start a discussion!
+For feedback or discussion, [open an issue](https://github.com/DDharma/portfolio-cms/issues) or start a discussion!

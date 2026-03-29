@@ -12,8 +12,8 @@ Thank you for your interest in contributing! This guide will help you get starte
 
 ### 1. Fork and Clone
 ```bash
-git clone https://github.com/YOUR_USERNAME/portfolio.git
-cd portfolio
+git clone https://github.com/YOUR_USERNAME/portfolio-cms.git
+cd portfolio-cms
 ```
 
 ### 2. Install Dependencies

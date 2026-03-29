@@ -102,8 +102,8 @@ By default, content revalidates every 1 hour (see `app/page.tsx`). For faster up
 
 3. **Clone your repository**
    ```bash
-   git clone https://github.com/yourusername/portfolio.git
-   cd portfolio
+   git clone https://github.com/DDharma/portfolio-cms.git
+   cd portfolio-cms
    ```
 
 4. **Install project dependencies**
@@ -405,5 +405,5 @@ docker logs container-name -f
 ## Need Help?
 
 - Check [`README.md`](../README.md) for quick start
-- Open an issue on GitHub
+- [Open an issue on GitHub](https://github.com/DDharma/portfolio-cms/issues)
 - Check [`docs/`](../docs/) for more resources

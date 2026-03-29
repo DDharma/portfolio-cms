@@ -32,8 +32,8 @@ A fully customizable, self-hosted portfolio CMS built for developers and tech pr
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/yourusername/portfolio.git
-cd portfolio
+git clone https://github.com/DDharma/portfolio-cms.git
+cd portfolio-cms
 ```
 
 ### 2. Install Dependencies
@@ -112,9 +112,7 @@ Once logged in, you'll see:
 ## 🚢 Deployment
 
 ### Deploy on Vercel (One-Click)
-```
-[Coming soon: Vercel deploy button]
-```
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FDDharma%2Fportfolio-cms&env=NEXT_PUBLIC_SUPABASE_URL,NEXT_PUBLIC_SUPABASE_ANON_KEY,SUPABASE_SERVICE_ROLE_KEY,JWT_SECRET)
 
 ### Manual Deployment
 See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) for detailed guides on deploying to:
@@ -212,9 +210,9 @@ MIT License — see [`LICENSE`](LICENSE) for details.
 
 ## 🙋 Support
 
-- **Issues & bugs?** File an issue on GitHub
+- **Issues & bugs?** [File an issue](https://github.com/DDharma/portfolio-cms/issues)
 - **Questions?** Check the [Documentation](docs/) folder
-- **Want to improve?** Fork, build, and submit a PR
+- **Want to improve?** [Fork](https://github.com/DDharma/portfolio-cms/fork), build, and submit a PR
 
 ## 🌟 Acknowledgments
 
