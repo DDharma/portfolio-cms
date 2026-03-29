@@ -1,0 +1,18 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "next build",
+  "env": {
+    "NEXT_PUBLIC_SUPABASE_URL": {
+      "description": "Your Supabase project URL (e.g., https://project-id.supabase.co)"
+    },
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": {
+      "description": "Your Supabase anonymous public key"
+    },
+    "SUPABASE_SERVICE_ROLE_KEY": {
+      "description": "Your Supabase service role secret key (keep this private)"
+    },
+    "JWT_SECRET": {
+      "description": "A random string for JWT signing (minimum 32 characters)"
+    }
+  }
+}
