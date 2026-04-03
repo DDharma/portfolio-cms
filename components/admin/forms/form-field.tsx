@@ -11,14 +11,7 @@ interface FormFieldProps {
   className?: string
 }
 
-export function FormField({
-  label,
-  error,
-  hint,
-  required,
-  children,
-  className,
-}: FormFieldProps) {
+export function FormField({ label, error, hint, required, children, className }: FormFieldProps) {
   return (
     <div className={cn('space-y-2', className)}>
       <label className="block text-sm font-medium text-white">

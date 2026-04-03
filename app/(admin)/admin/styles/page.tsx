@@ -18,7 +18,12 @@ interface CustomStyle {
 export default function StylesPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
 
-  const { data: styles = [], isLoading, error, refetch } = useQuery({
+  const {
+    data: styles = [],
+    isLoading,
+    error,
+    refetch,
+  } = useQuery({
     queryKey: ['custom-styles'],
     queryFn: async () => {
       const res = await fetch('/api/admin/styles')
@@ -116,7 +121,8 @@ export default function StylesPage() {
                 <tr>
                   <td colSpan={5} className="px-6 py-8 text-center">
                     <div className="text-red-400 mb-2">
-                      Error loading styles: {error instanceof Error ? error.message : 'Unknown error'}
+                      Error loading styles:{' '}
+                      {error instanceof Error ? error.message : 'Unknown error'}
                     </div>
                     <Button
                       variant="secondary"
@@ -139,19 +145,21 @@ export default function StylesPage() {
                 filteredStyles.map((style: CustomStyle) => (
                   <tr key={style.id} className="border-b border-white/[0.05] hover:bg-zinc-950">
                     <td className="px-6 py-4 text-sm font-medium text-white">{style.name}</td>
-                    <td className="px-6 py-4 text-sm text-zinc-400 capitalize">{style.category || 'custom'}</td>
+                    <td className="px-6 py-4 text-sm text-zinc-400 capitalize">
+                      {style.category || 'custom'}
+                    </td>
                     <td className="px-6 py-4 text-sm">
-                      <div className="w-24 h-8 rounded border border-white/[0.1]" style={{ all: 'unset' }}>
+                      <div
+                        className="w-24 h-8 rounded border border-white/[0.1]"
+                        style={{ all: 'unset' }}
+                      >
                         <div
                           className="w-full h-full rounded"
                           style={{
                             ...Object.fromEntries(
                               style.css_rules.split(';').map((rule) => {
                                 const [key, value] = rule.split(':').map((s) => s.trim())
-                                return [
-                                  key.replace(/-./g, (x) => x[1].toUpperCase()),
-                                  value,
-                                ]
+                                return [key.replace(/-./g, (x) => x[1].toUpperCase()), value]
                               })
                             ),
                           }}

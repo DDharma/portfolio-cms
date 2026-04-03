@@ -1,6 +1,6 @@
-import { SectionShell } from "@/components/sections/section-shell";
-import { SectionHeading } from "@/components/sections/section-heading";
-import { sanitizeHTML } from "@/lib/utils/html-sanitizer";
+import { SectionShell } from '@/components/sections/section-shell'
+import { SectionHeading } from '@/components/sections/section-heading'
+import { sanitizeHTML } from '@/lib/utils/html-sanitizer'
 
 // Helper to unescape HTML entities (server-safe, no DOM)
 const unescapeHTML = (html: string): string => {
@@ -16,22 +16,18 @@ const unescapeHTML = (html: string): string => {
 }
 
 type AboutSectionProps = {
-  data?: any;
-};
+  data?: any
+}
 
 export const AboutSection = ({ data }: AboutSectionProps) => {
-  if (!data) return null;
+  if (!data) return null
 
-  const highlights = data.about_highlights || [];
-  const principles = data.about_principles || [];
+  const highlights = data.about_highlights || []
+  const principles = data.about_principles || []
 
   // Unescape and sanitize HTML from database content
-  const title = data.title
-    ? sanitizeHTML(unescapeHTML(data.title))
-    : '';
-  const description = data.description
-    ? sanitizeHTML(unescapeHTML(data.description))
-    : '';
+  const title = data.title ? sanitizeHTML(unescapeHTML(data.title)) : ''
+  const description = data.description ? sanitizeHTML(unescapeHTML(data.description)) : ''
 
   return (
     <SectionShell id="about" className="relative">
@@ -44,8 +40,8 @@ export const AboutSection = ({ data }: AboutSectionProps) => {
       />
       <div className="mt-12 grid gap-4 md:grid-cols-2 lg:gap-6">
         {highlights.map((item: any) => {
-          const highlightTitle = item.title ? sanitizeHTML(unescapeHTML(item.title)) : '';
-          const highlightDesc = item.description ? sanitizeHTML(unescapeHTML(item.description)) : '';
+          const highlightTitle = item.title ? sanitizeHTML(unescapeHTML(item.title)) : ''
+          const highlightDesc = item.description ? sanitizeHTML(unescapeHTML(item.description)) : ''
 
           return (
             <article
@@ -68,7 +64,7 @@ export const AboutSection = ({ data }: AboutSectionProps) => {
                 )}
               </p>
             </article>
-          );
+          )
         })}
       </div>
       <div className="mt-10 flex flex-wrap items-center gap-3">
@@ -83,5 +79,5 @@ export const AboutSection = ({ data }: AboutSectionProps) => {
         ))}
       </div>
     </SectionShell>
-  );
-};
+  )
+}

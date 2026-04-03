@@ -3,10 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/auth/jwt'
 import { revalidatePath } from 'next/cache'
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const authResult = requireAdmin(request)
   if ('error' in authResult) {
     return NextResponse.json({ error: authResult.error }, { status: authResult.status })
@@ -19,10 +16,7 @@ export async function PATCH(
     const body = await request.json()
     const { is_featured } = body
 
-    const { error } = await supabase
-      .from('gallery_photos')
-      .update({ is_featured })
-      .eq('id', id)
+    const { error } = await supabase.from('gallery_photos').update({ is_featured }).eq('id', id)
 
     if (error) throw error
 

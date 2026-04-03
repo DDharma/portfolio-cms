@@ -29,9 +29,7 @@ interface BlogFormProps {
 export function BlogForm({ initialData, isLoading = false }: BlogFormProps) {
   const router = useRouter()
   const [error, setError] = useState<string | null>(null)
-  const [status, setStatus] = useState<'draft' | 'published'>(
-    initialData?.status || 'draft'
-  )
+  const [status, setStatus] = useState<'draft' | 'published'>(initialData?.status || 'draft')
   const slugAutoRef = useRef(!initialData?.id) // true for new posts, false for existing
 
   const createMutation = useCreateBlog()
@@ -132,16 +130,10 @@ export function BlogForm({ initialData, isLoading = false }: BlogFormProps) {
       <div className="rounded-lg border border-white/[0.06] bg-zinc-950 p-6 space-y-6">
         <div>
           <h3 className="text-lg font-semibold text-white">Blog Post Details</h3>
-          <p className="text-sm text-zinc-400 mt-1">
-            Information about the blog post
-          </p>
+          <p className="text-sm text-zinc-400 mt-1">Information about the blog post</p>
         </div>
 
-        <FormField
-          label="Title"
-          required
-          error={form.formState.errors.title?.message}
-        >
+        <FormField label="Title" required error={form.formState.errors.title?.message}>
           <input
             type="text"
             {...form.register('title')}
@@ -151,17 +143,13 @@ export function BlogForm({ initialData, isLoading = false }: BlogFormProps) {
           />
         </FormField>
 
-        <FormField
-          label="Slug"
-          required
-          error={form.formState.errors.slug?.message}
-        >
+        <FormField label="Slug" required error={form.formState.errors.slug?.message}>
           <input
             type="text"
             {...form.register('slug', {
               onChange: () => {
                 slugAutoRef.current = false // mark as manually edited
-              }
+              },
             })}
             className="w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-4 py-2.5 text-white placeholder-zinc-500 focus:border-white/[0.2] focus:outline-none"
             placeholder="blog-post-title (lowercase with hyphens)"
@@ -228,10 +216,7 @@ export function BlogForm({ initialData, isLoading = false }: BlogFormProps) {
           />
         </FormField>
 
-        <FormField
-          label="Reading Time"
-          error={form.formState.errors.reading_time?.message}
-        >
+        <FormField label="Reading Time" error={form.formState.errors.reading_time?.message}>
           <input
             type="text"
             {...form.register('reading_time')}
@@ -283,12 +268,7 @@ export function BlogForm({ initialData, isLoading = false }: BlogFormProps) {
 
       {/* Actions */}
       <div className="flex gap-3 justify-end">
-        <Button
-          type="button"
-          variant="ghost"
-          onClick={() => router.back()}
-          disabled={isSubmitting}
-        >
+        <Button type="button" variant="ghost" onClick={() => router.back()} disabled={isSubmitting}>
           Cancel
         </Button>
         <Button
@@ -299,11 +279,7 @@ export function BlogForm({ initialData, isLoading = false }: BlogFormProps) {
         >
           {isSubmitting ? 'Saving...' : 'Save Draft'}
         </Button>
-        <Button
-          type="submit"
-          onClick={() => setStatus('published')}
-          disabled={isSubmitting}
-        >
+        <Button type="submit" onClick={() => setStatus('published')} disabled={isSubmitting}>
           {isSubmitting ? 'Publishing...' : 'Publish'}
         </Button>
       </div>

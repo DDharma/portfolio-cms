@@ -38,7 +38,7 @@ export function useAuth() {
         expires: 1, // 1 day
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
-        path: '/'
+        path: '/',
       })
 
       setUser(newUser)

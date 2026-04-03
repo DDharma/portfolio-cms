@@ -63,9 +63,7 @@ export function IconSelector({ value, onChange, disabled }: IconSelectorProps) {
   const [search, setSearch] = useState('')
 
   const filteredIcons = useMemo(() => {
-    return ICON_LIST.filter((iconObj) =>
-      iconObj.name.toLowerCase().includes(search.toLowerCase())
-    )
+    return ICON_LIST.filter((iconObj) => iconObj.name.toLowerCase().includes(search.toLowerCase()))
   }, [search])
 
   const selectedIconObj = ICON_LIST.find((iconObj) => iconObj.name === value)
@@ -91,9 +89,7 @@ export function IconSelector({ value, onChange, disabled }: IconSelectorProps) {
           )}
         </div>
         <ChevronDown
-          className={`w-4 h-4 text-zinc-400 transition-transform ${
-            isOpen ? 'rotate-180' : ''
-          }`}
+          className={`w-4 h-4 text-zinc-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
         />
       </button>
 
@@ -135,9 +131,7 @@ export function IconSelector({ value, onChange, disabled }: IconSelectorProps) {
                   title={name}
                 >
                   <IconComponent className="w-5 h-5 text-white" />
-                  <span className="text-xs text-zinc-400 text-center truncate w-full">
-                    {name}
-                  </span>
+                  <span className="text-xs text-zinc-400 text-center truncate w-full">{name}</span>
                 </button>
               ))
             ) : (

@@ -20,7 +20,10 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ success: true, data })
   } catch (error) {
     console.error('Get research papers error:', error)
-    return NextResponse.json({ error: error instanceof Error ? error.message : 'Failed' }, { status: 500 })
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : 'Failed' },
+      { status: 500 }
+    )
   }
 }
 
@@ -48,12 +51,21 @@ export async function POST(request: NextRequest) {
       .single()
     if (researchError) throw researchError
 
-    if (tags.length > 0) await supabase.from('research_paper_tags').insert(tags.map((t, i) => ({ ...t, research_paper_id: newResearch.id, sort_order: i })))
-    if (links.length > 0) await supabase.from('research_paper_links').insert(links.map((l, i) => ({ ...l, research_paper_id: newResearch.id, sort_order: i })))
+    if (tags.length > 0)
+      await supabase
+        .from('research_paper_tags')
+        .insert(tags.map((t, i) => ({ ...t, research_paper_id: newResearch.id, sort_order: i })))
+    if (links.length > 0)
+      await supabase
+        .from('research_paper_links')
+        .insert(links.map((l, i) => ({ ...l, research_paper_id: newResearch.id, sort_order: i })))
 
     return NextResponse.json({ success: true, data: newResearch }, { status: 201 })
   } catch (error) {
     console.error('Create research paper error:', error)
-    return NextResponse.json({ error: error instanceof Error ? error.message : 'Failed' }, { status: 400 })
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : 'Failed' },
+      { status: 400 }
+    )
   }
 }

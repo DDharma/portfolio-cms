@@ -42,24 +42,26 @@ export default function HeroListPage() {
           <h1 className="text-3xl font-bold text-white">Hero Section</h1>
           <p className="text-zinc-400 mt-1">Manage your hero section content</p>
         </div>
-        <Button
-          onClick={() => router.push('/admin/hero/new')}
-          className="gap-2"
-        >
+        <Button onClick={() => router.push('/admin/hero/new')} className="gap-2">
           <Plus className="h-4 w-4" />
           New Hero
         </Button>
       </div>
-      {
-        data && data?.length > 0 && <DataTable
+      {data && data?.length > 0 && (
+        <DataTable
           columns={[
             {
               header: 'Title',
               key: 'title',
               render: (_, item) => {
-                const unescaped = unescapeHTML(item.title || '');
-                const sanitized = sanitizeHTML(unescaped);
-                return <div className="text-sm line-clamp-2" dangerouslySetInnerHTML={{ __html: sanitized }} />;
+                const unescaped = unescapeHTML(item.title || '')
+                const sanitized = sanitizeHTML(unescaped)
+                return (
+                  <div
+                    className="text-sm line-clamp-2"
+                    dangerouslySetInnerHTML={{ __html: sanitized }}
+                  />
+                )
               },
             },
             {
@@ -75,8 +77,7 @@ export default function HeroListPage() {
             {
               header: 'Created',
               key: 'created_at',
-              render: (_, item) =>
-                new Date(item.created_at).toLocaleDateString(),
+              render: (_, item) => new Date(item.created_at).toLocaleDateString(),
             },
             {
               header: 'Actions',
@@ -112,8 +113,7 @@ export default function HeroListPage() {
           loading={isLoading}
           emptyMessage="No hero content created yet. Create one to get started."
         />
-      }
-
+      )}
     </div>
   )
 }

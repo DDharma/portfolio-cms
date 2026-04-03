@@ -78,8 +78,6 @@ export function useHeroList() {
       const { data: response } = await apiClient.get(ADMIN_ENDPOINTS.HERO.LIST)
       return response.data // Return just the data array
     },
-    refetchOnMount: true,
-    refetchOnWindowFocus: true,
   })
 }
 
@@ -117,8 +115,6 @@ export function useAboutList() {
       const { data: response } = await apiClient.get(ADMIN_ENDPOINTS.ABOUT.LIST)
       return response.data
     },
-    refetchOnMount: true,
-    refetchOnWindowFocus: true,
   })
 }
 
@@ -212,8 +208,6 @@ export function useSkillsList() {
       const { data: response } = await apiClient.get(ADMIN_ENDPOINTS.SKILLS.LIST)
       return response.data
     },
-    refetchOnMount: true,
-    refetchOnWindowFocus: true,
   })
 }
 
@@ -279,8 +273,6 @@ export function useExperienceList() {
       const { data: response } = await apiClient.get(ADMIN_ENDPOINTS.EXPERIENCE.LIST)
       return response.data
     },
-    refetchOnMount: true,
-    refetchOnWindowFocus: true,
   })
 }
 
@@ -346,8 +338,6 @@ export function useProjectsList() {
       const { data: response } = await apiClient.get(ADMIN_ENDPOINTS.PROJECTS.LIST)
       return response.data
     },
-    refetchOnMount: true,
-    refetchOnWindowFocus: true,
   })
 }
 
@@ -413,8 +403,6 @@ export function useBlogList() {
       const { data: response } = await apiClient.get(ADMIN_ENDPOINTS.BLOG.LIST)
       return response.data
     },
-    refetchOnMount: true,
-    refetchOnWindowFocus: true,
   })
 }
 
@@ -480,8 +468,6 @@ export function useResearchList() {
       const { data: response } = await apiClient.get(ADMIN_ENDPOINTS.RESEARCH.LIST)
       return response.data
     },
-    refetchOnMount: true,
-    refetchOnWindowFocus: true,
   })
 }
 
@@ -547,8 +533,6 @@ export function useGalleryList() {
       const { data: response } = await apiClient.get(ADMIN_ENDPOINTS.GALLERY.LIST)
       return response.data
     },
-    refetchOnMount: true,
-    refetchOnWindowFocus: true,
   })
 }
 
@@ -609,7 +593,10 @@ export function useUpdateSectionMetadata() {
 
   return useMutation({
     mutationFn: async ({ key, data }: { key: string; data: Partial<SectionMetadata> }) => {
-      const { data: response } = await apiClient.patch(ADMIN_ENDPOINTS.SECTION_METADATA.UPDATE(key), data)
+      const { data: response } = await apiClient.patch(
+        ADMIN_ENDPOINTS.SECTION_METADATA.UPDATE(key),
+        data
+      )
       return response
     },
     onSuccess: (_, { key }) => {

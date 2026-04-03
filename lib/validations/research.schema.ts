@@ -16,7 +16,10 @@ export const researchTagSchema = z.object({
 export const researchPaperSchema = z.object({
   id: z.string().optional(),
   title: z.string().min(1, 'Title is required').max(200),
-  slug: z.string().min(1, 'Slug is required').regex(/^[a-z0-9-]+$/, 'Slug must be lowercase with hyphens'),
+  slug: z
+    .string()
+    .min(1, 'Slug is required')
+    .regex(/^[a-z0-9-]+$/, 'Slug must be lowercase with hyphens'),
   description: z.string().min(1, 'Description is required'),
   content: z.string().min(1, 'Content is required'),
   featured_image: z.string().nullable().optional(),

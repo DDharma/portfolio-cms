@@ -20,7 +20,13 @@ type Project = {
   description: string
   featured_image?: string | null
   thumbnail_image?: string | null
-  links: Array<{ id?: string; type: 'live' | 'github' | 'other'; label: string; href: string; sort_order: number }>
+  links: Array<{
+    id?: string
+    type: 'live' | 'github' | 'other'
+    label: string
+    href: string
+    sort_order: number
+  }>
   tags: Array<{ id?: string; tag: string; sort_order: number }>
   category?: string
   year?: string
@@ -45,9 +51,7 @@ interface ProjectsFormProps {
 export function ProjectsForm({ initialData, isLoading = false }: ProjectsFormProps) {
   const router = useRouter()
   const [error, setError] = useState<string | undefined>(undefined)
-  const [status, setStatus] = useState<'draft' | 'published'>(
-    initialData?.status || 'draft'
-  )
+  const [status, setStatus] = useState<'draft' | 'published'>(initialData?.status || 'draft')
 
   const createMutation = useCreateProject()
   const updateMutation = useUpdateProject()
@@ -136,16 +140,10 @@ export function ProjectsForm({ initialData, isLoading = false }: ProjectsFormPro
       <div className="rounded-lg border border-white/[0.06] bg-zinc-950 p-6 space-y-6">
         <div>
           <h3 className="text-lg font-semibold text-white">Project Details</h3>
-          <p className="text-sm text-zinc-400 mt-1">
-            Information about the project
-          </p>
+          <p className="text-sm text-zinc-400 mt-1">Information about the project</p>
         </div>
 
-        <FormField
-          label="Project Title"
-          required
-          error={form.formState.errors.title?.message}
-        >
+        <FormField label="Project Title" required error={form.formState.errors.title?.message}>
           <input
             type="text"
             {...form.register('title')}
@@ -155,11 +153,7 @@ export function ProjectsForm({ initialData, isLoading = false }: ProjectsFormPro
           />
         </FormField>
 
-        <FormField
-          label="Slug"
-          required
-          error={form.formState.errors.slug?.message}
-        >
+        <FormField label="Slug" required error={form.formState.errors.slug?.message}>
           <input
             type="text"
             {...form.register('slug')}
@@ -228,7 +222,10 @@ export function ProjectsForm({ initialData, isLoading = false }: ProjectsFormPro
 
         <div className="space-y-4">
           {linksField.fields.map((field, index) => (
-            <div key={field.id} className="space-y-3 p-4 rounded-lg bg-zinc-950 border border-white/[0.05]">
+            <div
+              key={field.id}
+              className="space-y-3 p-4 rounded-lg bg-zinc-950 border border-white/[0.05]"
+            >
               <div className="grid grid-cols-2 gap-3">
                 <select
                   {...form.register(`links.${index}.type`)}
@@ -310,12 +307,7 @@ export function ProjectsForm({ initialData, isLoading = false }: ProjectsFormPro
 
       {/* Actions */}
       <div className="flex gap-3 justify-end">
-        <Button
-          type="button"
-          variant="ghost"
-          onClick={() => router.back()}
-          disabled={isSubmitting}
-        >
+        <Button type="button" variant="ghost" onClick={() => router.back()} disabled={isSubmitting}>
           Cancel
         </Button>
         <Button
@@ -326,11 +318,7 @@ export function ProjectsForm({ initialData, isLoading = false }: ProjectsFormPro
         >
           {isSubmitting ? 'Saving...' : 'Save Draft'}
         </Button>
-        <Button
-          type="submit"
-          onClick={() => setStatus('published')}
-          disabled={isSubmitting}
-        >
+        <Button type="submit" onClick={() => setStatus('published')} disabled={isSubmitting}>
           {isSubmitting ? 'Publishing...' : 'Publish'}
         </Button>
       </div>

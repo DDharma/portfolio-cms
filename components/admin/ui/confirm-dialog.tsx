@@ -43,16 +43,10 @@ export function ConfirmDialog({
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur">
           <div className="rounded-lg border border-white/[0.06] bg-zinc-900 p-6 shadow-xl max-w-sm w-full mx-4">
             <h2 className="text-lg font-semibold text-white">{title}</h2>
-            {description && (
-              <p className="mt-2 text-sm text-zinc-400">{description}</p>
-            )}
+            {description && <p className="mt-2 text-sm text-zinc-400">{description}</p>}
 
             <div className="mt-6 flex gap-3 justify-end">
-              <Button
-                variant="ghost"
-                onClick={() => setIsOpen(false)}
-                disabled={isProcessing}
-              >
+              <Button variant="ghost" onClick={() => setIsOpen(false)} disabled={isProcessing}>
                 Cancel
               </Button>
               <Button

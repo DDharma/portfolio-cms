@@ -22,7 +22,9 @@ export default function EditHeroPage() {
         </button>
         <h1 className="text-3xl font-bold text-white">Error</h1>
         <div className="rounded-lg bg-red-500/10 border border-red-500/20 p-4">
-          <p className="text-sm text-red-400">{error instanceof Error ? error.message : 'Failed to load'}</p>
+          <p className="text-sm text-red-400">
+            {error instanceof Error ? error.message : 'Failed to load'}
+          </p>
         </div>
       </div>
     )
@@ -43,10 +45,7 @@ export default function EditHeroPage() {
         <p className="text-zinc-400 mt-1">Update your hero section content</p>
       </div>
 
-      {
-        data && <HeroForm initialData={data || undefined} isLoading={isLoading} />
-      }
-
+      {data && <HeroForm initialData={data || undefined} isLoading={isLoading} />}
     </div>
   )
 }

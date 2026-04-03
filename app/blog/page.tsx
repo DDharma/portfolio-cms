@@ -1,26 +1,26 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowUpRight, Calendar, Clock } from "lucide-react";
+import type { Metadata } from 'next'
+import Link from 'next/link'
+import { ArrowUpRight, Calendar, Clock } from 'lucide-react'
 
-import { SectionShell } from "@/components/sections/section-shell";
-import { SectionHeading } from "@/components/sections/section-heading";
-import { getBlogPosts } from "@/lib/api/blog";
-import { getSiteSettings, DEFAULT_SITE_NAME } from "@/lib/api/contact";
-import { Badge } from "@/components/ui/badge";
+import { SectionShell } from '@/components/sections/section-shell'
+import { SectionHeading } from '@/components/sections/section-heading'
+import { getBlogPosts } from '@/lib/api/blog'
+import { getSiteSettings, DEFAULT_SITE_NAME } from '@/lib/api/contact'
+import { Badge } from '@/components/ui/badge'
 
-export const revalidate = 3600;
+export const revalidate = 3600
 
 export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getSiteSettings();
-  const name = settings?.site_name ?? DEFAULT_SITE_NAME;
+  const settings = await getSiteSettings()
+  const name = settings?.site_name ?? DEFAULT_SITE_NAME
   return {
     title: `Blog · ${name}`,
-    description: "Writing on engineering, design systems, and product development.",
-  };
+    description: 'Writing on engineering, design systems, and product development.',
+  }
 }
 
 export default async function BlogPage() {
-  const blogPosts = await getBlogPosts();
+  const blogPosts = await getBlogPosts()
 
   return (
     <SectionShell id="blog-page">
@@ -50,7 +50,13 @@ export default async function BlogPage() {
                   {post.created_at && (
                     <div className="flex items-center gap-1.5">
                       <Calendar className="h-3.5 w-3.5" />
-                      <span>{new Date(post.created_at).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}</span>
+                      <span>
+                        {new Date(post.created_at).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                        })}
+                      </span>
                     </div>
                   )}
                   {post.reading_time && (
@@ -82,7 +88,9 @@ export default async function BlogPage() {
                 {post.tags && post.tags.length > 0 && (
                   <div className="mt-4 flex flex-wrap gap-2">
                     {post.tags.map((tag) => (
-                      <Badge key={tag.id || tag.tag} variant="outline">{tag.tag}</Badge>
+                      <Badge key={tag.id || tag.tag} variant="outline">
+                        {tag.tag}
+                      </Badge>
                     ))}
                   </div>
                 )}
@@ -96,5 +104,5 @@ export default async function BlogPage() {
         )}
       </div>
     </SectionShell>
-  );
+  )
 }

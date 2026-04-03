@@ -32,12 +32,13 @@ export default function LoginPage() {
       <div className="w-full max-w-md space-y-8">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-white">Admin Portal</h1>
-          <p className="mt-2 text-sm text-zinc-400">
-            Sign in to manage your portfolio
-          </p>
+          <p className="mt-2 text-sm text-zinc-400">Sign in to manage your portfolio</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6 rounded-lg border border-white/[0.06] bg-zinc-950 p-8 backdrop-blur">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-6 rounded-lg border border-white/[0.06] bg-zinc-950 p-8 backdrop-blur"
+        >
           {error && (
             <div className="rounded-lg bg-red-500/10 border border-red-500/20 p-4">
               <p className="text-sm text-red-400">{error}</p>
@@ -76,11 +77,7 @@ export default function LoginPage() {
             />
           </div>
 
-          <Button
-            type="submit"
-            disabled={loading}
-            className="w-full"
-          >
+          <Button type="submit" disabled={loading} className="w-full">
             {loading ? 'Signing in...' : 'Sign in'}
           </Button>
         </form>

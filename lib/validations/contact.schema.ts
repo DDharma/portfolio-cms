@@ -10,7 +10,10 @@ export const contactSettingsSchema = z.object({
   site_name: z.string().min(1, 'Site name is required'),
   site_title: z.string().min(1, 'Site title is required'),
   site_description: z.string().min(1, 'Site description is required'),
-  site_logo: z.string().min(1, 'Site logo is required').max(10, 'Keep it short — initials or emoji'),
+  site_logo: z
+    .string()
+    .min(1, 'Site logo is required')
+    .max(10, 'Keep it short — initials or emoji'),
   email: z.string().email('Invalid email address'),
   location: z.string().min(1, 'Location is required'),
   availability: z.string().min(1, 'Availability is required'),

@@ -24,12 +24,12 @@ export const heroMarqueeItemSchema = z.object({
 
 export const heroContentSchema = z.object({
   id: z.string().optional(),
-  title: z.string().min(1, 'Title is required'),  // Now accepts HTML, no max length restriction
+  title: z.string().min(1, 'Title is required'), // Now accepts HTML, no max length restriction
   subtitle: z.any().optional(),
   description: z.any().optional(),
   featured_image: z.any().optional(),
   heading: z.any().optional(),
-  custom_style_ids: z.array(z.string().uuid()).optional().nullable().default(null),  // Track which custom styles are used
+  custom_style_ids: z.array(z.string().uuid()).optional().nullable().default(null), // Track which custom styles are used
   ctas: z.array(heroCtaSchema).optional().default([]),
   stats: z.array(heroStatSchema).optional().default([]),
   marquee_items: z.array(heroMarqueeItemSchema).optional().default([]),

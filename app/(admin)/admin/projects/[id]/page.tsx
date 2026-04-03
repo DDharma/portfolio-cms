@@ -22,7 +22,9 @@ export default function EditProjectsPage() {
         </button>
         <h1 className="text-3xl font-bold text-white">Error</h1>
         <div className="rounded-lg bg-red-500/10 border border-red-500/20 p-4">
-          <p className="text-sm text-red-400">{error instanceof Error ? error.message : 'Failed to load'}</p>
+          <p className="text-sm text-red-400">
+            {error instanceof Error ? error.message : 'Failed to load'}
+          </p>
         </div>
       </div>
     )

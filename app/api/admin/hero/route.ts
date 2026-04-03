@@ -16,12 +16,14 @@ export async function GET(request: NextRequest) {
   try {
     const { data, error } = await supabase
       .from('hero_content')
-      .select(`
+      .select(
+        `
         *,
         hero_ctas (*),
         hero_stats (*),
         hero_marquee_items (*)
-      `)
+      `
+      )
       .order('created_at', { ascending: false })
 
     if (error) throw error
@@ -64,10 +66,7 @@ export async function POST(request: NextRequest) {
       .insert({
         ...heroData,
         created_by: authResult.user.userId,
-        published_at:
-          heroData.status === 'published'
-            ? new Date().toISOString()
-            : null,
+        published_at: heroData.status === 'published' ? new Date().toISOString() : null,
       })
       .select()
       .single()
@@ -76,41 +75,35 @@ export async function POST(request: NextRequest) {
 
     // Insert child records
     if (ctas.length > 0) {
-      const { error } = await supabase
-        .from('hero_ctas')
-        .insert(
-          ctas.map((cta, i) => ({
-            ...cta,
-            hero_id: newHero.id,
-            sort_order: i,
-          }))
-        )
+      const { error } = await supabase.from('hero_ctas').insert(
+        ctas.map((cta, i) => ({
+          ...cta,
+          hero_id: newHero.id,
+          sort_order: i,
+        }))
+      )
       if (error) throw error
     }
 
     if (stats.length > 0) {
-      const { error } = await supabase
-        .from('hero_stats')
-        .insert(
-          stats.map((stat, i) => ({
-            ...stat,
-            hero_id: newHero.id,
-            sort_order: i,
-          }))
-        )
+      const { error } = await supabase.from('hero_stats').insert(
+        stats.map((stat, i) => ({
+          ...stat,
+          hero_id: newHero.id,
+          sort_order: i,
+        }))
+      )
       if (error) throw error
     }
 
     if (marquee_items.length > 0) {
-      const { error } = await supabase
-        .from('hero_marquee_items')
-        .insert(
-          marquee_items.map((item, i) => ({
-            ...item,
-            hero_id: newHero.id,
-            sort_order: i,
-          }))
-        )
+      const { error } = await supabase.from('hero_marquee_items').insert(
+        marquee_items.map((item, i) => ({
+          ...item,
+          hero_id: newHero.id,
+          sort_order: i,
+        }))
+      )
       if (error) throw error
     }
 

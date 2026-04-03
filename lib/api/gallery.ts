@@ -4,10 +4,12 @@ export async function getPublishedGalleryPhotos() {
   const supabase = await createClient()
   const { data, error } = await supabase
     .from('gallery_photos')
-    .select(`
+    .select(
+      `
       *,
       gallery_tags(*)
-    `)
+    `
+    )
     .eq('status', 'published')
     .order('sort_order')
 

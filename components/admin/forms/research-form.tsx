@@ -46,9 +46,7 @@ interface ResearchFormProps {
 export function ResearchForm({ initialData, isLoading = false }: ResearchFormProps) {
   const router = useRouter()
   const [error, setError] = useState<string | null>(null)
-  const [status, setStatus] = useState<'draft' | 'published'>(
-    initialData?.status || 'draft'
-  )
+  const [status, setStatus] = useState<'draft' | 'published'>(initialData?.status || 'draft')
 
   const createMutation = useCreateResearch()
   const updateMutation = useUpdateResearch()
@@ -145,16 +143,10 @@ export function ResearchForm({ initialData, isLoading = false }: ResearchFormPro
       <div className="rounded-lg border border-white/[0.06] bg-zinc-950 p-6 space-y-6">
         <div>
           <h3 className="text-lg font-semibold text-white">Research Paper Details</h3>
-          <p className="text-sm text-zinc-400 mt-1">
-            Information about the research paper
-          </p>
+          <p className="text-sm text-zinc-400 mt-1">Information about the research paper</p>
         </div>
 
-        <FormField
-          label="Title"
-          required
-          error={form.formState.errors.title?.message}
-        >
+        <FormField label="Title" required error={form.formState.errors.title?.message}>
           <input
             type="text"
             {...form.register('title')}
@@ -164,11 +156,7 @@ export function ResearchForm({ initialData, isLoading = false }: ResearchFormPro
           />
         </FormField>
 
-        <FormField
-          label="Slug"
-          required
-          error={form.formState.errors.slug?.message}
-        >
+        <FormField label="Slug" required error={form.formState.errors.slug?.message}>
           <input
             type="text"
             {...form.register('slug')}
@@ -235,10 +223,7 @@ export function ResearchForm({ initialData, isLoading = false }: ResearchFormPro
           />
         </FormField>
 
-        <FormField
-          label="Research PDF (optional)"
-          error={form.formState.errors.pdf_url?.message}
-        >
+        <FormField label="Research PDF (optional)" error={form.formState.errors.pdf_url?.message}>
           <PdfUploader
             value={form.watch('pdf_url') || ''}
             onChange={(url) => form.setValue('pdf_url', url)}
@@ -375,12 +360,7 @@ export function ResearchForm({ initialData, isLoading = false }: ResearchFormPro
 
       {/* Actions */}
       <div className="flex gap-3 justify-end">
-        <Button
-          type="button"
-          variant="ghost"
-          onClick={() => router.back()}
-          disabled={isSubmitting}
-        >
+        <Button type="button" variant="ghost" onClick={() => router.back()} disabled={isSubmitting}>
           Cancel
         </Button>
         <Button
@@ -391,11 +371,7 @@ export function ResearchForm({ initialData, isLoading = false }: ResearchFormPro
         >
           {isSubmitting ? 'Saving...' : 'Save Draft'}
         </Button>
-        <Button
-          type="submit"
-          onClick={() => setStatus('published')}
-          disabled={isSubmitting}
-        >
+        <Button type="submit" onClick={() => setStatus('published')} disabled={isSubmitting}>
           {isSubmitting ? 'Publishing...' : 'Publish'}
         </Button>
       </div>

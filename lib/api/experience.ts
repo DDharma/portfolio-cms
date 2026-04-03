@@ -5,11 +5,13 @@ export async function getPublishedExperience() {
   const supabase = await createClient()
   const { data, error } = await supabase
     .from('experience_items')
-    .select(`
+    .select(
+      `
       *,
       experience_achievements(*, sort_order),
       experience_tech_stack(*, sort_order)
-    `)
+    `
+    )
     .eq('status', 'published')
     .order('sort_order')
 
@@ -33,11 +35,7 @@ export async function getExperienceItemById(id: string) {
       .select('*')
       .eq('experience_id', id)
       .order('sort_order'),
-    supabase
-      .from('experience_tech_stack')
-      .select('*')
-      .eq('experience_id', id)
-      .order('sort_order'),
+    supabase.from('experience_tech_stack').select('*').eq('experience_id', id).order('sort_order'),
   ])
 
   return {
@@ -66,7 +64,13 @@ export async function createExperienceItem(data: ExperienceItem) {
   if (achievements.length > 0) {
     const { error } = await supabase
       .from('experience_achievements')
-      .insert(achievements.map((achievement, i) => ({ ...achievement, experience_id: newExperience.id, sort_order: i })))
+      .insert(
+        achievements.map((achievement, i) => ({
+          ...achievement,
+          experience_id: newExperience.id,
+          sort_order: i,
+        }))
+      )
 
     if (error) throw new Error(error.message)
   }
@@ -74,7 +78,9 @@ export async function createExperienceItem(data: ExperienceItem) {
   if (tech_stack.length > 0) {
     const { error } = await supabase
       .from('experience_tech_stack')
-      .insert(tech_stack.map((tech, i) => ({ ...tech, experience_id: newExperience.id, sort_order: i })))
+      .insert(
+        tech_stack.map((tech, i) => ({ ...tech, experience_id: newExperience.id, sort_order: i }))
+      )
 
     if (error) throw new Error(error.message)
   }
@@ -105,7 +111,9 @@ export async function updateExperienceItem(id: string, data: ExperienceItem) {
   if (achievements.length > 0) {
     const { error } = await supabase
       .from('experience_achievements')
-      .insert(achievements.map((achievement, i) => ({ ...achievement, experience_id: id, sort_order: i })))
+      .insert(
+        achievements.map((achievement, i) => ({ ...achievement, experience_id: id, sort_order: i }))
+      )
 
     if (error) throw new Error(error.message)
   }
@@ -121,10 +129,7 @@ export async function updateExperienceItem(id: string, data: ExperienceItem) {
 
 export async function deleteExperienceItem(id: string) {
   const supabase = await createClient()
-  const { error } = await supabase
-    .from('experience_items')
-    .delete()
-    .eq('id', id)
+  const { error } = await supabase.from('experience_items').delete().eq('id', id)
 
   if (error) throw new Error(error.message)
 }

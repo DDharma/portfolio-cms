@@ -5,11 +5,13 @@ export async function getAboutContent() {
   const supabase = await createClient()
   const { data, error } = await supabase
     .from('about_content')
-    .select(`
+    .select(
+      `
       *,
       about_highlights(*),
       about_principles(*)
-    `)
+    `
+    )
     .eq('status', 'published')
     .order('created_at', { ascending: false })
     .limit(1)
@@ -30,16 +32,8 @@ export async function getAboutById(id: string) {
   if (aboutError) throw new Error(aboutError.message)
 
   const [highlights, principles] = await Promise.all([
-    supabase
-      .from('about_highlights')
-      .select('*')
-      .eq('about_id', id)
-      .order('sort_order'),
-    supabase
-      .from('about_principles')
-      .select('*')
-      .eq('about_id', id)
-      .order('sort_order'),
+    supabase.from('about_highlights').select('*').eq('about_id', id).order('sort_order'),
+    supabase.from('about_principles').select('*').eq('about_id', id).order('sort_order'),
   ])
 
   return {
@@ -68,7 +62,9 @@ export async function createAbout(data: AboutContent) {
   if (highlights.length > 0) {
     const { error } = await supabase
       .from('about_highlights')
-      .insert(highlights.map((highlight, i) => ({ ...highlight, about_id: newAbout.id, sort_order: i })))
+      .insert(
+        highlights.map((highlight, i) => ({ ...highlight, about_id: newAbout.id, sort_order: i }))
+      )
 
     if (error) throw new Error(error.message)
   }
@@ -76,7 +72,9 @@ export async function createAbout(data: AboutContent) {
   if (principles.length > 0) {
     const { error } = await supabase
       .from('about_principles')
-      .insert(principles.map((principle, i) => ({ ...principle, about_id: newAbout.id, sort_order: i })))
+      .insert(
+        principles.map((principle, i) => ({ ...principle, about_id: newAbout.id, sort_order: i }))
+      )
 
     if (error) throw new Error(error.message)
   }
@@ -123,10 +121,7 @@ export async function updateAbout(id: string, data: AboutContent) {
 
 export async function deleteAbout(id: string) {
   const supabase = await createClient()
-  const { error } = await supabase
-    .from('about_content')
-    .delete()
-    .eq('id', id)
+  const { error } = await supabase.from('about_content').delete().eq('id', id)
 
   if (error) throw new Error(error.message)
 }

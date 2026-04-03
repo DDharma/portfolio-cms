@@ -5,10 +5,12 @@ export async function getPublishedSkills() {
   const supabase = await createClient()
   const { data, error } = await supabase
     .from('skill_categories')
-    .select(`
+    .select(
+      `
       *,
       skills(*, sort_order)
-    `)
+    `
+    )
     .eq('status', 'published')
     .order('sort_order')
 
@@ -95,10 +97,7 @@ export async function updateSkillCategory(id: string, data: SkillCategory) {
 
 export async function deleteSkillCategory(id: string) {
   const supabase = await createClient()
-  const { error } = await supabase
-    .from('skill_categories')
-    .delete()
-    .eq('id', id)
+  const { error } = await supabase.from('skill_categories').delete().eq('id', id)
 
   if (error) throw new Error(error.message)
 }

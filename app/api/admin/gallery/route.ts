@@ -14,10 +14,12 @@ export async function GET(request: NextRequest) {
   try {
     const { data, error } = await supabase
       .from('gallery_photos')
-      .select(`
+      .select(
+        `
         *,
         gallery_tags (*)
-      `)
+      `
+      )
       .order('sort_order')
 
     if (error) throw error

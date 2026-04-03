@@ -3,6 +3,7 @@
 This guide covers deploying your portfolio CMS to production on various platforms.
 
 ## Table of Contents
+
 1. [Vercel (Recommended)](#vercel-recommended)
 2. [Self-Hosted (Node.js / Docker)](#self-hosted)
 3. [Environment Variables](#environment-variables)
@@ -18,6 +19,7 @@ This guide covers deploying your portfolio CMS to production on various platform
 Vercel is the recommended platform — it's optimized for Next.js and offers a seamless deployment experience.
 
 ### Prerequisites
+
 - Vercel account (free at [vercel.com](https://vercel.com))
 - GitHub repository with this code
 - Supabase project already set up
@@ -41,6 +43,7 @@ JWT_SECRET=your-jwt-secret-min-32-chars
 ```
 
 **Where to find these values:**
+
 - Log into your Supabase project
 - Go to **Settings > API**
 - Copy `Project URL` → `NEXT_PUBLIC_SUPABASE_URL`
@@ -62,6 +65,7 @@ Subsequent pushes to `main` will auto-deploy.
 To refresh content on-demand instead of waiting 1 hour, add this webhook to your admin:
 
 In Vercel Project Settings > Git, add a **Deploy Hook**:
+
 - **Name:** `revalidate-portfolio`
 - **Branch:** `main`
 - Copy the webhook URL
@@ -71,6 +75,7 @@ Then in your Supabase, you could trigger this webhook on content publish (advanc
 ### Vercel ISR Strategy
 
 By default, content revalidates every 1 hour (see `app/page.tsx`). For faster updates:
+
 - Option 1: Reduce `revalidate = 3600` to a lower number (60 = 1 minute)
 - Option 2: Use on-demand revalidation via Supabase functions
 - Option 3: Accept 1-hour lag, manually trigger deployment on important changes
@@ -82,6 +87,7 @@ By default, content revalidates every 1 hour (see `app/page.tsx`). For faster up
 ### Option A: Node.js Server
 
 #### Prerequisites
+
 - Node.js 18+ installed
 - A Linux server (Ubuntu recommended)
 - Supabase project configured
@@ -89,11 +95,13 @@ By default, content revalidates every 1 hour (see `app/page.tsx`). For faster up
 #### Deployment Steps
 
 1. **SSH into your server**
+
    ```bash
    ssh user@your-server.com
    ```
 
 2. **Install dependencies**
+
    ```bash
    curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
    sudo apt-get install -y nodejs git
@@ -101,34 +109,40 @@ By default, content revalidates every 1 hour (see `app/page.tsx`). For faster up
    ```
 
 3. **Clone your repository**
+
    ```bash
    git clone https://github.com/DDharma/portfolio-cms.git
    cd portfolio-cms
    ```
 
 4. **Install project dependencies**
+
    ```bash
    pnpm install --prod
    ```
 
 5. **Build the Next.js app**
+
    ```bash
    pnpm build
    ```
 
 6. **Create `.env` file** (same as `.env.example`)
+
    ```bash
    cp .env.example .env.local
    nano .env.local  # Edit with your values
    ```
 
 7. **Start the server**
+
    ```bash
    pnpm start
    # The server runs on http://localhost:3000
    ```
 
 8. **Set up PM2 for persistent running** (optional but recommended)
+
    ```bash
    sudo pnpm add -g pm2
    pm2 start "pnpm start" --name portfolio
@@ -137,12 +151,14 @@ By default, content revalidates every 1 hour (see `app/page.tsx`). For faster up
    ```
 
 9. **Set up Nginx as reverse proxy** (optional)
+
    ```bash
    sudo apt-get install -y nginx
    sudo nano /etc/nginx/sites-available/default
    ```
 
    Add this to the `server` block:
+
    ```nginx
    location / {
      proxy_pass http://localhost:3000;
@@ -155,6 +171,7 @@ By default, content revalidates every 1 hour (see `app/page.tsx`). For faster up
    ```
 
    Then:
+
    ```bash
    sudo nginx -t
    sudo systemctl restart nginx
@@ -169,6 +186,7 @@ By default, content revalidates every 1 hour (see `app/page.tsx`). For faster up
 ### Option B: Docker
 
 1. **Create a `Dockerfile`** in your project root:
+
    ```dockerfile
    FROM node:18-alpine
 
@@ -189,11 +207,13 @@ By default, content revalidates every 1 hour (see `app/page.tsx`). For faster up
    ```
 
 2. **Build the image**
+
    ```bash
    docker build -t portfolio:latest .
    ```
 
 3. **Run the container**
+
    ```bash
    docker run -p 3000:80 \
      -e NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co \
@@ -204,6 +224,7 @@ By default, content revalidates every 1 hour (see `app/page.tsx`). For faster up
    ```
 
    Or use Docker Compose (`docker-compose.yml`):
+
    ```yaml
    version: '3.8'
 
@@ -211,7 +232,7 @@ By default, content revalidates every 1 hour (see `app/page.tsx`). For faster up
      portfolio:
        build: .
        ports:
-         - "3000:3000"
+         - '3000:3000'
        environment:
          - NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
          - NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
@@ -220,6 +241,7 @@ By default, content revalidates every 1 hour (see `app/page.tsx`). For faster up
    ```
 
    Then run:
+
    ```bash
    docker-compose up -d
    ```
@@ -230,12 +252,12 @@ By default, content revalidates every 1 hour (see `app/page.tsx`). For faster up
 
 All environment variables from `.env.example` are required:
 
-| Variable | Required | Where to Get | Example |
-|----------|----------|--------------|---------|
-| `NEXT_PUBLIC_SUPABASE_URL` | ✅ | Supabase Dashboard > Settings > API > Project URL | `https://abcd1234.supabase.co` |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | ✅ | Supabase Dashboard > Settings > API > anon key | `eyJhbGciOi...` |
-| `SUPABASE_SERVICE_ROLE_KEY` | ✅ | Supabase Dashboard > Settings > API > service_role key | `eyJhbGciOi...` |
-| `JWT_SECRET` | ✅ | Generate your own | `qwertyuiopasdfghjklzxcvbnm123456` |
+| Variable                        | Required | Where to Get                                           | Example                            |
+| ------------------------------- | -------- | ------------------------------------------------------ | ---------------------------------- |
+| `NEXT_PUBLIC_SUPABASE_URL`      | ✅       | Supabase Dashboard > Settings > API > Project URL      | `https://abcd1234.supabase.co`     |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | ✅       | Supabase Dashboard > Settings > API > anon key         | `eyJhbGciOi...`                    |
+| `SUPABASE_SERVICE_ROLE_KEY`     | ✅       | Supabase Dashboard > Settings > API > service_role key | `eyJhbGciOi...`                    |
+| `JWT_SECRET`                    | ✅       | Generate your own                                      | `qwertyuiopasdfghjklzxcvbnm123456` |
 
 **⚠️ Never commit `.env.local` to git. Add it to `.gitignore`.**
 
@@ -279,42 +301,47 @@ Visit your deployed site at `/setup` to create your admin account. This page is 
 ### How It Works
 
 By default, the homepage and archive pages revalidate **every 1 hour** (ISR). This means:
+
 - Fresh content is cached for fast load times
 - Updates appear within 1 hour automatically
 - No manual redeploy needed
 
 See `app/page.tsx`, `app/blog/page.tsx`, `app/projects/page.tsx`:
+
 ```typescript
-export const revalidate = 3600; // 1 hour in seconds
+export const revalidate = 3600 // 1 hour in seconds
 ```
 
 ### Speed It Up
 
 #### Option 1: Reduce ISR Time
+
 Change `revalidate = 3600` to `revalidate = 60` (1 minute) or `revalidate = 300` (5 minutes).
 
 **Tradeoff:** More server load but faster updates.
 
 #### Option 2: On-Demand Revalidation (Advanced)
+
 Create a webhook that Supabase triggers on publish:
 
 1. In Vercel, create a **Deploy Hook** (Settings > Git)
 2. Or create an API route in your Next.js app:
+
    ```typescript
    // app/api/revalidate/route.ts
-   import { revalidateTag } from 'next/cache';
+   import { revalidateTag } from 'next/cache'
 
    export async function POST(req: Request) {
-     const authHeader = req.headers.get('authorization');
+     const authHeader = req.headers.get('authorization')
      if (authHeader !== `Bearer ${process.env.REVALIDATE_SECRET}`) {
-       return new Response('Unauthorized', { status: 401 });
+       return new Response('Unauthorized', { status: 401 })
      }
 
-     revalidateTag('home');
-     revalidateTag('blog');
-     revalidateTag('projects');
+     revalidateTag('home')
+     revalidateTag('blog')
+     revalidateTag('projects')
 
-     return Response.json({ revalidated: true, now: Date.now() });
+     return Response.json({ revalidated: true, now: Date.now() })
    }
    ```
 
@@ -357,11 +384,13 @@ Create a webhook that Supabase triggers on publish:
 ### Self-Hosted (PM2)
 
 View logs:
+
 ```bash
 pm2 logs portfolio
 ```
 
 Restart the app:
+
 ```bash
 pm2 restart portfolio
 ```
@@ -369,6 +398,7 @@ pm2 restart portfolio
 ### Self-Hosted (Docker)
 
 View logs:
+
 ```bash
 docker logs container-name -f
 ```
@@ -378,26 +408,31 @@ docker logs container-name -f
 ## Troubleshooting
 
 ### "Database connection failed"
+
 - Check that `SUPABASE_SERVICE_ROLE_KEY` is correct
 - Ensure Supabase project is running (check dashboard)
 - Verify network allows connections to Supabase
 
 ### "Image won't load from Supabase"
+
 - Check that `portfolio-images` bucket is public
 - Verify images are in the bucket (go to Storage in Supabase)
 - Check browser console for CORS errors
 
 ### "Admin login fails"
+
 - Verify `JWT_SECRET` is set and at least 32 characters
 - Check that admin user exists in `profiles` table with `role = 'admin'`
 - Clear browser cookies and try again
 
 ### "Build fails on deploy"
+
 - Run `pnpm build` locally to debug
 - Check that all environment variables are set
 - Ensure `next.config.ts` is valid
 
 ### "Content not refreshing"
+
 - If using ISR, wait up to 1 hour or reduce `revalidate` time
 - On Vercel, try **Redeploy** button manually
 - Check that you're viewing a `GET` request (not cached from `POST`)

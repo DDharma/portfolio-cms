@@ -37,8 +37,8 @@ export async function GET(request: NextRequest) {
 
     // Helper to count by status
     const countByStatus = (data: any[]) => {
-      const published = data?.filter(item => item.status === 'published').length || 0
-      const draft = data?.filter(item => item.status === 'draft').length || 0
+      const published = data?.filter((item) => item.status === 'published').length || 0
+      const draft = data?.filter((item) => item.status === 'draft').length || 0
       return { total: data?.length || 0, published, draft }
     }
 
@@ -70,9 +70,6 @@ export async function GET(request: NextRequest) {
     })
   } catch (error) {
     console.error('Dashboard stats error:', error)
-    return NextResponse.json(
-      { error: 'Failed to fetch dashboard statistics' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to fetch dashboard statistics' }, { status: 500 })
   }
 }

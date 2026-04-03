@@ -20,7 +20,10 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ success: true, data })
   } catch (error) {
     console.error('Get skills error:', error)
-    return NextResponse.json({ error: error instanceof Error ? error.message : 'Failed' }, { status: 500 })
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : 'Failed' },
+      { status: 500 }
+    )
   }
 }
 
@@ -48,11 +51,17 @@ export async function POST(request: NextRequest) {
       .single()
     if (categoryError) throw categoryError
 
-    if (skills.length > 0) await supabase.from('skills').insert(skills.map((s, i) => ({ ...s, category_id: newCategory.id, sort_order: i })))
+    if (skills.length > 0)
+      await supabase
+        .from('skills')
+        .insert(skills.map((s, i) => ({ ...s, category_id: newCategory.id, sort_order: i })))
 
     return NextResponse.json({ success: true, data: newCategory }, { status: 201 })
   } catch (error) {
     console.error('Create skills error:', error)
-    return NextResponse.json({ error: error instanceof Error ? error.message : 'Failed' }, { status: 400 })
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : 'Failed' },
+      { status: 400 }
+    )
   }
 }

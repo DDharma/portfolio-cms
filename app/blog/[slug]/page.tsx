@@ -1,57 +1,50 @@
-import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import Link from "next/link";
-import { ArrowLeft, Calendar, Clock } from "lucide-react";
+import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
+import Link from 'next/link'
+import { ArrowLeft, Calendar, Clock } from 'lucide-react'
 
-import { SectionShell } from "@/components/sections/section-shell";
-import { getBlogPosts, getBlogPostBySlug } from "@/lib/api/blog";
-import { getSiteSettings, DEFAULT_SITE_NAME } from "@/lib/api/contact";
+import { SectionShell } from '@/components/sections/section-shell'
+import { getBlogPosts, getBlogPostBySlug } from '@/lib/api/blog'
+import { getSiteSettings, DEFAULT_SITE_NAME } from '@/lib/api/contact'
 
-export const revalidate = 3600;
-export const dynamicParams = true;
+export const revalidate = 3600
+export const dynamicParams = true
 
 export async function generateStaticParams() {
   try {
-    const posts = await getBlogPosts();
-    return posts.map((post) => ({ slug: post.slug }));
+    const posts = await getBlogPosts()
+    return posts.map((post) => ({ slug: post.slug }))
   } catch (error) {
     // During build time, cookies may not be available
     // Return empty array and let Next.js generate pages on-demand
-    console.warn("Could not fetch blog posts for static generation:", error);
-    return [];
+    console.warn('Could not fetch blog posts for static generation:', error)
+    return []
   }
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string }>
 }): Promise<Metadata> {
-  const { slug } = await params;
-  const [post, settings] = await Promise.all([
-    getBlogPostBySlug(slug),
-    getSiteSettings(),
-  ]);
-  const name = settings?.site_name ?? DEFAULT_SITE_NAME;
+  const { slug } = await params
+  const [post, settings] = await Promise.all([getBlogPostBySlug(slug), getSiteSettings()])
+  const name = settings?.site_name ?? DEFAULT_SITE_NAME
   if (!post) {
-    return { title: `Post not found · ${name}` };
+    return { title: `Post not found · ${name}` }
   }
   return {
     title: `${post.title} · ${name}`,
     description: post.description,
-  };
+  }
 }
 
-export default async function BlogPostPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  const { slug } = await params;
-  const post = await getBlogPostBySlug(slug);
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const post = await getBlogPostBySlug(slug)
 
   if (!post) {
-    notFound();
+    notFound()
   }
 
   return (
@@ -73,10 +66,10 @@ export default async function BlogPostPage({
             <div className="flex items-center gap-2 text-sm text-zinc-400">
               <Calendar className="h-4 w-4 text-zinc-500" />
               <span>
-                {new Date(post.created_at).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
+                {new Date(post.created_at).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
                 })}
               </span>
             </div>
@@ -132,5 +125,5 @@ export default async function BlogPostPage({
         />
       </div>
     </SectionShell>
-  );
+  )
 }

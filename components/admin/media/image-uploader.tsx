@@ -13,19 +13,12 @@ interface ImageUploaderProps {
   className?: string
 }
 
-export function ImageUploader({
-  value,
-  onChange,
-  disabled,
-  className,
-}: ImageUploaderProps) {
+export function ImageUploader({ value, onChange, disabled, className }: ImageUploaderProps) {
   const [isUploading, setIsUploading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (!file) return
 
@@ -70,12 +63,7 @@ export function ImageUploader({
     <div className={cn('space-y-4', className)}>
       {value ? (
         <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-white/[0.1]">
-          <Image
-            src={value}
-            alt="Preview"
-            fill
-            className="object-cover"
-          />
+          <Image src={value} alt="Preview" fill className="object-cover" />
           <button
             type="button"
             onClick={() => onChange('')}

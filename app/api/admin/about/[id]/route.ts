@@ -4,10 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { revalidatePath } from 'next/cache'
 import { requireAdmin } from '@/lib/auth/jwt'
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const authResult = requireAdmin(request)
   if ('error' in authResult) {
     return NextResponse.json({ error: authResult.error }, { status: authResult.status })
@@ -26,16 +23,8 @@ export async function GET(
     if (aboutError) throw aboutError
 
     const [highlights, principles] = await Promise.all([
-      supabase
-        .from('about_highlights')
-        .select('*')
-        .eq('about_id', id)
-        .order('sort_order'),
-      supabase
-        .from('about_principles')
-        .select('*')
-        .eq('about_id', id)
-        .order('sort_order'),
+      supabase.from('about_highlights').select('*').eq('about_id', id).order('sort_order'),
+      supabase.from('about_principles').select('*').eq('about_id', id).order('sort_order'),
     ])
 
     return NextResponse.json({
@@ -51,10 +40,7 @@ export async function GET(
   }
 }
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const authResult = requireAdmin(request)
   if ('error' in authResult) {
     return NextResponse.json({ error: authResult.error }, { status: authResult.status })
@@ -72,10 +58,7 @@ export async function PATCH(
       .from('about_content')
       .update({
         ...aboutData,
-        published_at:
-          aboutData.status === 'published'
-            ? new Date().toISOString()
-            : null,
+        published_at: aboutData.status === 'published' ? new Date().toISOString() : null,
       })
       .eq('id', id)
 
@@ -88,28 +71,24 @@ export async function PATCH(
     ])
 
     if (highlights.length > 0) {
-      const { error } = await supabase
-        .from('about_highlights')
-        .insert(
-          highlights.map((highlight, i) => ({
-            ...highlight,
-            about_id: id,
-            sort_order: i,
-          }))
-        )
+      const { error } = await supabase.from('about_highlights').insert(
+        highlights.map((highlight, i) => ({
+          ...highlight,
+          about_id: id,
+          sort_order: i,
+        }))
+      )
       if (error) throw error
     }
 
     if (principles.length > 0) {
-      const { error } = await supabase
-        .from('about_principles')
-        .insert(
-          principles.map((principle, i) => ({
-            ...principle,
-            about_id: id,
-            sort_order: i,
-          }))
-        )
+      const { error } = await supabase.from('about_principles').insert(
+        principles.map((principle, i) => ({
+          ...principle,
+          about_id: id,
+          sort_order: i,
+        }))
+      )
       if (error) throw error
     }
 
@@ -119,10 +98,7 @@ export async function PATCH(
   } catch (error) {
     console.error('PATCH error:', error)
     const errorMessage = error instanceof Error ? error.message : 'Failed to update'
-    return NextResponse.json(
-      { error: errorMessage },
-      { status: 400 }
-    )
+    return NextResponse.json({ error: errorMessage }, { status: 400 })
   }
 }
 
@@ -139,10 +115,7 @@ export async function DELETE(
   const supabase = createAdminClient()
 
   try {
-    const { error } = await supabase
-      .from('about_content')
-      .delete()
-      .eq('id', id)
+    const { error } = await supabase.from('about_content').delete().eq('id', id)
 
     if (error) throw error
 

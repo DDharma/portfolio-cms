@@ -67,10 +67,7 @@ export function DataTable<T extends { id: string }>({
             {columns.map((col) => (
               <th
                 key={String(col.key)}
-                className={cn(
-                  'px-6 py-3 text-left text-xs font-semibold text-zinc-300',
-                  col.width
-                )}
+                className={cn('px-6 py-3 text-left text-xs font-semibold text-zinc-300', col.width)}
               >
                 {col.sortable && onSort ? (
                   <button
@@ -108,10 +105,7 @@ export function DataTable<T extends { id: string }>({
               {columns.map((col) => (
                 <td
                   key={`${row.id}-${String(col.key)}`}
-                  className={cn(
-                    'px-6 py-4 text-sm text-zinc-300',
-                    col.width
-                  )}
+                  className={cn('px-6 py-4 text-sm text-zinc-300', col.width)}
                 >
                   {col.render ? col.render(row[col.key], row) : String(row[col.key] ?? '-')}
                 </td>

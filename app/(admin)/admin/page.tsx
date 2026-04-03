@@ -22,14 +22,19 @@ export default function AdminPage() {
       try {
         const supabase = createClient()
 
-        const [projectsRes, blogsRes, experienceRes, researchRes, galleryRes, photoRes] = await Promise.all([
-          supabase.from('projects').select('id', { count: 'exact' }),
-          supabase.from('blog_posts').select('id', { count: 'exact' }),
-          supabase.from('experience_items').select('id', { count: 'exact' }),
-          supabase.from('research_papers').select('id', { count: 'exact' }),
-          supabase.from('gallery_photos').select('id', { count: 'exact' }),
-          supabase.from('gallery_photos').select('id, title, image_url').limit(6).order('created_at', { ascending: false }),
-        ])
+        const [projectsRes, blogsRes, experienceRes, researchRes, galleryRes, photoRes] =
+          await Promise.all([
+            supabase.from('projects').select('id', { count: 'exact' }),
+            supabase.from('blog_posts').select('id', { count: 'exact' }),
+            supabase.from('experience_items').select('id', { count: 'exact' }),
+            supabase.from('research_papers').select('id', { count: 'exact' }),
+            supabase.from('gallery_photos').select('id', { count: 'exact' }),
+            supabase
+              .from('gallery_photos')
+              .select('id, title, image_url')
+              .limit(6)
+              .order('created_at', { ascending: false }),
+          ])
 
         setStats({
           projects: projectsRes.count || 0,
@@ -66,7 +71,10 @@ export default function AdminPage() {
         {loading ? (
           <>
             {[...Array(5)].map((_, i) => (
-              <div key={i} className="h-32 rounded-lg border border-white/6 bg-white/2 animate-pulse" />
+              <div
+                key={i}
+                className="h-32 rounded-lg border border-white/6 bg-white/2 animate-pulse"
+              />
             ))}
           </>
         ) : (
@@ -101,7 +109,10 @@ export default function AdminPage() {
           <h2 className="text-xl font-semibold text-white">Recent Gallery Photos</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
             {galleryPhotos.map((photo) => (
-              <div key={photo.id} className="relative group rounded-lg overflow-hidden border border-white/[0.1] hover:border-white/[0.2] transition-all">
+              <div
+                key={photo.id}
+                className="relative group rounded-lg overflow-hidden border border-white/[0.1] hover:border-white/[0.2] transition-all"
+              >
                 <div className="relative h-48 bg-zinc-900">
                   <Image
                     src={photo.image_url}
@@ -111,7 +122,9 @@ export default function AdminPage() {
                   />
                 </div>
                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <p className="text-white text-sm font-medium text-center px-2 line-clamp-2">{photo.title}</p>
+                  <p className="text-white text-sm font-medium text-center px-2 line-clamp-2">
+                    {photo.title}
+                  </p>
                 </div>
               </div>
             ))}
@@ -122,7 +135,8 @@ export default function AdminPage() {
       <Card className="p-8">
         <h2 className="text-xl font-semibold text-white">Getting Started</h2>
         <p className="mt-2 text-zinc-400">
-          Navigate using the sidebar to manage your portfolio content. Start by adding projects, blog posts, and experience items.
+          Navigate using the sidebar to manage your portfolio content. Start by adding projects,
+          blog posts, and experience items.
         </p>
       </Card>
     </div>

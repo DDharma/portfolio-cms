@@ -75,20 +75,14 @@ export default function MediaPage() {
       {showUploader === 'image' && (
         <div className="rounded-lg border border-white/[0.06] bg-zinc-950 p-6">
           <h3 className="text-lg font-semibold text-white mb-4">Upload New Image</h3>
-          <ImageUploader
-            value=""
-            onChange={handleUploadSuccess}
-          />
+          <ImageUploader value="" onChange={handleUploadSuccess} />
         </div>
       )}
 
       {showUploader === 'pdf' && (
         <div className="rounded-lg border border-white/[0.06] bg-zinc-950 p-6">
           <h3 className="text-lg font-semibold text-white mb-4">Upload New PDF</h3>
-          <PdfUploader
-            value=""
-            onChange={handleUploadSuccess}
-          />
+          <PdfUploader value="" onChange={handleUploadSuccess} />
         </div>
       )}
 
@@ -96,7 +90,10 @@ export default function MediaPage() {
       {isLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="h-64 rounded-lg border border-white/6 bg-white/2 animate-pulse" />
+            <div
+              key={i}
+              className="h-64 rounded-lg border border-white/6 bg-white/2 animate-pulse"
+            />
           ))}
         </div>
       ) : uploads.length > 0 ? (

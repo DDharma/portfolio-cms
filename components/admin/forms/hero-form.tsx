@@ -19,7 +19,13 @@ type HeroContent = {
   subtitle: string
   description: string
   featured_image?: any
-  ctas: Array<{ id?: string; label: string; href: string; variant: 'default' | 'secondary'; sort_order: number }>
+  ctas: Array<{
+    id?: string
+    label: string
+    href: string
+    variant: 'default' | 'secondary'
+    sort_order: number
+  }>
   stats: Array<{ id?: string; label: string; value: string; sort_order: number }>
   marquee_items: Array<{ id?: string; text: string; icon?: string; sort_order: number }>
   custom_style_ids: string[] | null
@@ -44,9 +50,7 @@ interface HeroFormProps {
 export function HeroForm({ initialData, isLoading = false }: HeroFormProps) {
   const router = useRouter()
   const [error, setError] = useState<string | undefined>(undefined)
-  const [status, setStatus] = useState<'draft' | 'published'>(
-    initialData?.status || 'draft'
-  )
+  const [status, setStatus] = useState<'draft' | 'published'>(initialData?.status || 'draft')
 
   const createMutation = useCreateHero()
   const updateMutation = useUpdateHero()
@@ -124,10 +128,7 @@ export function HeroForm({ initialData, isLoading = false }: HeroFormProps) {
   }
 
   return (
-    <form
-      onSubmit={form.handleSubmit(onSubmit)}
-      className="space-y-8"
-    >
+    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
       {error && (
         <div className="rounded-lg bg-red-500/10 border border-red-500/20 p-4">
           <p className="text-sm text-red-400">{error}</p>
@@ -138,9 +139,7 @@ export function HeroForm({ initialData, isLoading = false }: HeroFormProps) {
       <div className="rounded-lg border border-white/[0.06] bg-zinc-950 p-6 space-y-6">
         <div>
           <h3 className="text-lg font-semibold text-white">Basic Information</h3>
-          <p className="text-sm text-zinc-400 mt-1">
-            Main content for the hero section
-          </p>
+          <p className="text-sm text-zinc-400 mt-1">Main content for the hero section</p>
         </div>
 
         <div>
@@ -167,10 +166,7 @@ export function HeroForm({ initialData, isLoading = false }: HeroFormProps) {
           />
         </div>
 
-        <FormField
-          label="Subtitle"
-          error={form.formState.errors.subtitle?.message}
-        >
+        <FormField label="Subtitle" error={form.formState.errors.subtitle?.message}>
           <input
             type="text"
             {...form.register('subtitle')}
@@ -219,7 +215,9 @@ export function HeroForm({ initialData, isLoading = false }: HeroFormProps) {
             type="button"
             variant="secondary"
             size="sm"
-            onClick={() => ctasField.append({ label: '', href: '', variant: 'default', sort_order: 0 })}
+            onClick={() =>
+              ctasField.append({ label: '', href: '', variant: 'default', sort_order: 0 })
+            }
             disabled={isSubmitting}
           >
             <Plus className="h-4 w-4" />
@@ -313,12 +311,7 @@ export function HeroForm({ initialData, isLoading = false }: HeroFormProps) {
 
       {/* Actions */}
       <div className="flex gap-3 justify-end">
-        <Button
-          type="button"
-          variant="ghost"
-          onClick={() => router.back()}
-          disabled={isSubmitting}
-        >
+        <Button type="button" variant="ghost" onClick={() => router.back()} disabled={isSubmitting}>
           Cancel
         </Button>
         <Button
@@ -330,11 +323,7 @@ export function HeroForm({ initialData, isLoading = false }: HeroFormProps) {
         >
           {isSubmitting ? 'Saving...' : 'Save Draft'}
         </Button>
-        <Button
-          type="submit"
-          onClick={() => setStatus('published')}
-          disabled={isSubmitting}
-        >
+        <Button type="submit" onClick={() => setStatus('published')} disabled={isSubmitting}>
           {isSubmitting ? 'Publishing...' : 'Publish'}
         </Button>
       </div>

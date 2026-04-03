@@ -2,7 +2,12 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useProjectsList, useDeleteProject, useSectionMetadata, useUpdateSectionMetadata } from '@/hooks/use-admin-api'
+import {
+  useProjectsList,
+  useDeleteProject,
+  useSectionMetadata,
+  useUpdateSectionMetadata,
+} from '@/hooks/use-admin-api'
 import { Button } from '@/components/ui/button'
 import { DataTable } from '@/components/admin/ui/data-table'
 import { StatusBadge } from '@/components/admin/ui/status-badge'
@@ -13,7 +18,8 @@ export default function ProjectsListPage() {
   const router = useRouter()
   const { data, isLoading } = useProjectsList()
   const deleteProject = useDeleteProject()
-  const { data: sectionHeading, isLoading: isLoadingSectionHeading } = useSectionMetadata('projects')
+  const { data: sectionHeading, isLoading: isLoadingSectionHeading } =
+    useSectionMetadata('projects')
   const updateSectionHeading = useUpdateSectionMetadata()
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [isEditingHeading, setIsEditingHeading] = useState(false)
@@ -80,7 +86,12 @@ export default function ProjectsListPage() {
                     <input
                       type="text"
                       value={editingHeadingValues.heading}
-                      onChange={(e) => setEditingHeadingValues({ ...editingHeadingValues, heading: e.target.value })}
+                      onChange={(e) =>
+                        setEditingHeadingValues({
+                          ...editingHeadingValues,
+                          heading: e.target.value,
+                        })
+                      }
                       className="w-full mt-1 rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-white placeholder-zinc-500 focus:border-white/20 focus:outline-none text-sm"
                       placeholder="e.g. Selected Work"
                     />
@@ -90,7 +101,9 @@ export default function ProjectsListPage() {
                     <input
                       type="text"
                       value={editingHeadingValues.title}
-                      onChange={(e) => setEditingHeadingValues({ ...editingHeadingValues, title: e.target.value })}
+                      onChange={(e) =>
+                        setEditingHeadingValues({ ...editingHeadingValues, title: e.target.value })
+                      }
                       className="w-full mt-1 rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-white placeholder-zinc-500 focus:border-white/20 focus:outline-none text-sm"
                       placeholder="Main heading..."
                     />
@@ -99,7 +112,12 @@ export default function ProjectsListPage() {
                     <label className="text-sm font-medium text-white">Description</label>
                     <textarea
                       value={editingHeadingValues.description}
-                      onChange={(e) => setEditingHeadingValues({ ...editingHeadingValues, description: e.target.value })}
+                      onChange={(e) =>
+                        setEditingHeadingValues({
+                          ...editingHeadingValues,
+                          description: e.target.value,
+                        })
+                      }
                       className="w-full mt-1 rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-white placeholder-zinc-500 focus:border-white/20 focus:outline-none text-sm"
                       placeholder="Optional description..."
                       rows={3}
@@ -109,7 +127,11 @@ export default function ProjectsListPage() {
                     <Button variant="ghost" size="sm" onClick={handleCancelHeading}>
                       Cancel
                     </Button>
-                    <Button size="sm" onClick={handleSaveHeading} disabled={updateSectionHeading.isPending}>
+                    <Button
+                      size="sm"
+                      onClick={handleSaveHeading}
+                      disabled={updateSectionHeading.isPending}
+                    >
                       {updateSectionHeading.isPending ? 'Saving...' : 'Save'}
                     </Button>
                   </div>
@@ -149,17 +171,33 @@ export default function ProjectsListPage() {
         columns={[
           { header: 'Title', key: 'title' },
           { header: 'Slug', key: 'slug' },
-          { header: 'Status', key: 'status', render: (_, item) => <StatusBadge status={item.status} /> },
-          { header: 'Created', key: 'created_at', render: (_, item) => new Date(item.created_at).toLocaleDateString() },
+          {
+            header: 'Status',
+            key: 'status',
+            render: (_, item) => <StatusBadge status={item.status} />,
+          },
+          {
+            header: 'Created',
+            key: 'created_at',
+            render: (_, item) => new Date(item.created_at).toLocaleDateString(),
+          },
           {
             header: 'Actions',
             key: 'id',
             render: (_, item) => (
               <div className="flex items-center gap-2">
-                <button onClick={() => router.push(`/admin/projects/${item.id}`)} className="text-zinc-400 hover:text-white cursor-pointer">
+                <button
+                  onClick={() => router.push(`/admin/projects/${item.id}`)}
+                  className="text-zinc-400 hover:text-white cursor-pointer"
+                >
                   <Edit className="h-4 w-4" />
                 </button>
-                <ConfirmDialog title="Delete?" action="Delete" isDangerous onConfirm={() => handleDelete(item.id)}>
+                <ConfirmDialog
+                  title="Delete?"
+                  action="Delete"
+                  isDangerous
+                  onConfirm={() => handleDelete(item.id)}
+                >
                   <button className="text-zinc-400 hover:text-red-400 cursor-pointer">
                     <Trash2 className="h-4 w-4" />
                   </button>

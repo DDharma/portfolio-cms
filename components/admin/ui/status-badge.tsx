@@ -18,10 +18,12 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
         className
       )}
     >
-      <span className={cn(
-        'h-1.5 w-1.5 rounded-full',
-        status === 'published' ? 'bg-green-400' : 'bg-yellow-400'
-      )} />
+      <span
+        className={cn(
+          'h-1.5 w-1.5 rounded-full',
+          status === 'published' ? 'bg-green-400' : 'bg-yellow-400'
+        )}
+      />
       {status === 'published' ? 'Published' : 'Draft'}
     </span>
   )

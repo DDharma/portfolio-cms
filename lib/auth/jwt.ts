@@ -96,10 +96,3 @@ export function requireAdmin(request: NextRequest) {
 
   return authResult
 }
-
-/**
- * Helper to create error response
- */
-export function createAuthErrorResponse(error: string, status: number) {
-  return Response.json({ error }, { status })
-}

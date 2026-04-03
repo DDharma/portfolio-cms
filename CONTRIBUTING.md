@@ -11,23 +11,27 @@ Thank you for your interest in contributing! This guide will help you get starte
 ## Getting Started
 
 ### 1. Fork and Clone
+
 ```bash
 git clone https://github.com/YOUR_USERNAME/portfolio-cms.git
 cd portfolio-cms
 ```
 
 ### 2. Install Dependencies
+
 ```bash
 pnpm install
 ```
 
 ### 3. Set Up Local Supabase (for testing database changes)
+
 - Create a local Supabase project or use the free tier
 - Run `scripts/production-migration.sql` in your Supabase SQL Editor
 - Copy `.env.example` to `.env.local` and fill in credentials
 - Visit `/setup` to create your local admin account
 
 ### 4. Run the Development Server
+
 ```bash
 pnpm dev
 ```
@@ -37,6 +41,7 @@ Open `http://localhost:3000` in your browser.
 ## Development Workflow
 
 ### Branch Naming Conventions
+
 ```
 feat/description        # New feature
 fix/description         # Bug fix
@@ -51,11 +56,13 @@ Example: `feat/project-card-variants` or `fix/gallery-section-layout`
 ### Making Changes
 
 1. **Create a feature branch** from `main`:
+
    ```bash
    git checkout -b feat/your-feature
    ```
 
 2. **Make your changes** and test locally:
+
    ```bash
    pnpm dev
    pnpm type-check  # Ensure TypeScript is clean
@@ -63,12 +70,14 @@ Example: `feat/project-card-variants` or `fix/gallery-section-layout`
    ```
 
 3. **Commit with clear messages** (imperative mood):
+
    ```bash
    git commit -m "Add project card variant selector to CMS"
    git commit -m "Fix: correct ISR revalidation timing"
    ```
 
 4. **Push to your fork**:
+
    ```bash
    git push origin feat/your-feature
    ```
@@ -81,22 +90,27 @@ Example: `feat/project-card-variants` or `fix/gallery-section-layout`
 ## Code Style
 
 ### TypeScript
+
 - Use strict mode (it's enabled in `tsconfig.json`)
 - Avoid `any` types — use proper typing
 - Use descriptive variable and function names
 
 ### React
+
 - Use functional components with hooks
 - Keep components small and focused
 - Use TypeScript for prop types
 
 ### CSS / Tailwind
+
 - Prefer Tailwind CSS classes over custom CSS
 - Use v4 syntax and tokens
 - Keep custom CSS minimal and well-scoped
 
 ### Formatting
+
 We use Prettier for code formatting. Run before committing:
+
 ```bash
 pnpm format  # If available
 # or
@@ -106,12 +120,14 @@ pnpm exec prettier --write .
 ## Testing
 
 ### Running Tests
+
 ```bash
 pnpm test        # Run all tests (if test suite exists)
 pnpm test:ui # Open test UI
 ```
 
 ### Testing Database Changes
+
 1. Create your migration SQL
 2. Run it in a test Supabase project
 3. Test the app thoroughly
@@ -127,6 +143,7 @@ pnpm test:ui # Open test UI
 ## Areas We're Looking For
 
 ### High Priority (Help Wanted 🙋)
+
 - [ ] Section layout variants (grid vs. masonry for projects)
 - [ ] Card design variant selector for projects, blog, etc.
 - [ ] Color theme controls in admin
@@ -135,12 +152,14 @@ pnpm test:ui # Open test UI
 - [ ] Add `is_featured` flag to projects and blog
 
 ### Medium Priority
+
 - [ ] Gallery and research public pages
 - [ ] Per-page SEO settings
 - [ ] Drag-and-drop section reordering
 - [ ] Multi-language support
 
 ### Lower Priority
+
 - [ ] Analytics dashboard
 - [ ] Contact form with inbox
 - [ ] Newsletter integration
@@ -151,6 +170,7 @@ See [`docs/CMS_IMPROVEMENT_ROADMAP.md`](docs/CMS_IMPROVEMENT_ROADMAP.md) for the
 ## Issues and Discussions
 
 ### Filing a Bug Report
+
 1. Check if it's already reported
 2. Use descriptive title
 3. Include steps to reproduce
@@ -158,6 +178,7 @@ See [`docs/CMS_IMPROVEMENT_ROADMAP.md`](docs/CMS_IMPROVEMENT_ROADMAP.md) for the
 5. Include your environment (OS, Node version, etc.)
 
 ### Feature Requests
+
 - Describe the use case
 - Explain why it's needed
 - Link to related issues/PRs
@@ -170,20 +191,25 @@ See [`docs/CMS_IMPROVEMENT_ROADMAP.md`](docs/CMS_IMPROVEMENT_ROADMAP.md) for the
 3. **Type-check** — Run `pnpm type-check`
 4. **Test your changes** locally and in a test Supabase project if needed
 5. **Write a clear PR description**:
+
    ```markdown
    ## Description
+
    What does this PR do?
 
    ## Type of Change
+
    - [ ] Bug fix
    - [ ] New feature
    - [ ] Documentation
    - [ ] Breaking change
 
    ## Testing
+
    How did you test this?
 
    ## Related Issues
+
    Closes #123
    ```
 

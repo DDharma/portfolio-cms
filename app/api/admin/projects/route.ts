@@ -53,16 +53,16 @@ export async function POST(request: NextRequest) {
     if (projectError) throw projectError
 
     if (links.length > 0) {
-      const { error } = await supabase.from('project_links').insert(
-        links.map((link, i) => ({ ...link, project_id: newProject.id, sort_order: i }))
-      )
+      const { error } = await supabase
+        .from('project_links')
+        .insert(links.map((link, i) => ({ ...link, project_id: newProject.id, sort_order: i })))
       if (error) throw error
     }
 
     if (tags.length > 0) {
-      const { error } = await supabase.from('project_tags').insert(
-        tags.map((tag, i) => ({ ...tag, project_id: newProject.id, sort_order: i }))
-      )
+      const { error } = await supabase
+        .from('project_tags')
+        .insert(tags.map((tag, i) => ({ ...tag, project_id: newProject.id, sort_order: i })))
       if (error) throw error
     }
 

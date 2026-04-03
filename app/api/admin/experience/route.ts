@@ -20,7 +20,10 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ success: true, data })
   } catch (error) {
     console.error('Get experience error:', error)
-    return NextResponse.json({ error: error instanceof Error ? error.message : 'Failed' }, { status: 500 })
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : 'Failed' },
+      { status: 500 }
+    )
   }
 }
 
@@ -49,13 +52,20 @@ export async function POST(request: NextRequest) {
     if (expError) throw expError
 
     if (achievements.length > 0)
-      await supabase.from('experience_achievements').insert(achievements.map((a, i) => ({ ...a, experience_id: newExp.id, sort_order: i })))
+      await supabase
+        .from('experience_achievements')
+        .insert(achievements.map((a, i) => ({ ...a, experience_id: newExp.id, sort_order: i })))
     if (tech_stack.length > 0)
-      await supabase.from('experience_tech_stack').insert(tech_stack.map((t, i) => ({ ...t, experience_id: newExp.id, sort_order: i })))
+      await supabase
+        .from('experience_tech_stack')
+        .insert(tech_stack.map((t, i) => ({ ...t, experience_id: newExp.id, sort_order: i })))
 
     return NextResponse.json({ success: true, data: newExp }, { status: 201 })
   } catch (error) {
     console.error('Create experience error:', error)
-    return NextResponse.json({ error: error instanceof Error ? error.message : 'Failed' }, { status: 400 })
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : 'Failed' },
+      { status: 400 }
+    )
   }
 }

@@ -14,17 +14,22 @@ export async function GET(request: NextRequest) {
   try {
     const { data, error } = await supabase
       .from('about_content')
-      .select(`
+      .select(
+        `
         *,
         about_highlights (*),
         about_principles (*)
-      `)
+      `
+      )
       .order('created_at', { ascending: false })
     if (error) throw error
     return NextResponse.json({ success: true, data })
   } catch (error) {
     console.error('Get about content error:', error)
-    return NextResponse.json({ error: error instanceof Error ? error.message : 'Failed' }, { status: 500 })
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : 'Failed' },
+      { status: 500 }
+    )
   }
 }
 
@@ -53,13 +58,20 @@ export async function POST(request: NextRequest) {
     if (aboutError) throw aboutError
 
     if (highlights.length > 0)
-      await supabase.from('about_highlights').insert(highlights.map((h, i) => ({ ...h, about_id: newAbout.id, sort_order: i })))
+      await supabase
+        .from('about_highlights')
+        .insert(highlights.map((h, i) => ({ ...h, about_id: newAbout.id, sort_order: i })))
     if (principles.length > 0)
-      await supabase.from('about_principles').insert(principles.map((p, i) => ({ ...p, about_id: newAbout.id, sort_order: i })))
+      await supabase
+        .from('about_principles')
+        .insert(principles.map((p, i) => ({ ...p, about_id: newAbout.id, sort_order: i })))
 
     return NextResponse.json({ success: true, data: newAbout }, { status: 201 })
   } catch (error) {
     console.error('Create about content error:', error)
-    return NextResponse.json({ error: error instanceof Error ? error.message : 'Failed' }, { status: 400 })
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : 'Failed' },
+      { status: 400 }
+    )
   }
 }

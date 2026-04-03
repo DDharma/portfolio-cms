@@ -12,7 +12,13 @@ type SiteSettings = {
   socials: { label: string; href: string }[]
 }
 
-export function RootLayoutContent({ children, siteSettings }: { children: React.ReactNode; siteSettings: SiteSettings }) {
+export function RootLayoutContent({
+  children,
+  siteSettings,
+}: {
+  children: React.ReactNode
+  siteSettings: SiteSettings
+}) {
   const pathname = usePathname()
   const isAdmin = pathname.startsWith('/admin') || pathname === '/setup' || pathname === '/login'
 
@@ -23,7 +29,14 @@ export function RootLayoutContent({ children, siteSettings }: { children: React.
       {!isAdmin && <div aria-hidden className="header-fade" />}
       <main className="flex-1 overflow-y-auto min-h-0">
         {children}
-        {!isAdmin && <Footer resumeUrl={siteSettings.resumeUrl} siteName={siteSettings.siteName} siteTitle={siteSettings.siteTitle} socials={siteSettings.socials} />}
+        {!isAdmin && (
+          <Footer
+            resumeUrl={siteSettings.resumeUrl}
+            siteName={siteSettings.siteName}
+            siteTitle={siteSettings.siteTitle}
+            socials={siteSettings.socials}
+          />
+        )}
       </main>
     </div>
   )

@@ -82,11 +82,7 @@ export default function SettingsPage() {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <FormField
-              label="Site Name"
-              required
-              error={form.formState.errors.site_name?.message}
-            >
+            <FormField label="Site Name" required error={form.formState.errors.site_name?.message}>
               <input
                 type="text"
                 {...form.register('site_name')}
@@ -125,11 +121,7 @@ export default function SettingsPage() {
             />
           </FormField>
 
-          <FormField
-            label="Site Logo"
-            required
-            error={form.formState.errors.site_logo?.message}
-          >
+          <FormField label="Site Logo" required error={form.formState.errors.site_logo?.message}>
             <input
               type="text"
               {...form.register('site_logo')}
@@ -154,11 +146,7 @@ export default function SettingsPage() {
           </div>
 
           {/* Email */}
-          <FormField
-            label="Email"
-            required
-            error={form.formState.errors.email?.message}
-          >
+          <FormField label="Email" required error={form.formState.errors.email?.message}>
             <input
               type="email"
               {...form.register('email')}
@@ -169,11 +157,7 @@ export default function SettingsPage() {
           </FormField>
 
           {/* Location */}
-          <FormField
-            label="Location"
-            required
-            error={form.formState.errors.location?.message}
-          >
+          <FormField label="Location" required error={form.formState.errors.location?.message}>
             <input
               type="text"
               {...form.register('location')}
@@ -199,10 +183,7 @@ export default function SettingsPage() {
           </FormField>
 
           {/* Resume URL */}
-          <FormField
-            label="Resume URL"
-            error={form.formState.errors.resume_url?.message}
-          >
+          <FormField label="Resume URL" error={form.formState.errors.resume_url?.message}>
             <input
               type="url"
               {...form.register('resume_url')}
@@ -211,7 +192,8 @@ export default function SettingsPage() {
               disabled={updateMutation.isPending}
             />
             <p className="text-xs text-zinc-500 mt-1">
-              Leave empty to hide the resume button from the site. Visitors can also access your resume at <code className="text-zinc-400">/resume</code>.
+              Leave empty to hide the resume button from the site. Visitors can also access your
+              resume at <code className="text-zinc-400">/resume</code>.
             </p>
           </FormField>
         </div>
@@ -234,7 +216,10 @@ export default function SettingsPage() {
 
           <div className="space-y-3">
             {socialsField.fields.map((field, index) => (
-              <div key={field.id} className="space-y-2 p-4 rounded-lg bg-white/[0.02] border border-white/[0.05]">
+              <div
+                key={field.id}
+                className="space-y-2 p-4 rounded-lg bg-white/[0.02] border border-white/[0.05]"
+              >
                 <div className="grid grid-cols-2 gap-3">
                   <input
                     type="text"
@@ -316,10 +301,7 @@ export default function SettingsPage() {
 
         {/* Actions */}
         <div className="flex gap-3 justify-end">
-          <Button
-            type="submit"
-            disabled={updateMutation.isPending || isLoading}
-          >
+          <Button type="submit" disabled={updateMutation.isPending || isLoading}>
             {updateMutation.isPending ? 'Saving...' : 'Save Changes'}
           </Button>
         </div>

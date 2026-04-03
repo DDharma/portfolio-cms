@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from 'next/link'
 
 type FooterProps = {
   resumeUrl: string | null
@@ -12,9 +12,7 @@ export const Footer = ({ resumeUrl, siteName, siteTitle, socials }: FooterProps)
     <footer className="border-t border-white/[0.04] py-16">
       <div className="mx-auto flex max-w-5xl flex-col gap-6 px-6 lg:px-8 md:flex-row md:items-center md:justify-between">
         <div>
-          <p className="text-sm font-medium tracking-[0.1em] text-white">
-            {siteName}
-          </p>
+          <p className="text-sm font-medium tracking-[0.1em] text-white">{siteName}</p>
           <p className="mt-2 text-sm text-zinc-500">
             &copy; {new Date().getFullYear()} {siteTitle}
           </p>
@@ -42,5 +40,5 @@ export const Footer = ({ resumeUrl, siteName, siteTitle, socials }: FooterProps)
         </div>
       </div>
     </footer>
-  );
-};
+  )
+}

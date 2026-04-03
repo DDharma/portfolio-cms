@@ -56,7 +56,16 @@ export default function SetupPage() {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, name, siteName, siteTitle, siteDescription, siteLogo, resumeUrl }),
+        body: JSON.stringify({
+          email,
+          password,
+          name,
+          siteName,
+          siteTitle,
+          siteDescription,
+          siteLogo,
+          resumeUrl,
+        }),
       })
 
       const data = await res.json()
@@ -87,9 +96,7 @@ export default function SetupPage() {
       <div className="w-full max-w-2xl space-y-6">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-white">Welcome</h1>
-          <p className="mt-2 text-sm text-zinc-400">
-            Create your admin account to get started
-          </p>
+          <p className="mt-2 text-sm text-zinc-400">Create your admin account to get started</p>
         </div>
 
         <form onSubmit={handleSubmit} className="rounded-lg border border-white/6 backdrop-blur">
@@ -148,7 +155,11 @@ export default function SetupPage() {
                     minLength={8}
                     disabled={loading}
                   />
-                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300">
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300"
+                  >
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 </div>
@@ -170,8 +181,16 @@ export default function SetupPage() {
                     minLength={8}
                     disabled={loading}
                   />
-                  <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300">
-                    {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300"
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
                   </button>
                 </div>
               </div>
@@ -266,11 +285,7 @@ export default function SetupPage() {
           </div>
 
           <div className="border-t border-white/6 p-6">
-            <Button
-              type="submit"
-              disabled={loading}
-              className="w-full"
-            >
+            <Button type="submit" disabled={loading} className="w-full">
               {loading ? 'Creating account...' : 'Create Admin Account'}
             </Button>
           </div>

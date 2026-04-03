@@ -13,17 +13,13 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         <AdminSidebar />
         <div className="flex-1 ml-64">
           <main className="p-6 md:p-8">
-            <div className="w-full">
-              {children}
-            </div>
+            <div className="w-full">{children}</div>
           </main>
         </div>
       </div>
 
       {/* React Query Devtools - only in development */}
-      {process.env.NODE_ENV === 'development' && (
-        <ReactQueryDevtools initialIsOpen={false} />
-      )}
+      {process.env.NODE_ENV === 'development' && <ReactQueryDevtools initialIsOpen={false} />}
     </QueryClientProvider>
   )
 }

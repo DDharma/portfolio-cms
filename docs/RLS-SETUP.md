@@ -10,11 +10,13 @@ This document explains the RLS policy implementation for your portfolio CMS. The
 ## Problem Solved
 
 Previously, the CMS was getting RLS violations like:
+
 ```
 new row violates row-level security policy for table "about_highlights"
 ```
 
 This happened because:
+
 - Child tables (about_highlights, skills, project_tags, etc.) had no explicit RLS policies
 - The Supabase client was using the ANON_KEY (public key) without admin permissions
 - Even with custom JWT authentication, Supabase couldn't recognize the user as an admin
@@ -41,6 +43,7 @@ export function createAdminClient() {
 Modified ALL admin API routes to use the admin client:
 
 **Updated Files:**
+
 - ✅ `app/api/admin/about/route.ts` (GET, POST)
 - ✅ `app/api/admin/about/[id]/route.ts` (GET, PATCH, DELETE)
 - ✅ `app/api/admin/blog/route.ts` (GET, POST)
@@ -57,6 +60,7 @@ Modified ALL admin API routes to use the admin client:
 - ✅ `app/api/admin/hero/[id]/route.ts` (GET, PATCH, DELETE)
 
 **Change Pattern:**
+
 ```typescript
 // Before
 import { createClient } from '@/lib/supabase/server'
@@ -74,6 +78,7 @@ Created: `scripts/setup-admin-rls-policies.sql`
 This SQL script sets up RLS policies for ALL tables:
 
 **Main Content Tables** (with published status):
+
 - hero_content
 - about_content
 - skill_categories
@@ -84,6 +89,7 @@ This SQL script sets up RLS policies for ALL tables:
 - research_papers
 
 **Child Tables** (tied to parent's published status):
+
 - hero_ctas, hero_stats, hero_marquee_items
 - about_highlights, about_principles
 - skills (under skill_categories)
@@ -94,12 +100,14 @@ This SQL script sets up RLS policies for ALL tables:
 - research_paper_tags, research_paper_links
 
 **Utility Tables**:
+
 - media (admin only)
 - profiles (custom rules)
 
 ### 4. RLS Policy Rules
 
 **For Main Content Tables:**
+
 ```sql
 -- Public can read published content
 CREATE POLICY "Public can read published [table]"
@@ -111,6 +119,7 @@ USING (public.is_admin());
 ```
 
 **For Child Tables:**
+
 ```sql
 -- Public can read if parent is published
 CREATE POLICY "Public can read [child]"
@@ -150,6 +159,7 @@ SUPABASE_SERVICE_ROLE_KEY=your_service_role_key  # ← Make sure this is set!
 6. Verify all queries execute successfully (no errors)
 
 Alternatively, via Supabase CLI:
+
 ```bash
 supabase db push  # If using local Supabase
 # or
@@ -161,6 +171,7 @@ psql postgresql://user:password@db.supabase.co:5432/postgres < scripts/setup-adm
 Once RLS policies are applied:
 
 **Test 1: Create Content**
+
 ```bash
 curl -X POST http://localhost:3000/api/admin/about \
   -H "Authorization: Bearer YOUR_ADMIN_TOKEN" \
@@ -169,6 +180,7 @@ curl -X POST http://localhost:3000/api/admin/about \
 ```
 
 **Test 2: Update Content**
+
 ```bash
 curl -X PATCH http://localhost:3000/api/admin/about/[id] \
   -H "Authorization: Bearer YOUR_ADMIN_TOKEN" \
@@ -177,6 +189,7 @@ curl -X PATCH http://localhost:3000/api/admin/about/[id] \
 ```
 
 **Test 3: Browser Admin Panel**
+
 1. Login to admin panel
 2. Navigate to any section (About, Skills, Blog, etc.)
 3. Try creating/editing content
@@ -234,16 +247,19 @@ curl -X PATCH http://localhost:3000/api/admin/about/[id] \
 ## Troubleshooting
 
 ### Error: "new row violates row-level security policy"
+
 - Check if SERVICE_ROLE_KEY is set in `.env.local`
 - Verify RLS policies were applied (run SQL script again)
 - Check that admin client is being used in API route
 
 ### Error: "Unauthorized - Admin access required"
+
 - Verify JWT token is being sent in Authorization header
 - Check that user account has admin role in profiles table
 - Verify token hasn't expired
 
 ### Published content not showing in public API
+
 - Verify status field is set to 'published'
 - Check RLS policies were created correctly
 - Test with: `SELECT * FROM about_content WHERE status = 'published'`
@@ -251,14 +267,17 @@ curl -X PATCH http://localhost:3000/api/admin/about/[id] \
 ## Files Modified
 
 **New Files:**
+
 - `lib/supabase/admin.ts` - Admin client factory
 - `scripts/setup-admin-rls-policies.sql` - Complete RLS policy setup
 
 **Modified API Routes:** (14 files)
+
 - All routes in `app/api/admin/*/route.ts`
 - All routes in `app/api/admin/*/[id]/route.ts`
 
 **No Changes Needed:**
+
 - Form components
 - Validation schemas
 - Public API routes

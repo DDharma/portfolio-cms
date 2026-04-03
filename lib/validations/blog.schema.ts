@@ -9,8 +9,14 @@ export const blogTagSchema = z.object({
 export const blogPostSchema = z.object({
   id: z.string().optional(),
   title: z.string().min(1, 'Title is required').max(200),
-  slug: z.string().min(1, 'Slug is required').regex(/^[a-z0-9-]+$/, 'Slug must be lowercase with hyphens'),
-  description: z.string().min(1, 'Description is required').max(2000, 'Description must be 2000 characters or less'),
+  slug: z
+    .string()
+    .min(1, 'Slug is required')
+    .regex(/^[a-z0-9-]+$/, 'Slug must be lowercase with hyphens'),
+  description: z
+    .string()
+    .min(1, 'Description is required')
+    .max(2000, 'Description must be 2000 characters or less'),
   content: z.string().min(1, 'Content is required'),
   featured_image: z.string().nullable().optional(),
   reading_time: z.string().optional(),

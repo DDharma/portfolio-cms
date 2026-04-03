@@ -148,7 +148,10 @@ export function sanitizeCSS(css: string): SanitizationResult {
   }
 
   // Split by semicolon and process each declaration
-  const declarations = css.split(';').map(decl => decl.trim()).filter(Boolean)
+  const declarations = css
+    .split(';')
+    .map((decl) => decl.trim())
+    .filter(Boolean)
   const sanitizedDeclarations: string[] = []
   const errors: string[] = []
 

@@ -9,10 +9,7 @@ export async function GET() {
   } = await supabase.auth.getSession()
 
   if (!session) {
-    return NextResponse.json(
-      { error: 'No active session' },
-      { status: 401 }
-    )
+    return NextResponse.json({ error: 'No active session' }, { status: 401 })
   }
 
   return NextResponse.json({ session })

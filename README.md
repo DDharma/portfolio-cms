@@ -21,28 +21,32 @@ A fully customizable, self-hosted portfolio CMS built for developers and tech pr
 - **Freelancers** wanting a professional online presence
 - **Anyone** who wants CMS power without the bloat of WordPress
 
-*This is NOT a general-purpose blogging platform. It's optimized for developer portfolios.*
+_This is NOT a general-purpose blogging platform. It's optimized for developer portfolios._
 
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - Node.js 18+
 - pnpm (install via `corepack enable` or see [pnpm.io](https://pnpm.io/installation))
 - A free Supabase account (https://supabase.com)
 - Git
 
 ### 1. Clone the Repository
+
 ```bash
 git clone https://github.com/DDharma/portfolio-cms.git
 cd portfolio-cms
 ```
 
 ### 2. Install Dependencies
+
 ```bash
 pnpm install
 ```
 
 ### 3. Set Up Supabase Project
+
 1. Create a free account at [supabase.com](https://supabase.com)
 2. Create a new project
 3. In the SQL Editor, run the migration from [`scripts/production-migration.sql`](scripts/production-migration.sql)
@@ -59,6 +63,7 @@ pnpm install
    - You'll be automatically logged into the admin dashboard
 
 ### 4. Configure Environment Variables
+
 1. Copy `.env.example` to `.env.local`:
    ```bash
    cp .env.example .env.local
@@ -70,6 +75,7 @@ pnpm install
    - `JWT_SECRET` — Generate a random 32+ character string (Go to this https://randomkeygen.com/jwt-secret and copy any key)
 
 ### 5. Run the Development Server
+
 ```bash
 pnpm dev
 ```
@@ -83,6 +89,7 @@ Access the admin CMS at `http://localhost:3000/admin`
 **First-time setup:** Visit `/setup` to create your admin account. This page is only available when no admin exists.
 
 Once logged in, you'll see:
+
 - **Dashboard** — Quick stats on all content
 - **Hero** — Homepage hero section (title, subtitle, CTAs, stats)
 - **About** — About section with highlights and principles
@@ -98,30 +105,34 @@ Once logged in, you'll see:
 
 ## 📦 Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| **Frontend** | Next.js 16, React 19, TypeScript 5 |
-| **Database** | Supabase (PostgreSQL) |
-| **Authentication** | Custom JWT (not Supabase Auth) |
-| **Storage** | Supabase Storage |
-| **Styling** | Tailwind CSS v4 |
-| **UI Components** | Radix UI, Shadcn-style primitives |
-| **Forms** | react-hook-form + Zod |
-| **Rich Text** | Tiptap 3 |
-| **Data Fetching** | TanStack Query (admin), SWR (fallback), ISR (public) |
+| Layer              | Technology                                           |
+| ------------------ | ---------------------------------------------------- |
+| **Frontend**       | Next.js 16, React 19, TypeScript 5                   |
+| **Database**       | Supabase (PostgreSQL)                                |
+| **Authentication** | Custom JWT (not Supabase Auth)                       |
+| **Storage**        | Supabase Storage                                     |
+| **Styling**        | Tailwind CSS v4                                      |
+| **UI Components**  | Radix UI, Shadcn-style primitives                    |
+| **Forms**          | react-hook-form + Zod                                |
+| **Rich Text**      | Tiptap 3                                             |
+| **Data Fetching**  | TanStack Query (admin), SWR (fallback), ISR (public) |
 
 ## 🚢 Deployment
 
 ### Deploy on Vercel (One-Click)
+
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FDDharma%2Fportfolio-cms&env=NEXT_PUBLIC_SUPABASE_URL,NEXT_PUBLIC_SUPABASE_ANON_KEY,SUPABASE_SERVICE_ROLE_KEY,JWT_SECRET)
 
 ### Manual Deployment
+
 See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) for detailed guides on deploying to:
+
 - Vercel (with environment variables)
 - Node.js servers
 - Docker containers
 
 **Key deployment notes:**
+
 - Set environment variables in your hosting platform
 - ISR revalidates content every 1 hour by default
 - Supabase storage bucket must be public for image serving
@@ -137,6 +148,7 @@ See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) for detailed guides on deploying 
 ## 🛠️ Development
 
 ### Available Commands
+
 ```bash
 pnpm dev          # Start dev server (http://localhost:3000)
 pnpm build        # Build for production
@@ -146,6 +158,7 @@ pnpm type-check   # Type check only
 ```
 
 ### Project Structure
+
 ```
 portfolio/
 ├── app/              # Next.js App Router pages
@@ -161,6 +174,7 @@ portfolio/
 ## 📖 Creating Content
 
 ### Blog Post Example
+
 1. Go to Admin > Blog
 2. Click "New Post"
 3. Fill in title, description, and content (rich text)
@@ -171,6 +185,7 @@ portfolio/
 Content is immediately visible at `/blog/[slug]`.
 
 ### Project Example
+
 1. Go to Admin > Projects
 2. Click "New Project"
 3. Add title, description, images
@@ -200,6 +215,7 @@ Use the **Styles section** in the admin to create reusable CSS classes, then app
 ## 🤝 Contributing
 
 Contributions are welcome! Please read [`CONTRIBUTING.md`](CONTRIBUTING.md) for:
+
 - How to run locally
 - Branch naming conventions
 - Pull request process
@@ -218,6 +234,7 @@ MIT License — see [`LICENSE`](LICENSE) for details.
 ## 🌟 Acknowledgments
 
 Built with:
+
 - [Next.js](https://nextjs.org/)
 - [Supabase](https://supabase.com)
 - [Tailwind CSS](https://tailwindcss.com)

@@ -33,14 +33,14 @@ export function DynamicStylesProvider({ styles }: DynamicStylesProviderProps) {
 
     // Generate CSS from custom styles
     const cssContent = styles
-      .filter(style => style.is_active !== false) // Exclude inactive styles
-      .map(style => `.${style.name} { ${style.css_rules} }`)
+      .filter((style) => style.is_active !== false) // Exclude inactive styles
+      .map((style) => `.${style.name} { ${style.css_rules} }`)
       .join('\n')
 
     // Set the style content
     if ((styleTag as any).styleSheet) {
       // IE fallback
-      (styleTag as any).styleSheet.cssText = cssContent
+      ;(styleTag as any).styleSheet.cssText = cssContent
     } else {
       styleTag.textContent = cssContent
     }
@@ -49,7 +49,7 @@ export function DynamicStylesProvider({ styles }: DynamicStylesProviderProps) {
     if (process.env.NODE_ENV === 'development') {
       console.log('[DynamicStylesProvider] Injected custom styles:', styles.length)
       console.log('[DynamicStylesProvider] CSS Content:', cssContent)
-      styles.forEach(s => {
+      styles.forEach((s) => {
         console.log(`[DynamicStylesProvider] Style: ${s.name} => ${s.css_rules}`)
       })
     }

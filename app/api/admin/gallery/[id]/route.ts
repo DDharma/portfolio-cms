@@ -4,10 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { revalidatePath } from 'next/cache'
 import { requireAdmin } from '@/lib/auth/jwt'
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const authResult = requireAdmin(request)
   if ('error' in authResult) {
     return NextResponse.json({ error: authResult.error }, { status: authResult.status })
@@ -45,10 +42,7 @@ export async function GET(
   }
 }
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const authResult = requireAdmin(request)
   if ('error' in authResult) {
     return NextResponse.json({ error: authResult.error }, { status: authResult.status })
@@ -66,8 +60,7 @@ export async function PATCH(
       .from('gallery_photos')
       .update({
         ...photoData,
-        published_at:
-          photoData.status === 'published' ? new Date().toISOString() : null,
+        published_at: photoData.status === 'published' ? new Date().toISOString() : null,
       })
       .eq('id', id)
 
@@ -77,15 +70,13 @@ export async function PATCH(
     await supabase.from('gallery_tags').delete().eq('photo_id', id)
 
     if (tags.length > 0) {
-      const { error } = await supabase
-        .from('gallery_tags')
-        .insert(
-          tags.map((tag, i) => ({
-            ...tag,
-            photo_id: id,
-            sort_order: i,
-          }))
-        )
+      const { error } = await supabase.from('gallery_tags').insert(
+        tags.map((tag, i) => ({
+          ...tag,
+          photo_id: id,
+          sort_order: i,
+        }))
+      )
       if (error) throw error
     }
 
@@ -95,10 +86,7 @@ export async function PATCH(
   } catch (error) {
     console.error('PATCH error:', error)
     const errorMessage = error instanceof Error ? error.message : 'Failed to update'
-    return NextResponse.json(
-      { error: errorMessage },
-      { status: 400 }
-    )
+    return NextResponse.json({ error: errorMessage }, { status: 400 })
   }
 }
 
@@ -115,10 +103,7 @@ export async function DELETE(
   const supabase = createAdminClient()
 
   try {
-    const { error } = await supabase
-      .from('gallery_photos')
-      .delete()
-      .eq('id', id)
+    const { error } = await supabase.from('gallery_photos').delete().eq('id', id)
 
     if (error) throw error
 

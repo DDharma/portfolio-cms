@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const PROFICIENCY_LEVELS = ['beginner', 'intermediate', 'advanced', 'expert'] as const
-export type ProficiencyLevel = typeof PROFICIENCY_LEVELS[number]
+export type ProficiencyLevel = (typeof PROFICIENCY_LEVELS)[number]
 
 export const skillSchema = z.object({
   id: z.string().optional(),

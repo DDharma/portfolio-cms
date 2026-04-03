@@ -1,35 +1,36 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { contactSettingsSchema } from '@/lib/validations/contact.schema'
+import { requireAdmin } from '@/lib/auth/jwt'
 
 export async function GET(request: NextRequest) {
+  const authResult = requireAdmin(request)
+  if ('error' in authResult) {
+    return NextResponse.json({ error: authResult.error }, { status: authResult.status })
+  }
+
   try {
     const supabase = createAdminClient()
 
-    const { data, error } = await supabase
-      .from('contact_settings')
-      .select('*')
-      .limit(1)
-      .single()
+    const { data, error } = await supabase.from('contact_settings').select('*').limit(1).single()
 
     if (error) {
-      return NextResponse.json(
-        { error: 'Contact settings not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Contact settings not found' }, { status: 404 })
     }
 
     return NextResponse.json({ data })
   } catch (error) {
     console.error('Error fetching contact settings:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
 
 export async function PATCH(request: NextRequest) {
+  const authResult = requireAdmin(request)
+  if ('error' in authResult) {
+    return NextResponse.json({ error: authResult.error }, { status: authResult.status })
+  }
+
   try {
     const supabase = createAdminClient()
     const body = await request.json()
@@ -85,18 +86,12 @@ export async function PATCH(request: NextRequest) {
 
     if (error) {
       console.error('Error updating contact settings:', error)
-      return NextResponse.json(
-        { error: 'Failed to update contact settings' },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: 'Failed to update contact settings' }, { status: 500 })
     }
 
     return NextResponse.json({ data })
   } catch (error) {
     console.error('Error in PATCH:', error)
-    return NextResponse.json(
-      { error: 'Invalid request data' },
-      { status: 400 }
-    )
+    return NextResponse.json({ error: 'Invalid request data' }, { status: 400 })
   }
 }

@@ -16,7 +16,10 @@ type CSSStyleInput = {
 }
 
 const cssStyleSchema = z.object({
-  name: z.string().min(1, 'Name is required').regex(/^[a-z0-9-]+$/, 'Only lowercase letters, numbers, and hyphens'),
+  name: z
+    .string()
+    .min(1, 'Name is required')
+    .regex(/^[a-z0-9-]+$/, 'Only lowercase letters, numbers, and hyphens'),
   css_rules: z.string().min(1, 'CSS rules are required'),
   description: z.string().optional(),
   category: z.enum(['text', 'background', 'border', 'layout', 'custom']),
@@ -126,10 +129,7 @@ export function CSSStyleForm({ initialData, onSubmit, isLoading = false }: CSSSt
                       .filter(Boolean)
                       .map((rule) => {
                         const [key, value] = rule.split(':').map((s) => s.trim())
-                        return [
-                          key.replace(/-./g, (x) => x[1].toUpperCase()),
-                          value,
-                        ]
+                        return [key.replace(/-./g, (x) => x[1].toUpperCase()), value]
                       })
                   )
                 : {}

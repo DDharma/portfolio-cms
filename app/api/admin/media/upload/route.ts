@@ -28,7 +28,10 @@ export async function POST(request: NextRequest) {
     // Validate file size (max 25MB for PDFs, 10MB for images)
     const maxSize = isPdf ? 25 * 1024 * 1024 : 10 * 1024 * 1024
     if (file.size > maxSize) {
-      return NextResponse.json({ error: `File too large (max ${isPdf ? '25MB' : '10MB'})` }, { status: 400 })
+      return NextResponse.json(
+        { error: `File too large (max ${isPdf ? '25MB' : '10MB'})` },
+        { status: 400 }
+      )
     }
 
     const buffer = await file.arrayBuffer()
@@ -36,12 +39,10 @@ export async function POST(request: NextRequest) {
     const folder = isPdf ? 'portfolio-pdfs' : 'portfolio-images'
     const path = `${folder}/${filename}`
 
-    const { data, error } = await supabase.storage
-      .from('portfolio-images')
-      .upload(path, buffer, {
-        contentType: file.type,
-        upsert: false,
-      })
+    const { data, error } = await supabase.storage.from('portfolio-images').upload(path, buffer, {
+      contentType: file.type,
+      upsert: false,
+    })
 
     if (error) throw error
 

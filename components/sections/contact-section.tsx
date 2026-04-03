@@ -1,19 +1,19 @@
-import Link from "next/link";
-import { Mail, MapPin, CalendarDays, ArrowUpRight } from "lucide-react";
+import Link from 'next/link'
+import { Mail, MapPin, CalendarDays, ArrowUpRight } from 'lucide-react'
 
-import { SectionShell } from "@/components/sections/section-shell";
-import { SectionHeading } from "@/components/sections/section-heading";
-import { contactDetails } from "@/utils/data";
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import type { ContactSettings } from "@/lib/validations/contact.schema";
+import { SectionShell } from '@/components/sections/section-shell'
+import { SectionHeading } from '@/components/sections/section-heading'
+import { contactDetails } from '@/utils/data'
+import { buttonVariants } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+import type { ContactSettings } from '@/lib/validations/contact.schema'
 
 type ContactSectionProps = {
-  data?: ContactSettings | null;
-};
+  data?: ContactSettings | null
+}
 
 export const ContactSection = ({ data }: ContactSectionProps) => {
-  const contact = data || contactDetails;
+  const contact = data || contactDetails
   return (
     <SectionShell id="contact">
       <SectionHeading
@@ -48,7 +48,7 @@ export const ContactSection = ({ data }: ContactSectionProps) => {
             <Link
               key={social.label}
               href={social.href}
-              className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
+              className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }))}
               target="_blank"
               rel="noreferrer"
             >
@@ -59,15 +59,12 @@ export const ContactSection = ({ data }: ContactSectionProps) => {
         </div>
         <div className="grid gap-3 text-center text-sm text-zinc-400 md:grid-cols-3">
           {contact.callouts?.map((item) => (
-            <div
-              key={item}
-              className="rounded-xl border border-white/[0.04] px-4 py-3"
-            >
+            <div key={item} className="rounded-xl border border-white/[0.04] px-4 py-3">
               {item}
             </div>
           ))}
         </div>
       </div>
     </SectionShell>
-  );
-};
+  )
+}

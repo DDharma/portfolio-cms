@@ -4,7 +4,11 @@ import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { SkillCategory, skillCategorySchema, PROFICIENCY_LEVELS } from '@/lib/validations/skills.schema'
+import {
+  SkillCategory,
+  skillCategorySchema,
+  PROFICIENCY_LEVELS,
+} from '@/lib/validations/skills.schema'
 import { Button } from '@/components/ui/button'
 import { FormField } from './form-field'
 import { IconSelector } from '@/components/admin/ui/icon-selector'
@@ -84,16 +88,10 @@ export function SkillsForm({ initialData, isLoading = false }: SkillsFormProps) 
       <div className="rounded-lg border border-white/[0.06] bg-zinc-950 p-6 space-y-6">
         <div>
           <h3 className="text-lg font-semibold text-white">Category Information</h3>
-          <p className="text-sm text-zinc-400 mt-1">
-            Basic details about the skill category
-          </p>
+          <p className="text-sm text-zinc-400 mt-1">Basic details about the skill category</p>
         </div>
 
-        <FormField
-          label="Category Name"
-          required
-          error={form.formState.errors.name?.message}
-        >
+        <FormField label="Category Name" required error={form.formState.errors.name?.message}>
           <input
             type="text"
             {...form.register('name')}
@@ -103,10 +101,7 @@ export function SkillsForm({ initialData, isLoading = false }: SkillsFormProps) 
           />
         </FormField>
 
-        <FormField
-          label="Description"
-          error={form.formState.errors.description?.message}
-        >
+        <FormField label="Description" error={form.formState.errors.description?.message}>
           <textarea
             {...form.register('description')}
             className="w-full h-20 rounded-lg border border-white/[0.1] bg-white/[0.05] px-4 py-2.5 text-white placeholder-zinc-500 focus:border-white/[0.2] focus:outline-none resize-none"
@@ -115,10 +110,7 @@ export function SkillsForm({ initialData, isLoading = false }: SkillsFormProps) 
           />
         </FormField>
 
-        <FormField
-          label="Icon"
-          error={form.formState.errors.icon?.message}
-        >
+        <FormField label="Icon" error={form.formState.errors.icon?.message}>
           <IconSelector
             value={form.watch('icon') || ''}
             onChange={(iconName) => form.setValue('icon', iconName)}
@@ -135,7 +127,9 @@ export function SkillsForm({ initialData, isLoading = false }: SkillsFormProps) 
             type="button"
             variant="secondary"
             size="sm"
-            onClick={() => skillsField.append({ name: '', proficiency_level: 'intermediate', sort_order: 0 })}
+            onClick={() =>
+              skillsField.append({ name: '', proficiency_level: 'intermediate', sort_order: 0 })
+            }
             disabled={isSubmitting}
           >
             <Plus className="h-4 w-4" />
@@ -183,12 +177,7 @@ export function SkillsForm({ initialData, isLoading = false }: SkillsFormProps) 
 
       {/* Actions */}
       <div className="flex gap-3 justify-end">
-        <Button
-          type="button"
-          variant="ghost"
-          onClick={() => router.back()}
-          disabled={isSubmitting}
-        >
+        <Button type="button" variant="ghost" onClick={() => router.back()} disabled={isSubmitting}>
           Cancel
         </Button>
         <Button

@@ -100,7 +100,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         expires: 1, // 1 day
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
-        path: '/'
+        path: '/',
       })
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Login failed'

@@ -1,9 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import type { SectionMetadata } from '@/lib/validations/section-metadata.schema'
 
-export async function getSectionMetadata(
-  key: string
-): Promise<SectionMetadata | null> {
+export async function getSectionMetadata(key: string): Promise<SectionMetadata | null> {
   try {
     const supabase = await createClient()
 

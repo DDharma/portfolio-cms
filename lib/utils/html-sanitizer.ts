@@ -14,10 +14,26 @@ export interface SanitizeOptions {
 // Default configuration for sanitization
 const DEFAULT_CONFIG: any = {
   ALLOWED_TAGS: [
-    'p', 'span', 'strong', 'b', 'em', 'i', 'u', 'br',
-    'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-    'ul', 'ol', 'li',
-    'blockquote', 'code', 'pre'
+    'p',
+    'span',
+    'strong',
+    'b',
+    'em',
+    'i',
+    'u',
+    'br',
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'h6',
+    'ul',
+    'ol',
+    'li',
+    'blockquote',
+    'code',
+    'pre',
   ],
   ALLOWED_ATTR: ['class'],
   ALLOWED_CLASSES: ['*'], // Allow all classes (validated separately)
@@ -44,7 +60,9 @@ export function sanitizeHTML(html: string, options?: SanitizeOptions): string {
   if (typeof window === 'undefined') {
     // Server-side: For now, return as-is (DOMPurify needs DOM)
     // In production, consider using isomorphic-dompurify
-    console.warn('HTML sanitization not available on server side. Consider installing isomorphic-dompurify.')
+    console.warn(
+      'HTML sanitization not available on server side. Consider installing isomorphic-dompurify.'
+    )
     return html
   }
 
@@ -88,7 +106,7 @@ export function containsDangerousPatterns(html: string): boolean {
     /vbscript:/gi,
   ]
 
-  return dangerousPatterns.some(pattern => pattern.test(html))
+  return dangerousPatterns.some((pattern) => pattern.test(html))
 }
 
 /**
@@ -105,7 +123,7 @@ export function escapeHTML(text: string): string {
     '"': '&quot;',
     "'": '&#039;',
   }
-  return text.replace(/[&<>"']/g, char => map[char])
+  return text.replace(/[&<>"']/g, (char) => map[char])
 }
 
 /**

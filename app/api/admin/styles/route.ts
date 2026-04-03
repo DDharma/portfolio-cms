@@ -89,10 +89,7 @@ export async function POST(request: NextRequest) {
       .maybeSingle()
 
     if (existing) {
-      return NextResponse.json(
-        { error: 'A style with this name already exists' },
-        { status: 409 }
-      )
+      return NextResponse.json({ error: 'A style with this name already exists' }, { status: 409 })
     }
 
     // Insert new style

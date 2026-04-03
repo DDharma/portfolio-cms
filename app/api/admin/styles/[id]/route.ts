@@ -8,19 +8,12 @@ import { requireAdmin } from '@/lib/auth/jwt'
  * GET /api/admin/styles/[id]
  * Get a single custom style
  */
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params
     const supabase = createAdminClient()
 
-    const { data, error } = await supabase
-      .from('custom_styles')
-      .select('*')
-      .eq('id', id)
-      .single()
+    const { data, error } = await supabase.from('custom_styles').select('*').eq('id', id).single()
 
     if (error || !data) {
       return NextResponse.json({ error: 'Style not found' }, { status: 404 })
@@ -39,10 +32,7 @@ export async function GET(
  * PATCH /api/admin/styles/[id]
  * Update a custom style (admin only)
  */
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   // Verify admin authentication
   const authResult = requireAdmin(request)
   if ('error' in authResult) {
@@ -146,10 +136,7 @@ export async function DELETE(
     // Change to hard delete if preferred:
     // await supabase.from('custom_styles').delete().eq('id', id)
 
-    const { error } = await supabase
-      .from('custom_styles')
-      .update({ is_active: false })
-      .eq('id', id)
+    const { error } = await supabase.from('custom_styles').update({ is_active: false }).eq('id', id)
 
     if (error) throw error
 

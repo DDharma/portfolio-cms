@@ -1,21 +1,21 @@
-"use client";
+'use client'
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { ExternalLink } from "lucide-react";
-import { useState } from "react";
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { ExternalLink } from 'lucide-react'
+import { useState } from 'react'
 
-import { navLinks } from "@/utils/data";
-import { cn } from "@/lib/utils";
+import { navLinks } from '@/utils/data'
+import { cn } from '@/lib/utils'
 
 export const Header = ({ resumeUrl, siteLogo }: { resumeUrl: string | null; siteLogo: string }) => {
-  const pathname = usePathname();
-  const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
+  const pathname = usePathname()
+  const [openSubmenu, setOpenSubmenu] = useState<string | null>(null)
 
   const isActive = (href: string) => {
-    if (href.startsWith("#")) return false;
-    return pathname === href;
-  };
+    if (href.startsWith('#')) return false
+    return pathname === href
+  }
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 px-4 py-4 flex items-center justify-center">
@@ -37,10 +37,8 @@ export const Header = ({ resumeUrl, siteLogo }: { resumeUrl: string | null; site
               <Link
                 href={link.href}
                 className={cn(
-                  "rounded-full hover:rounded-full hover:bg-white/[0.06]  px-5 py-2.5 text-[15px] tracking-normal text-zinc-500 transition-colors duration-200 cursor-pointer whitespace-nowrap shrink-0",
-                  isActive(link.href)
-                    ? "bg-white/[0.06] text-white"
-                    : "hover:text-zinc-200"
+                  'rounded-full hover:rounded-full hover:bg-white/[0.06]  px-5 py-2.5 text-[15px] tracking-normal text-zinc-500 transition-colors duration-200 cursor-pointer whitespace-nowrap shrink-0',
+                  isActive(link.href) ? 'bg-white/[0.06] text-white' : 'hover:text-zinc-200'
                 )}
               >
                 {link.label}
@@ -74,5 +72,5 @@ export const Header = ({ resumeUrl, siteLogo }: { resumeUrl: string | null; site
         )}
       </div>
     </header>
-  );
-};
+  )
+}

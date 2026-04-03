@@ -127,10 +127,12 @@ Each section follows this pattern:
 **Login Page**: `http://localhost:3000/login`
 
 **Protected Routes** (require login):
+
 - `/admin/*` - All admin pages
 - `/api/admin/*` - All admin APIs
 
 **Public Routes** (no login needed):
+
 - `/` - Home
 - `/blog` - Blog listing
 - `/projects` - Projects listing
@@ -165,6 +167,7 @@ Each section follows this pattern:
 ## 📊 Dashboard Overview
 
 `/admin` shows:
+
 - Total Projects created
 - Total Blog Posts created
 - Total Experience items
@@ -177,16 +180,19 @@ Click any stat to jump to that section.
 ## ✍️ Workflow Tips
 
 ### Draft Before Publishing
+
 1. Always "Save Draft" first
 2. Review changes
 3. Then "Publish" when ready
 
 ### Organizing Content
+
 - Use **sort_order** to arrange items (drag to reorder in future)
 - Use **tags** to categorize (Blog, Research, Projects)
 - Use **status** to control visibility (only Published shows publicly)
 
 ### Managing Images
+
 - Upload small versions (optimize for web)
 - Keep originals saved locally
 - Use consistent aspect ratios
@@ -196,22 +202,26 @@ Click any stat to jump to that section.
 ## 🐛 Troubleshooting
 
 ### "Can't login"
+
 - Check email and password are correct
 - Verify user exists in Supabase Authentication
 - Verify user has admin role in profiles table
 
 ### "Can't upload images"
+
 - File size > 10MB? Reduce and try again
 - Check `portfolio-images` bucket exists in Storage
 - Verify bucket is set to Public
 
 ### "Can't see content changes"
+
 - Content in draft? Only published content visible
 - Try refreshing page
 - Check browser cache
 
 ### "Form validation error"
-- Required fields marked with * - fill them
+
+- Required fields marked with \* - fill them
 - Check URL format for links
 - Slug must be lowercase with hyphens only
 
@@ -220,6 +230,7 @@ Click any stat to jump to that section.
 ## 🎨 Content Types Reference
 
 ### Hero Section
+
 - **Title** - Main headline (required)
 - **Subtitle** - Secondary text (optional)
 - **Description** - Detailed text (optional)
@@ -229,6 +240,7 @@ Click any stat to jump to that section.
 - **Marquee Items** - Scrolling text items (array)
 
 ### Projects
+
 - **Title** - Project name (required)
 - **Slug** - URL path (required, lowercase-hyphenated)
 - **Description** - Project overview (required)
@@ -237,6 +249,7 @@ Click any stat to jump to that section.
 - **Tags** - Technology and topic tags (array)
 
 ### Blog Posts
+
 - **Title** - Post title (required)
 - **Slug** - URL path (required)
 - **Description** - Excerpt (required)
@@ -245,6 +258,7 @@ Click any stat to jump to that section.
 - **Tags** - Article topics (array)
 
 ### Experience
+
 - **Title** - Job title (required)
 - **Company** - Company name (required)
 - **Location** - Location (optional)
@@ -256,6 +270,7 @@ Click any stat to jump to that section.
 - **Tech Stack** - Technologies used (array)
 
 ### Skills
+
 - **Name** - Category name (required)
 - **Description** - Category description (optional)
 - **Icon** - Category icon (optional)
@@ -264,6 +279,7 @@ Click any stat to jump to that section.
   - Proficiency: beginner / intermediate / advanced / expert
 
 ### About Section
+
 - **Title** - Section title (required)
 - **Description** - Main text (required)
 - **Featured Image** - About image (optional)
@@ -273,6 +289,7 @@ Click any stat to jump to that section.
   - Title, Description
 
 ### Research Papers
+
 - **Title** - Paper title (required)
 - **Slug** - URL path (required)
 - **Description** - Abstract (required)
@@ -309,24 +326,29 @@ For detailed information, see:
 ## 💬 Key Concepts
 
 ### Draft vs Publish
+
 - **Draft**: Content saved but not visible to public
 - **Publish**: Content visible on public pages
 
 ### Status
+
 - Shows whether content is draft or published
 - Only published content appears on website
 
 ### Slug
+
 - URL-friendly version of title
 - Used in URLs like `/blog/my-article`
 - Must be lowercase with hyphens
 
 ### Tags
+
 - Categorize content
 - Optional for most sections
 - Help organize by topic
 
 ### Sort Order
+
 - Controls display order on frontend
 - Lower numbers appear first
 - Can be updated in database if needed

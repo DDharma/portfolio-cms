@@ -12,12 +12,7 @@ interface PdfUploaderProps {
   className?: string
 }
 
-export function PdfUploader({
-  value,
-  onChange,
-  disabled,
-  className,
-}: PdfUploaderProps) {
+export function PdfUploader({ value, onChange, disabled, className }: PdfUploaderProps) {
   const [isUploading, setIsUploading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -29,9 +24,7 @@ export function PdfUploader({
     return pathname.split('/').pop() || 'document.pdf'
   }
 
-  const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (!file) return
 
@@ -79,9 +72,7 @@ export function PdfUploader({
           <div className="flex items-center gap-3">
             <FileText className="h-8 w-8 text-blue-400 flex-shrink-0" />
             <div className="flex-1 min-w-0">
-              <p className="text-sm text-white truncate font-medium">
-                {getFilename(value)}
-              </p>
+              <p className="text-sm text-white truncate font-medium">{getFilename(value)}</p>
               <p className="text-xs text-zinc-500 truncate">{value}</p>
             </div>
             <button

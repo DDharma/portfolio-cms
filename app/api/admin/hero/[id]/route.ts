@@ -6,10 +6,7 @@ import { revalidatePath } from 'next/cache'
 import { requireAdmin } from '@/lib/auth/jwt'
 import { v4 as uuidv4 } from 'uuid'
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   // Verify admin authentication
   const authResult = requireAdmin(request)
   if ('error' in authResult) {
@@ -29,21 +26,9 @@ export async function GET(
     if (heroError) throw heroError
 
     const [ctas, stats, marquee] = await Promise.all([
-      supabase
-        .from('hero_ctas')
-        .select('*')
-        .eq('hero_id', id)
-        .order('sort_order'),
-      supabase
-        .from('hero_stats')
-        .select('*')
-        .eq('hero_id', id)
-        .order('sort_order'),
-      supabase
-        .from('hero_marquee_items')
-        .select('*')
-        .eq('hero_id', id)
-        .order('sort_order'),
+      supabase.from('hero_ctas').select('*').eq('hero_id', id).order('sort_order'),
+      supabase.from('hero_stats').select('*').eq('hero_id', id).order('sort_order'),
+      supabase.from('hero_marquee_items').select('*').eq('hero_id', id).order('sort_order'),
     ])
 
     return NextResponse.json({
@@ -60,10 +45,7 @@ export async function GET(
   }
 }
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   // Verify admin authentication
   const authResult = requireAdmin(request)
   if ('error' in authResult) {
@@ -93,10 +75,7 @@ export async function PATCH(
       .from('hero_content')
       .update({
         ...heroData,
-        published_at:
-          heroData.status === 'published'
-            ? new Date().toISOString()
-            : null,
+        published_at: heroData.status === 'published' ? new Date().toISOString() : null,
       })
       .eq('id', id)
 
@@ -110,48 +89,42 @@ export async function PATCH(
     ])
 
     if (ctas.length > 0) {
-      const { error } = await supabase
-        .from('hero_ctas')
-        .insert(
-          ctas.map((cta, i) => ({
-            id: cta.id || uuidv4(),
-            label: cta.label,
-            href: cta.href,
-            variant: cta.variant,
-            hero_id: id,
-            sort_order: i,
-          }))
-        )
+      const { error } = await supabase.from('hero_ctas').insert(
+        ctas.map((cta, i) => ({
+          id: cta.id || uuidv4(),
+          label: cta.label,
+          href: cta.href,
+          variant: cta.variant,
+          hero_id: id,
+          sort_order: i,
+        }))
+      )
       if (error) throw error
     }
 
     if (stats.length > 0) {
-      const { error } = await supabase
-        .from('hero_stats')
-        .insert(
-          stats.map((stat, i) => ({
-            id: stat.id || uuidv4(),
-            label: stat.label,
-            value: stat.value,
-            hero_id: id,
-            sort_order: i,
-          }))
-        )
+      const { error } = await supabase.from('hero_stats').insert(
+        stats.map((stat, i) => ({
+          id: stat.id || uuidv4(),
+          label: stat.label,
+          value: stat.value,
+          hero_id: id,
+          sort_order: i,
+        }))
+      )
       if (error) throw error
     }
 
     if (marquee_items.length > 0) {
-      const { error } = await supabase
-        .from('hero_marquee_items')
-        .insert(
-          marquee_items.map((item, i) => ({
-            id: item.id || uuidv4(),
-            text: item.text,
-            icon: item.icon,
-            hero_id: id,
-            sort_order: i,
-          }))
-        )
+      const { error } = await supabase.from('hero_marquee_items').insert(
+        marquee_items.map((item, i) => ({
+          id: item.id || uuidv4(),
+          text: item.text,
+          icon: item.icon,
+          hero_id: id,
+          sort_order: i,
+        }))
+      )
       if (error) throw error
     }
 
@@ -165,10 +138,7 @@ export async function PATCH(
     console.error('PATCH error:', error)
     const errorMessage = error instanceof Error ? error.message : 'Failed to update'
     console.error('Error message:', errorMessage)
-    return NextResponse.json(
-      { error: errorMessage },
-      { status: 400 }
-    )
+    return NextResponse.json({ error: errorMessage }, { status: 400 })
   }
 }
 
@@ -186,10 +156,7 @@ export async function DELETE(
   const supabase = createAdminClient()
 
   try {
-    const { error } = await supabase
-      .from('hero_content')
-      .delete()
-      .eq('id', id)
+    const { error } = await supabase.from('hero_content').delete().eq('id', id)
 
     if (error) throw error
 

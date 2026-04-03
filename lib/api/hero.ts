@@ -5,12 +5,14 @@ export async function getHeroContent() {
   const supabase = await createClient()
   const { data, error } = await supabase
     .from('hero_content')
-    .select(`
+    .select(
+      `
       *,
       hero_ctas(*, sort_order),
       hero_stats(*, sort_order),
       hero_marquee_items(*, sort_order)
-    `)
+    `
+    )
     .eq('status', 'published')
     .order('created_at', { ascending: false })
     .limit(1)
@@ -31,21 +33,9 @@ export async function getHeroById(id: string) {
   if (heroError) throw new Error(heroError.message)
 
   const [ctas, stats, marquee] = await Promise.all([
-    supabase
-      .from('hero_ctas')
-      .select('*')
-      .eq('hero_id', id)
-      .order('sort_order'),
-    supabase
-      .from('hero_stats')
-      .select('*')
-      .eq('hero_id', id)
-      .order('sort_order'),
-    supabase
-      .from('hero_marquee_items')
-      .select('*')
-      .eq('hero_id', id)
-      .order('sort_order'),
+    supabase.from('hero_ctas').select('*').eq('hero_id', id).order('sort_order'),
+    supabase.from('hero_stats').select('*').eq('hero_id', id).order('sort_order'),
+    supabase.from('hero_marquee_items').select('*').eq('hero_id', id).order('sort_order'),
   ])
 
   return {
@@ -147,10 +137,7 @@ export async function updateHero(id: string, data: HeroContent) {
 
 export async function deleteHero(id: string) {
   const supabase = await createClient()
-  const { error } = await supabase
-    .from('hero_content')
-    .delete()
-    .eq('id', id)
+  const { error } = await supabase.from('hero_content').delete().eq('id', id)
 
   if (error) throw new Error(error.message)
 }

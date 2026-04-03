@@ -112,9 +112,12 @@ export function AboutForm({ initialData, isLoading = false }: AboutFormProps) {
   }
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit, (errors) => {
-      console.log('Form validation errors:', errors)
-    })} className="space-y-8">
+    <form
+      onSubmit={form.handleSubmit(onSubmit, (errors) => {
+        console.log('Form validation errors:', errors)
+      })}
+      className="space-y-8"
+    >
       {error && (
         <div className="rounded-lg bg-red-500/10 border border-red-500/20 p-4">
           <p className="text-sm text-red-400">{error}</p>
@@ -127,7 +130,9 @@ export function AboutForm({ initialData, isLoading = false }: AboutFormProps) {
           <p className="text-sm text-amber-400">Please fix the following errors:</p>
           <ul className="text-sm text-amber-400 mt-2 list-disc list-inside">
             {Object.entries(form.formState.errors).map(([field, error]) => (
-              <li key={field}>{field}: {error?.message}</li>
+              <li key={field}>
+                {field}: {error?.message}
+              </li>
             ))}
           </ul>
         </div>
@@ -137,16 +142,10 @@ export function AboutForm({ initialData, isLoading = false }: AboutFormProps) {
       <div className="rounded-lg border border-white/[0.06] bg-zinc-950 p-6 space-y-6">
         <div>
           <h3 className="text-lg font-semibold text-white">Basic Information</h3>
-          <p className="text-sm text-zinc-400 mt-1">
-            Main content for the about section
-          </p>
+          <p className="text-sm text-zinc-400 mt-1">Main content for the about section</p>
         </div>
 
-        <FormField
-          label="Title"
-          required
-          error={form.formState.errors.title?.message}
-        >
+        <FormField label="Title" required error={form.formState.errors.title?.message}>
           <Controller
             name="title"
             control={form.control}
@@ -163,11 +162,7 @@ export function AboutForm({ initialData, isLoading = false }: AboutFormProps) {
           />
         </FormField>
 
-        <FormField
-          label="Description"
-          required
-          error={form.formState.errors.description?.message}
-        >
+        <FormField label="Description" required error={form.formState.errors.description?.message}>
           <Controller
             name="description"
             control={form.control}
@@ -201,7 +196,9 @@ export function AboutForm({ initialData, isLoading = false }: AboutFormProps) {
             type="button"
             variant="secondary"
             size="sm"
-            onClick={() => highlightsField.append({ title: '', description: '', icon: '', sort_order: 0 })}
+            onClick={() =>
+              highlightsField.append({ title: '', description: '', icon: '', sort_order: 0 })
+            }
             disabled={isSubmitting}
           >
             <Plus className="h-4 w-4" />
@@ -211,7 +208,10 @@ export function AboutForm({ initialData, isLoading = false }: AboutFormProps) {
 
         <div className="space-y-4">
           {highlightsField.fields.map((field, index) => (
-            <div key={field.id} className="space-y-3 p-4 rounded-lg bg-zinc-950 border border-white/[0.05]">
+            <div
+              key={field.id}
+              className="space-y-3 p-4 rounded-lg bg-zinc-950 border border-white/[0.05]"
+            >
               <input
                 type="text"
                 placeholder="Highlight title"
@@ -229,9 +229,7 @@ export function AboutForm({ initialData, isLoading = false }: AboutFormProps) {
                 <label className="text-xs text-zinc-400 block mb-2">Icon (optional)</label>
                 <IconSelector
                   value={form.watch(`highlights.${index}.icon`) || ''}
-                  onChange={(iconName) =>
-                    form.setValue(`highlights.${index}.icon`, iconName)
-                  }
+                  onChange={(iconName) => form.setValue(`highlights.${index}.icon`, iconName)}
                   disabled={isSubmitting}
                 />
               </div>
@@ -268,7 +266,10 @@ export function AboutForm({ initialData, isLoading = false }: AboutFormProps) {
 
         <div className="space-y-4">
           {principlesField.fields.map((field, index) => (
-            <div key={field.id} className="space-y-3 p-4 rounded-lg bg-zinc-950 border border-white/[0.05]">
+            <div
+              key={field.id}
+              className="space-y-3 p-4 rounded-lg bg-zinc-950 border border-white/[0.05]"
+            >
               <input
                 type="text"
                 placeholder="Principle title"
@@ -299,12 +300,7 @@ export function AboutForm({ initialData, isLoading = false }: AboutFormProps) {
 
       {/* Actions */}
       <div className="flex gap-3 justify-end">
-        <Button
-          type="button"
-          variant="ghost"
-          onClick={() => router.back()}
-          disabled={isSubmitting}
-        >
+        <Button type="button" variant="ghost" onClick={() => router.back()} disabled={isSubmitting}>
           Cancel
         </Button>
         <Button

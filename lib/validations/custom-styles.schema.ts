@@ -19,9 +19,7 @@ export const customStyleSchema = z.object({
     .max(500, 'Description must be less than 500 characters')
     .optional()
     .or(z.literal('')),
-  category: z
-    .enum(['text', 'background', 'border', 'layout', 'custom'])
-    .default('text'),
+  category: z.enum(['text', 'background', 'border', 'layout', 'custom']).default('text'),
   is_active: z.boolean().default(true),
   created_by: z.string().uuid().optional(),
   created_at: z.string().datetime().optional(),

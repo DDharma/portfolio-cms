@@ -5,11 +5,13 @@ export async function getPublishedProjects() {
   const supabase = await createClient()
   const { data, error } = await supabase
     .from('projects')
-    .select(`
+    .select(
+      `
       *,
       project_tags(*, sort_order),
       project_links(*, sort_order)
-    `)
+    `
+    )
     .eq('status', 'published')
     .order('sort_order')
 
@@ -21,11 +23,13 @@ export async function getProjectBySlug(slug: string) {
   const supabase = await createClient()
   const { data, error } = await supabase
     .from('projects')
-    .select(`
+    .select(
+      `
       *,
       project_tags(*, sort_order),
       project_links(*, sort_order)
-    `)
+    `
+    )
     .eq('slug', slug)
     .eq('status', 'published')
     .single()
@@ -45,16 +49,8 @@ export async function getProjectById(id: string) {
   if (projectError) throw new Error(projectError.message)
 
   const [tags, links] = await Promise.all([
-    supabase
-      .from('project_tags')
-      .select('*')
-      .eq('project_id', id)
-      .order('sort_order'),
-    supabase
-      .from('project_links')
-      .select('*')
-      .eq('project_id', id)
-      .order('sort_order'),
+    supabase.from('project_tags').select('*').eq('project_id', id).order('sort_order'),
+    supabase.from('project_links').select('*').eq('project_id', id).order('sort_order'),
   ])
 
   return {
@@ -138,10 +134,7 @@ export async function updateProject(id: string, data: Project) {
 
 export async function deleteProject(id: string) {
   const supabase = await createClient()
-  const { error } = await supabase
-    .from('projects')
-    .delete()
-    .eq('id', id)
+  const { error } = await supabase.from('projects').delete().eq('id', id)
 
   if (error) throw new Error(error.message)
 }

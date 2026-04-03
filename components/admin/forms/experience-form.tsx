@@ -35,9 +35,7 @@ interface ExperienceFormProps {
 export function ExperienceForm({ initialData, isLoading = false }: ExperienceFormProps) {
   const router = useRouter()
   const [error, setError] = useState<string | undefined>(undefined)
-  const [status, setStatus] = useState<'draft' | 'published'>(
-    initialData?.status || 'draft'
-  )
+  const [status, setStatus] = useState<'draft' | 'published'>(initialData?.status || 'draft')
 
   const createMutation = useCreateExperience()
   const updateMutation = useUpdateExperience()
@@ -113,16 +111,10 @@ export function ExperienceForm({ initialData, isLoading = false }: ExperienceFor
       <div className="rounded-lg border border-white/[0.06] bg-zinc-950 p-6 space-y-6">
         <div>
           <h3 className="text-lg font-semibold text-white">Experience Details</h3>
-          <p className="text-sm text-zinc-400 mt-1">
-            Information about the work experience
-          </p>
+          <p className="text-sm text-zinc-400 mt-1">Information about the work experience</p>
         </div>
 
-        <FormField
-          label="Job Title"
-          required
-          error={form.formState.errors.title?.message}
-        >
+        <FormField label="Job Title" required error={form.formState.errors.title?.message}>
           <input
             type="text"
             {...form.register('title')}
@@ -132,11 +124,7 @@ export function ExperienceForm({ initialData, isLoading = false }: ExperienceFor
           />
         </FormField>
 
-        <FormField
-          label="Company"
-          required
-          error={form.formState.errors.company?.message}
-        >
+        <FormField label="Company" required error={form.formState.errors.company?.message}>
           <input
             type="text"
             {...form.register('company')}
@@ -146,11 +134,7 @@ export function ExperienceForm({ initialData, isLoading = false }: ExperienceFor
           />
         </FormField>
 
-        <FormField
-          label="Location"
-          required
-          error={form.formState.errors.location?.message}
-        >
+        <FormField label="Location" required error={form.formState.errors.location?.message}>
           <input
             type="text"
             {...form.register('location')}
@@ -161,11 +145,7 @@ export function ExperienceForm({ initialData, isLoading = false }: ExperienceFor
         </FormField>
 
         <div className="grid grid-cols-2 gap-4">
-          <FormField
-            label="Start Date"
-            required
-            error={form.formState.errors.start_date?.message}
-          >
+          <FormField label="Start Date" required error={form.formState.errors.start_date?.message}>
             <input
               type="date"
               {...form.register('start_date')}
@@ -174,10 +154,7 @@ export function ExperienceForm({ initialData, isLoading = false }: ExperienceFor
             />
           </FormField>
 
-          <FormField
-            label="End Date"
-            error={form.formState.errors.end_date?.message}
-          >
+          <FormField label="End Date" error={form.formState.errors.end_date?.message}>
             <div className="space-y-2">
               <input
                 type="date"
@@ -198,11 +175,7 @@ export function ExperienceForm({ initialData, isLoading = false }: ExperienceFor
           </FormField>
         </div>
 
-        <FormField
-          label="Description"
-          required
-          error={form.formState.errors.description?.message}
-        >
+        <FormField label="Description" required error={form.formState.errors.description?.message}>
           <textarea
             {...form.register('description')}
             className="w-full h-24 rounded-lg border border-white/[0.1] bg-white/[0.05] px-4 py-2.5 text-white placeholder-zinc-500 focus:border-white/[0.2] focus:outline-none resize-none"
@@ -300,12 +273,7 @@ export function ExperienceForm({ initialData, isLoading = false }: ExperienceFor
 
       {/* Actions */}
       <div className="flex gap-3 justify-end">
-        <Button
-          type="button"
-          variant="ghost"
-          onClick={() => router.back()}
-          disabled={isSubmitting}
-        >
+        <Button type="button" variant="ghost" onClick={() => router.back()} disabled={isSubmitting}>
           Cancel
         </Button>
         <Button
@@ -316,11 +284,7 @@ export function ExperienceForm({ initialData, isLoading = false }: ExperienceFor
         >
           {isSubmitting ? 'Saving...' : 'Save Draft'}
         </Button>
-        <Button
-          type="submit"
-          onClick={() => setStatus('published')}
-          disabled={isSubmitting}
-        >
+        <Button type="submit" onClick={() => setStatus('published')} disabled={isSubmitting}>
           {isSubmitting ? 'Publishing...' : 'Publish'}
         </Button>
       </div>

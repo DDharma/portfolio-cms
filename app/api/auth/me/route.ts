@@ -5,10 +5,7 @@ export async function GET(request: NextRequest) {
   const authResult = requireAuth(request)
 
   if ('error' in authResult) {
-    return NextResponse.json(
-      { error: authResult.error },
-      { status: authResult.status }
-    )
+    return NextResponse.json({ error: authResult.error }, { status: authResult.status })
   }
 
   const { user } = authResult

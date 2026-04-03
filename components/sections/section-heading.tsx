@@ -1,26 +1,26 @@
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils'
 
 type SectionHeadingProps = {
-  heading: string;
-  title: string;
-  description?: string;
-  align?: "left" | "center";
-  titleIsHtml?: boolean;
-  descriptionIsHtml?: boolean;
-};
+  heading: string
+  title: string
+  description?: string
+  align?: 'left' | 'center'
+  titleIsHtml?: boolean
+  descriptionIsHtml?: boolean
+}
 
 export const SectionHeading = ({
   heading,
   title,
   description,
-  align = "left",
+  align = 'left',
   titleIsHtml = false,
   descriptionIsHtml = false,
 }: SectionHeadingProps) => {
   return (
     <div
-      className={cn("flex flex-col gap-3", {
-        "text-center items-center": align === "center",
+      className={cn('flex flex-col gap-3', {
+        'text-center items-center': align === 'center',
       })}
     >
       <span className="text-xs font-medium uppercase tracking-[0.15em] text-indigo-400/70">
@@ -28,11 +28,7 @@ export const SectionHeading = ({
       </span>
       <div className="space-y-2">
         <h2 className="text-2xl font-medium tracking-[-0.02em] text-white md:text-3xl lg:text-4xl">
-          {titleIsHtml ? (
-            <span dangerouslySetInnerHTML={{ __html: title }} />
-          ) : (
-            title
-          )}
+          {titleIsHtml ? <span dangerouslySetInnerHTML={{ __html: title }} /> : title}
         </h2>
         {description ? (
           <p className="max-w-2xl text-sm text-zinc-400 md:text-base">
@@ -45,5 +41,5 @@ export const SectionHeading = ({
         ) : null}
       </div>
     </div>
-  );
-};
+  )
+}

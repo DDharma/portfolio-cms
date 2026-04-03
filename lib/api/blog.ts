@@ -51,15 +51,13 @@ export async function createBlogPost(data: BlogPost) {
   if (postError) throw new Error(postError.message)
 
   if (tags && tags.length > 0) {
-    const { error: tagsError } = await supabase
-      .from('blog_tags')
-      .insert(
-        tags.map((tag, i) => ({
-          ...tag,
-          blog_id: newPost.id,
-          sort_order: i,
-        }))
-      )
+    const { error: tagsError } = await supabase.from('blog_tags').insert(
+      tags.map((tag, i) => ({
+        ...tag,
+        blog_id: newPost.id,
+        sort_order: i,
+      }))
+    )
 
     if (tagsError) throw new Error(tagsError.message)
   }
@@ -85,15 +83,13 @@ export async function updateBlogPost(id: string, data: BlogPost) {
   await supabase.from('blog_tags').delete().eq('blog_id', id)
 
   if (tags && tags.length > 0) {
-    const { error: tagsError } = await supabase
-      .from('blog_tags')
-      .insert(
-        tags.map((tag, i) => ({
-          ...tag,
-          blog_id: id,
-          sort_order: i,
-        }))
-      )
+    const { error: tagsError } = await supabase.from('blog_tags').insert(
+      tags.map((tag, i) => ({
+        ...tag,
+        blog_id: id,
+        sort_order: i,
+      }))
+    )
 
     if (tagsError) throw new Error(tagsError.message)
   }

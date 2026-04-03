@@ -7,20 +7,14 @@ import { generateToken } from '@/lib/auth/jwt'
 export async function GET() {
   try {
     const supabase = createAdminClient()
-    const { data: admins } = await supabase
-      .from('profiles')
-      .select('id')
-      .eq('role', 'admin')
+    const { data: admins } = await supabase.from('profiles').select('id').eq('role', 'admin')
 
     return NextResponse.json({
       adminExists: !!(admins && admins.length > 0),
     })
   } catch (error) {
     console.error('Admin check error:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
 
@@ -31,17 +25,11 @@ export async function POST(request: NextRequest) {
     const { email, password, name } = body
 
     if (!email || !password) {
-      return NextResponse.json(
-        { error: 'Email and password are required' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Email and password are required' }, { status: 400 })
     }
 
     if (password.length < 8) {
-      return NextResponse.json(
-        { error: 'Password must be at least 8 characters' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Password must be at least 8 characters' }, { status: 400 })
     }
 
     const supabase = createAdminClient()
@@ -67,10 +55,7 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (existingEmail) {
-      return NextResponse.json(
-        { error: 'Email already in use' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Email already in use' }, { status: 400 })
     }
 
     // Hash password
@@ -90,10 +75,7 @@ export async function POST(request: NextRequest) {
 
     if (createError || !newProfile) {
       console.error('Create admin error:', createError)
-      return NextResponse.json(
-        { error: 'Failed to create account' },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: 'Failed to create account' }, { status: 500 })
     }
 
     // Generate JWT token for auto-login
@@ -119,22 +101,22 @@ export async function POST(request: NextRequest) {
       console.error('Failed to seed contact_settings:', settingsError)
     }
 
-    return NextResponse.json({
-      success: true,
-      message: 'Admin account created successfully',
-      token,
-      user: {
-        id: newProfile.id,
-        email: newProfile.email,
-        name: newProfile.full_name,
-        role: newProfile.role,
+    return NextResponse.json(
+      {
+        success: true,
+        message: 'Admin account created successfully',
+        token,
+        user: {
+          id: newProfile.id,
+          email: newProfile.email,
+          name: newProfile.full_name,
+          role: newProfile.role,
+        },
       },
-    }, { status: 201 })
+      { status: 201 }
+    )
   } catch (error) {
     console.error('Register error:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

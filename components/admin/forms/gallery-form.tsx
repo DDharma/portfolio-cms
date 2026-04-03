@@ -33,9 +33,7 @@ interface GalleryFormProps {
 export function GalleryForm({ initialData, isLoading = false }: GalleryFormProps) {
   const router = useRouter()
   const [error, setError] = useState<string | undefined>(undefined)
-  const [status, setStatus] = useState<'draft' | 'published'>(
-    initialData?.status || 'draft'
-  )
+  const [status, setStatus] = useState<'draft' | 'published'>(initialData?.status || 'draft')
 
   const createMutation = useCreateGallery()
   const updateMutation = useUpdateGallery()
@@ -104,16 +102,10 @@ export function GalleryForm({ initialData, isLoading = false }: GalleryFormProps
       <div className="rounded-lg border border-white/[0.06] bg-zinc-950 p-6 space-y-6">
         <div>
           <h3 className="text-lg font-semibold text-white">Gallery Photo Details</h3>
-          <p className="text-sm text-zinc-400 mt-1">
-            Information about the gallery photo
-          </p>
+          <p className="text-sm text-zinc-400 mt-1">Information about the gallery photo</p>
         </div>
 
-        <FormField
-          label="Title"
-          required
-          error={form.formState.errors.title?.message}
-        >
+        <FormField label="Title" required error={form.formState.errors.title?.message}>
           <input
             type="text"
             {...form.register('title')}
@@ -123,11 +115,7 @@ export function GalleryForm({ initialData, isLoading = false }: GalleryFormProps
           />
         </FormField>
 
-        <FormField
-          label="Image"
-          required
-          error={form.formState.errors.image_url?.message}
-        >
+        <FormField label="Image" required error={form.formState.errors.image_url?.message}>
           <ImageUploader
             value={form.watch('image_url')}
             onChange={(url) => form.setValue('image_url', url)}
@@ -135,10 +123,7 @@ export function GalleryForm({ initialData, isLoading = false }: GalleryFormProps
           />
         </FormField>
 
-        <FormField
-          label="Description"
-          error={form.formState.errors.description?.message}
-        >
+        <FormField label="Description" error={form.formState.errors.description?.message}>
           <textarea
             {...form.register('description')}
             className="w-full h-24 rounded-lg border border-white/[0.1] bg-white/[0.05] px-4 py-2.5 text-white placeholder-zinc-500 focus:border-white/[0.2] focus:outline-none resize-none"
@@ -152,7 +137,9 @@ export function GalleryForm({ initialData, isLoading = false }: GalleryFormProps
           <Star className="h-5 w-5 text-yellow-400" />
           <div className="flex-1">
             <p className="text-sm font-medium text-white">Feature on homepage</p>
-            <p className="text-xs text-zinc-500">Featured photos appear in the public gallery section</p>
+            <p className="text-xs text-zinc-500">
+              Featured photos appear in the public gallery section
+            </p>
           </div>
           <button
             type="button"
@@ -162,17 +149,16 @@ export function GalleryForm({ initialData, isLoading = false }: GalleryFormProps
             }`}
             disabled={isSubmitting || isLoading}
           >
-            <span className={`inline-block h-4 w-4 rounded-full bg-white transition-transform ${
-              form.watch('is_featured') ? 'translate-x-6' : 'translate-x-1'
-            }`} />
+            <span
+              className={`inline-block h-4 w-4 rounded-full bg-white transition-transform ${
+                form.watch('is_featured') ? 'translate-x-6' : 'translate-x-1'
+              }`}
+            />
           </button>
         </div>
 
         <div className="grid grid-cols-2 gap-6">
-          <FormField
-            label="Category"
-            error={form.formState.errors.category?.message}
-          >
+          <FormField label="Category" error={form.formState.errors.category?.message}>
             <input
               type="text"
               {...form.register('category')}
@@ -182,10 +168,7 @@ export function GalleryForm({ initialData, isLoading = false }: GalleryFormProps
             />
           </FormField>
 
-          <FormField
-            label="Location"
-            error={form.formState.errors.location?.message}
-          >
+          <FormField label="Location" error={form.formState.errors.location?.message}>
             <input
               type="text"
               {...form.register('location')}
@@ -196,10 +179,7 @@ export function GalleryForm({ initialData, isLoading = false }: GalleryFormProps
           </FormField>
         </div>
 
-        <FormField
-          label="Photo Date"
-          error={form.formState.errors.photo_date?.message}
-        >
+        <FormField label="Photo Date" error={form.formState.errors.photo_date?.message}>
           <input
             type="date"
             {...form.register('photo_date')}
@@ -250,12 +230,7 @@ export function GalleryForm({ initialData, isLoading = false }: GalleryFormProps
 
       {/* Actions */}
       <div className="flex gap-3 justify-end">
-        <Button
-          type="button"
-          variant="ghost"
-          onClick={() => router.back()}
-          disabled={isSubmitting}
-        >
+        <Button type="button" variant="ghost" onClick={() => router.back()} disabled={isSubmitting}>
           Cancel
         </Button>
         <Button
@@ -266,11 +241,7 @@ export function GalleryForm({ initialData, isLoading = false }: GalleryFormProps
         >
           {isSubmitting ? 'Saving...' : 'Save Draft'}
         </Button>
-        <Button
-          type="submit"
-          onClick={() => setStatus('published')}
-          disabled={isSubmitting}
-        >
+        <Button type="submit" onClick={() => setStatus('published')} disabled={isSubmitting}>
           {isSubmitting ? 'Publishing...' : 'Publish'}
         </Button>
       </div>
