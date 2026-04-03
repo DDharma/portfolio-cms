@@ -63,10 +63,10 @@ npm install
    cp .env.example .env.local
    ```
 2. Fill in your Supabase credentials:
-   - `NEXT_PUBLIC_SUPABASE_URL` — From Project Settings > API > URL
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY` — From Project Settings > API > anon key
+   - `NEXT_PUBLIC_SUPABASE_URL` — Just After project created, from project overview copy the project url
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY` — From Project Settings > API Keys > Legacy anon > anon key
    - `SUPABASE_SERVICE_ROLE_KEY` — From Project Settings > API > Service Role Key
-   - `JWT_SECRET` — Generate a random 32+ character string
+   - `JWT_SECRET` — Generate a random 32+ character string (Go to this https://randomkeygen.com/jwt-secret and copy any key)
 
 ### 5. Run the Development Server
 ```bash

@@ -10,7 +10,6 @@ import { Button } from '@/components/ui/button'
 import { FormField } from './form-field'
 import { RichTextEditor } from './rich-text-editor'
 import { ImageUploader } from '@/components/admin/media/image-uploader'
-import { IconSelector } from '@/components/admin/ui/icon-selector'
 import { Plus, X } from 'lucide-react'
 import { useCreateHero, useUpdateHero } from '@/hooks/use-admin-api'
 
@@ -100,11 +99,6 @@ export function HeroForm({ initialData, isLoading = false }: HeroFormProps) {
   const statsField = useFieldArray({
     control: form.control,
     name: 'stats',
-  })
-
-  const marqueeField = useFieldArray({
-    control: form.control,
-    name: 'marquee_items',
   })
 
   const onSubmit = async (data: HeroContent) => {
@@ -308,58 +302,6 @@ export function HeroForm({ initialData, isLoading = false }: HeroFormProps) {
                 type="button"
                 onClick={() => statsField.remove(index)}
                 className="text-zinc-500 hover:text-red-400 transition-colors h-10 w-10 flex items-center justify-center"
-                disabled={isSubmitting}
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Marquee Items */}
-      <div className="rounded-lg border border-white/[0.06] bg-zinc-950 p-6 space-y-4">
-        <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-white">Marquee Items</h3>
-          <Button
-            type="button"
-            variant="secondary"
-            size="sm"
-            onClick={() => marqueeField.append({ text: '', sort_order: 0 })}
-            disabled={isSubmitting}
-          >
-            <Plus className="h-4 w-4" />
-            Add Item
-          </Button>
-        </div>
-
-        <div className="space-y-3">
-          {marqueeField.fields.map((field, index) => (
-            <div key={field.id} className="flex gap-3 items-end">
-              <div className="flex-1 space-y-1">
-                <label className="text-xs text-zinc-400 block">Text</label>
-                <input
-                  type="text"
-                  placeholder="Item text"
-                  {...form.register(`marquee_items.${index}.text`)}
-                  className="w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-4 py-2 text-white placeholder-zinc-500 focus:border-white/[0.2] focus:outline-none text-sm"
-                  disabled={isSubmitting}
-                />
-              </div>
-              <div className="flex-1 space-y-1">
-                <label className="text-xs text-zinc-400 block">Icon</label>
-                <IconSelector
-                  value={form.watch(`marquee_items.${index}.icon`) || ''}
-                  onChange={(iconName) =>
-                    form.setValue(`marquee_items.${index}.icon`, iconName)
-                  }
-                  disabled={isSubmitting}
-                />
-              </div>
-              <button
-                type="button"
-                onClick={() => marqueeField.remove(index)}
-                className="text-zinc-500 hover:text-red-400 transition-colors h-10 w-10 flex items-center justify-center rounded-lg hover:bg-white/[0.05]"
                 disabled={isSubmitting}
               >
                 <X className="h-4 w-4" />
