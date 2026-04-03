@@ -27,6 +27,7 @@ A fully customizable, self-hosted portfolio CMS built for developers and tech pr
 
 ### Prerequisites
 - Node.js 18+
+- pnpm (install via `corepack enable` or see [pnpm.io](https://pnpm.io/installation))
 - A free Supabase account (https://supabase.com)
 - Git
 
@@ -38,7 +39,7 @@ cd portfolio-cms
 
 ### 2. Install Dependencies
 ```bash
-npm install
+pnpm install
 ```
 
 ### 3. Set Up Supabase Project
@@ -52,7 +53,7 @@ npm install
    - Check "Public bucket"
    - Create bucket
 5. Create your admin account:
-   - Start the dev server (`npm run dev`)
+   - Start the dev server (`pnpm dev`)
    - Visit `http://localhost:3000/setup`
    - Fill in your name, email, and password
    - You'll be automatically logged into the admin dashboard
@@ -70,7 +71,7 @@ npm install
 
 ### 5. Run the Development Server
 ```bash
-npm run dev
+pnpm dev
 ```
 
 Visit `http://localhost:3000` — your portfolio is live.
@@ -137,11 +138,11 @@ See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) for detailed guides on deploying 
 
 ### Available Commands
 ```bash
-npm run dev          # Start dev server (http://localhost:3000)
-npm run build        # Build for production
-npm run start        # Start production server
-npm run lint         # Run TypeScript and linting
-npm run type-check   # Type check only
+pnpm dev          # Start dev server (http://localhost:3000)
+pnpm build        # Build for production
+pnpm start        # Start production server
+pnpm lint         # Run TypeScript and linting
+pnpm type-check   # Type check only
 ```
 
 ### Project Structure

@@ -52,6 +52,7 @@ export async function PATCH(request: NextRequest) {
             email: validatedData.email,
             location: validatedData.location,
             availability: validatedData.availability,
+            resume_url: validatedData.resume_url || null,
             socials: validatedData.socials,
             callouts: validatedData.callouts,
           })
@@ -65,6 +66,7 @@ export async function PATCH(request: NextRequest) {
             email: validatedData.email,
             location: validatedData.location,
             availability: validatedData.availability,
+            resume_url: validatedData.resume_url || null,
             socials: validatedData.socials,
             callouts: validatedData.callouts,
           })

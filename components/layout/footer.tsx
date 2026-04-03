@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { socialLinks } from "@/utils/data";
 
-export const Footer = () => {
+export const Footer = ({ resumeUrl }: { resumeUrl: string | null }) => {
   return (
     <footer className="border-t border-white/[0.04] py-16">
       <div className="mx-auto flex max-w-5xl flex-col gap-6 px-6 lg:px-8 md:flex-row md:items-center md:justify-between">
@@ -24,13 +24,16 @@ export const Footer = () => {
               {social.label}
             </Link>
           ))}
-          <a
-            href="/Senior_Frontend_Developer_React_Nextjs_Dharmvir.pdf"
-            download
-            className="transition-colors duration-200 hover:text-zinc-200"
-          >
-            Resume
-          </a>
+          {resumeUrl && (
+            <a
+              href={resumeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors duration-200 hover:text-zinc-200"
+            >
+              Resume
+            </a>
+          )}
         </div>
       </div>
     </footer>

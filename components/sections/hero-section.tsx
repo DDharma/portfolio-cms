@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowBigDown, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
 import { SectionShell } from "@/components/sections/section-shell";
@@ -54,7 +54,8 @@ export const HeroSection = ({ data }: HeroSectionProps) => {
           {(heroContent.hero_ctas || []).map((cta: any) => (
             <Link
               key={cta.label}
-              download={cta.label.toLowerCase().includes('resume') ? true : undefined}
+              target={cta.label.toLowerCase().includes('resume') ? '_blank' : undefined}
+              rel={cta.label.toLowerCase().includes('resume') ? 'noopener noreferrer' : undefined}
               href={cta.href}
               className={cn(
                 buttonVariants({

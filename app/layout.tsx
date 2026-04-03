@@ -34,16 +34,24 @@ export default async function RootLayout({
 }>) {
   // Fetch active custom styles server-side to inject into page
   let customStyles: any[] = [];
+  let resumeUrl: string | null = null;
   try {
     const supabase = await createClient();
-    const { data } = await supabase
-      .from("custom_styles")
-      .select("id, name, css_rules, is_active")
-      .eq("is_active", true);
-    customStyles = data || [];
+    const [stylesResult, contactResult] = await Promise.all([
+      supabase
+        .from("custom_styles")
+        .select("id, name, css_rules, is_active")
+        .eq("is_active", true),
+      supabase
+        .from("contact_settings")
+        .select("resume_url")
+        .limit(1)
+        .single(),
+    ]);
+    customStyles = stylesResult.data || [];
+    resumeUrl = contactResult.data?.resume_url || null;
   } catch (error) {
-    console.error("Failed to fetch custom styles:", error);
-    // Continue with empty styles array if fetch fails
+    console.error("Failed to fetch layout data:", error);
   }
 
   return (
@@ -58,7 +66,7 @@ export default async function RootLayout({
         <DynamicStylesProvider styles={customStyles} />
         <AuthProvider>
           <ThemeProvider>
-            <RootLayoutContent>
+            <RootLayoutContent resumeUrl={resumeUrl}>
               {children}
             </RootLayoutContent>
           </ThemeProvider>

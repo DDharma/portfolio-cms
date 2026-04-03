@@ -96,8 +96,8 @@ By default, content revalidates every 1 hour (see `app/page.tsx`). For faster up
 2. **Install dependencies**
    ```bash
    curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-   sudo apt-get install -y nodejs
-   sudo apt-get install -y git
+   sudo apt-get install -y nodejs git
+   corepack enable && corepack prepare pnpm@latest --activate
    ```
 
 3. **Clone your repository**
@@ -108,12 +108,12 @@ By default, content revalidates every 1 hour (see `app/page.tsx`). For faster up
 
 4. **Install project dependencies**
    ```bash
-   npm install --production
+   pnpm install --prod
    ```
 
 5. **Build the Next.js app**
    ```bash
-   npm run build
+   pnpm build
    ```
 
 6. **Create `.env` file** (same as `.env.example`)
@@ -124,14 +124,14 @@ By default, content revalidates every 1 hour (see `app/page.tsx`). For faster up
 
 7. **Start the server**
    ```bash
-   npm run start
+   pnpm start
    # The server runs on http://localhost:3000
    ```
 
 8. **Set up PM2 for persistent running** (optional but recommended)
    ```bash
-   sudo npm install -g pm2
-   pm2 start "npm run start" --name portfolio
+   sudo pnpm add -g pm2
+   pm2 start "pnpm start" --name portfolio
    pm2 startup
    pm2 save
    ```
@@ -172,18 +172,20 @@ By default, content revalidates every 1 hour (see `app/page.tsx`). For faster up
    ```dockerfile
    FROM node:18-alpine
 
+   RUN corepack enable && corepack prepare pnpm@latest --activate
+
    WORKDIR /app
 
-   COPY package*.json ./
-   RUN npm install --production
+   COPY package.json pnpm-lock.yaml ./
+   RUN pnpm install --prod --frozen-lockfile
 
    COPY . .
-   RUN npm run build
+   RUN pnpm build
 
    ENV NODE_ENV=production
    EXPOSE 3000
 
-   CMD ["npm", "run", "start"]
+   CMD ["pnpm", "start"]
    ```
 
 2. **Build the image**
@@ -391,7 +393,7 @@ docker logs container-name -f
 - Clear browser cookies and try again
 
 ### "Build fails on deploy"
-- Run `npm run build` locally to debug
+- Run `pnpm build` locally to debug
 - Check that all environment variables are set
 - Ensure `next.config.ts` is valid
 

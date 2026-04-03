@@ -18,7 +18,7 @@ cd portfolio-cms
 
 ### 2. Install Dependencies
 ```bash
-npm install
+pnpm install
 ```
 
 ### 3. Set Up Local Supabase (for testing database changes)
@@ -29,7 +29,7 @@ npm install
 
 ### 4. Run the Development Server
 ```bash
-npm run dev
+pnpm dev
 ```
 
 Open `http://localhost:3000` in your browser.
@@ -57,9 +57,9 @@ Example: `feat/project-card-variants` or `fix/gallery-section-layout`
 
 2. **Make your changes** and test locally:
    ```bash
-   npm run dev
-   npm run type-check  # Ensure TypeScript is clean
-   npm run lint        # Check for linting issues
+   pnpm dev
+   pnpm type-check  # Ensure TypeScript is clean
+   pnpm lint        # Check for linting issues
    ```
 
 3. **Commit with clear messages** (imperative mood):
@@ -98,17 +98,17 @@ Example: `feat/project-card-variants` or `fix/gallery-section-layout`
 ### Formatting
 We use Prettier for code formatting. Run before committing:
 ```bash
-npm run format  # If available
+pnpm format  # If available
 # or
-npx prettier --write .
+pnpm exec prettier --write .
 ```
 
 ## Testing
 
 ### Running Tests
 ```bash
-npm test        # Run all tests (if test suite exists)
-npm run test:ui # Open test UI
+pnpm test        # Run all tests (if test suite exists)
+pnpm test:ui # Open test UI
 ```
 
 ### Testing Database Changes
@@ -166,8 +166,8 @@ See [`docs/CMS_IMPROVEMENT_ROADMAP.md`](docs/CMS_IMPROVEMENT_ROADMAP.md) for the
 ## Pull Request Process
 
 1. **Self-review** — Make sure your code is clean and works
-2. **Check the build** — Ensure `npm run build` succeeds
-3. **Type-check** — Run `npm run type-check`
+2. **Check the build** — Ensure `pnpm build` succeeds
+3. **Type-check** — Run `pnpm type-check`
 4. **Test your changes** locally and in a test Supabase project if needed
 5. **Write a clear PR description**:
    ```markdown

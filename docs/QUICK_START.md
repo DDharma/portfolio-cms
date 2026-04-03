@@ -40,7 +40,7 @@ Get these from Supabase: Settings → API
 ### Step 3: Create Admin Account (1 min)
 
 ```bash
-npm run dev
+pnpm dev
 # Visit http://localhost:3000/setup
 # Create your admin account with name, email, and password
 # You'll be automatically logged into the admin dashboard!

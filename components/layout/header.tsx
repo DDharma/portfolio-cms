@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowBigDown } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { useState } from "react";
 
 import { navLinks } from "@/utils/data";
 import { cn } from "@/lib/utils";
 
-export const Header = () => {
+export const Header = ({ resumeUrl }: { resumeUrl: string | null }) => {
   const pathname = usePathname();
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
 
@@ -61,14 +61,17 @@ export const Header = () => {
             </div>
           ))}
         </nav>
-        <a
-          href="/Senior_Frontend_Developer_React_Nextjs_Dharmvir.pdf"
-          download
-          className="flex items-center gap-1 rounded-full text-zinc-950 px-4 py-2 text-[15px] font-medium transition-colors duration-200  whitespace-nowrap shrink-0"
-        >
-          <span className="gradient-text">Resume</span>
-          <ArrowBigDown className="h-3.5 w-3.5 gradient-icon" />
-        </a>
+        {resumeUrl && (
+          <a
+            href={resumeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 rounded-full text-zinc-950 px-4 py-2 text-[15px] font-medium transition-colors duration-200 whitespace-nowrap shrink-0"
+          >
+            <span className="gradient-text">Resume</span>
+            <ExternalLink className="h-3.5 w-3.5 gradient-icon" />
+          </a>
+        )}
       </div>
     </header>
   );

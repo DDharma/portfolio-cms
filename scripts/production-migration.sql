@@ -525,6 +525,7 @@ CREATE TABLE IF NOT EXISTS public.contact_settings (
   availability TEXT NOT NULL,
   socials JSONB DEFAULT '[]'::JSONB,
   callouts JSONB DEFAULT '[]'::JSONB,
+  resume_url TEXT DEFAULT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );

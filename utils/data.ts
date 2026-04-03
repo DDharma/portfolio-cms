@@ -21,7 +21,7 @@ export const navLinks: NavLink[] = [
   { label: "Experience", href: "/#experience" },
   { label: "Work", href: "/#projects" },
   { label: "Contact", href: "/#contact" },
-  { label: "Hire me", href: "/contact" },
+  { label: "Hire me", href: "/#contact" },
 ];
 
 export type BlogPost = {

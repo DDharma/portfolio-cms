@@ -56,7 +56,7 @@ See: [QUICK_START.md](./QUICK_START.md)
 ### Option B: Automated
 
 ```bash
-npx ts-node scripts/migrate-data.ts
+pnpm exec ts-node scripts/migrate-data.ts
 ```
 
 See: [MIGRATION_README.md](./MIGRATION_README.md)
@@ -82,7 +82,7 @@ See: [MIGRATION_README.md](./MIGRATION_README.md)
 
 ### If you want automation:
 1. Read [QUICK_START.md](./QUICK_START.md) Option B
-2. Run: `npx ts-node scripts/migrate-data.ts`
+2. Run: `pnpm exec ts-node scripts/migrate-data.ts`
 3. Check output for success
 
 ### If you need detailed help:
