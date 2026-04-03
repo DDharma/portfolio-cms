@@ -509,7 +509,7 @@ CREATE TRIGGER update_section_metadata_updated_at BEFORE UPDATE ON public.sectio
 -- Seed initial section_metadata values
 INSERT INTO public.section_metadata (section_key, heading, title, description, status) VALUES
   ('skills', 'Capabilities', 'Crafted systems with engineering-grade polish.', 'A multidisciplinary toolkit for building expressive, reliable products end-to-end.', 'published'),
-  ('experience', 'Experience', '4+ years of building, leading, and scaling.', 'From SDE-1 to SDE-3 — leading teams, architecting AI-driven platforms, and delivering measurable business impact across enterprise products.', 'published')
+  ('experience', 'Experience', 'Professional experience and career highlights.', 'Key roles, achievements, and technical expertise across my career.', 'published')
 ON CONFLICT (section_key) DO UPDATE SET
   status = 'published',
   updated_at = NOW();
@@ -526,6 +526,10 @@ CREATE TABLE IF NOT EXISTS public.contact_settings (
   socials JSONB DEFAULT '[]'::JSONB,
   callouts JSONB DEFAULT '[]'::JSONB,
   resume_url TEXT DEFAULT NULL,
+  site_name TEXT NOT NULL DEFAULT 'Your Name',
+  site_title TEXT NOT NULL DEFAULT 'Developer',
+  site_description TEXT NOT NULL DEFAULT 'A developer portfolio.',
+  site_logo TEXT NOT NULL DEFAULT 'P',
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -941,7 +945,12 @@ CREATE POLICY "Admins manage custom styles"
 ON public.custom_styles FOR ALL
 USING (public.is_admin());
 
--- Contact Settings (admin only)
+-- Contact Settings (public read, admin manage)
+DROP POLICY IF EXISTS "Public can read contact settings" ON public.contact_settings;
+CREATE POLICY "Public can read contact settings"
+ON public.contact_settings FOR SELECT
+USING (true);
+
 DROP POLICY IF EXISTS "Admins can manage contact settings" ON public.contact_settings;
 CREATE POLICY "Admins can manage contact settings"
 ON public.contact_settings FOR ALL

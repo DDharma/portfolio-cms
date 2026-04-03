@@ -5,15 +5,19 @@ import { ArrowUpRight, Calendar, Clock } from "lucide-react";
 import { SectionShell } from "@/components/sections/section-shell";
 import { SectionHeading } from "@/components/sections/section-heading";
 import { getBlogPosts } from "@/lib/api/blog";
+import { getSiteSettings, DEFAULT_SITE_NAME } from "@/lib/api/contact";
 import { Badge } from "@/components/ui/badge";
 
 export const revalidate = 3600;
 
-export const metadata: Metadata = {
-  title: "Blog · Dharmvir Dharmacharya",
-  description:
-    "Writing on frontend engineering, AI integration, design systems, and product development practice.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  const name = settings?.site_name ?? DEFAULT_SITE_NAME;
+  return {
+    title: `Blog · ${name}`,
+    description: "Writing on engineering, design systems, and product development.",
+  };
+}
 
 export default async function BlogPage() {
   const blogPosts = await getBlogPosts();

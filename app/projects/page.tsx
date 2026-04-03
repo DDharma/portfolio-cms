@@ -4,14 +4,18 @@ import { SectionShell } from "@/components/sections/section-shell";
 import { SectionHeading } from "@/components/sections/section-heading";
 import { ProjectGrid } from "@/components/sections/projects-section";
 import { getPublishedProjects } from "@/lib/api/projects";
+import { getSiteSettings, DEFAULT_SITE_NAME } from "@/lib/api/contact";
 
 export const revalidate = 3600;
 
-export const metadata: Metadata = {
-  title: "Projects · Dharmvir Dharmacharya",
-  description:
-    "Portfolio of AI-powered platforms, enterprise dashboards, CRM systems, and scalable frontend applications built with React, Next.js, and TypeScript.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  const name = settings?.site_name ?? DEFAULT_SITE_NAME;
+  return {
+    title: `Projects · ${name}`,
+    description: "A collection of projects and case studies.",
+  };
+}
 
 export default async function ProjectsPage() {
   const projects = await getPublishedProjects();
@@ -20,8 +24,8 @@ export default async function ProjectsPage() {
     <SectionShell id="projects-archive">
       <SectionHeading
         heading="Projects Archive"
-        title="AI-powered platforms and enterprise-scale products."
-        description="From AI hiring platforms to CRM systems and real-time dashboards — production builds serving 50+ enterprise clients with measurable business impact."
+        title="A collection of projects and case studies."
+        description="Production applications showcasing technical depth across different domains and scales."
       />
       <ProjectGrid items={projects} />
     </SectionShell>

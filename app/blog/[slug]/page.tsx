@@ -5,6 +5,7 @@ import { ArrowLeft, Calendar, Clock } from "lucide-react";
 
 import { SectionShell } from "@/components/sections/section-shell";
 import { getBlogPosts, getBlogPostBySlug } from "@/lib/api/blog";
+import { getSiteSettings, DEFAULT_SITE_NAME } from "@/lib/api/contact";
 
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -27,14 +28,16 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = await getBlogPostBySlug(slug);
+  const [post, settings] = await Promise.all([
+    getBlogPostBySlug(slug),
+    getSiteSettings(),
+  ]);
+  const name = settings?.site_name ?? DEFAULT_SITE_NAME;
   if (!post) {
-    return {
-      title: "Post not found · Dharmvir Dharmacharya",
-    };
+    return { title: `Post not found · ${name}` };
   }
   return {
-    title: `${post.title} · Dharmvir Dharmacharya`,
+    title: `${post.title} · ${name}`,
     description: post.description,
   };
 }

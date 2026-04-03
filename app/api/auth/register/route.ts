@@ -103,6 +103,22 @@ export async function POST(request: NextRequest) {
       role: newProfile.role as 'admin',
     })
 
+    const { error: settingsError } = await supabase.from('contact_settings').insert({
+      email: email.toLowerCase(),
+      location: '',
+      availability: '',
+      site_name: body.siteName || name || 'Admin',
+      site_title: body.siteTitle || 'Developer',
+      site_description: body.siteDescription || 'A developer portfolio.',
+      site_logo: body.siteLogo || name?.charAt(0)?.toUpperCase() || 'P',
+      resume_url: body.resumeUrl || null,
+      socials: [],
+      callouts: [],
+    })
+    if (settingsError) {
+      console.error('Failed to seed contact_settings:', settingsError)
+    }
+
     return NextResponse.json({
       success: true,
       message: 'Admin account created successfully',

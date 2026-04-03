@@ -18,8 +18,8 @@ export const ExperienceSection = ({ data, sectionHeading }: ExperienceSectionPro
     <SectionShell id="experience">
       <SectionHeading
         heading={sectionHeading?.heading ?? 'Experience'}
-        title={sectionHeading?.title ?? '4+ years of building, leading, and scaling.'}
-        description={sectionHeading?.description ?? 'From SDE-1 to SDE-3 — leading teams, architecting AI-driven platforms, and delivering measurable business impact across enterprise products.'}
+        title={sectionHeading?.title ?? 'Professional experience and career highlights.'}
+        description={sectionHeading?.description ?? 'Key roles, achievements, and technical expertise across my career.'}
       />
       <div className="mt-12 space-y-4">
         {experience.map((item: any) => {

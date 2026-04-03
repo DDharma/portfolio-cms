@@ -49,6 +49,10 @@ export async function PATCH(request: NextRequest) {
         await supabase
           .from('contact_settings')
           .update({
+            site_name: validatedData.site_name,
+            site_title: validatedData.site_title,
+            site_description: validatedData.site_description,
+            site_logo: validatedData.site_logo,
             email: validatedData.email,
             location: validatedData.location,
             availability: validatedData.availability,
@@ -63,6 +67,10 @@ export async function PATCH(request: NextRequest) {
         await supabase
           .from('contact_settings')
           .insert({
+            site_name: validatedData.site_name,
+            site_title: validatedData.site_title,
+            site_description: validatedData.site_description,
+            site_logo: validatedData.site_logo,
             email: validatedData.email,
             location: validatedData.location,
             availability: validatedData.availability,

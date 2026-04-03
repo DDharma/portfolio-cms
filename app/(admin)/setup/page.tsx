@@ -12,6 +12,11 @@ export default function SetupPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [siteName, setSiteName] = useState('')
+  const [siteTitle, setSiteTitle] = useState('')
+  const [siteDescription, setSiteDescription] = useState('')
+  const [siteLogo, setSiteLogo] = useState('')
+  const [resumeUrl, setResumeUrl] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [checking, setChecking] = useState(true)
@@ -48,7 +53,7 @@ export default function SetupPage() {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, name }),
+        body: JSON.stringify({ email, password, name, siteName, siteTitle, siteDescription, siteLogo, resumeUrl }),
       })
 
       const data = await res.json()
@@ -152,6 +157,91 @@ export default function SetupPage() {
               placeholder="Repeat your password"
               required
               minLength={8}
+              disabled={loading}
+            />
+          </div>
+
+          <div className="border-t border-white/[0.06] pt-6 mt-2">
+            <p className="text-sm font-medium text-white mb-4">Site Branding</p>
+          </div>
+
+          <div>
+            <label htmlFor="siteName" className="block text-sm font-medium text-white">
+              Site Name
+            </label>
+            <input
+              id="siteName"
+              type="text"
+              value={siteName}
+              onChange={(e) => setSiteName(e.target.value)}
+              className="mt-2 block w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-4 py-2.5 text-white placeholder-zinc-500 transition-colors hover:border-white/[0.15] focus:border-white/[0.2] focus:outline-none"
+              placeholder="Jane Doe"
+              required
+              disabled={loading}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="siteTitle" className="block text-sm font-medium text-white">
+              Site Title
+            </label>
+            <input
+              id="siteTitle"
+              type="text"
+              value={siteTitle}
+              onChange={(e) => setSiteTitle(e.target.value)}
+              className="mt-2 block w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-4 py-2.5 text-white placeholder-zinc-500 transition-colors hover:border-white/[0.15] focus:border-white/[0.2] focus:outline-none"
+              placeholder="Full-Stack Developer"
+              required
+              disabled={loading}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="siteDescription" className="block text-sm font-medium text-white">
+              Site Description
+            </label>
+            <textarea
+              id="siteDescription"
+              value={siteDescription}
+              onChange={(e) => setSiteDescription(e.target.value)}
+              className="mt-2 block w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-4 py-2.5 text-white placeholder-zinc-500 transition-colors hover:border-white/[0.15] focus:border-white/[0.2] focus:outline-none"
+              placeholder="SEO meta description for your portfolio"
+              rows={2}
+              required
+              disabled={loading}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="siteLogo" className="block text-sm font-medium text-white">
+              Site Logo
+            </label>
+            <input
+              id="siteLogo"
+              type="text"
+              value={siteLogo}
+              onChange={(e) => setSiteLogo(e.target.value)}
+              className="mt-2 block w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-4 py-2.5 text-white placeholder-zinc-500 transition-colors hover:border-white/[0.15] focus:border-white/[0.2] focus:outline-none"
+              placeholder="J"
+              maxLength={10}
+              required
+              disabled={loading}
+            />
+            <p className="mt-1 text-xs text-zinc-500">Initials or short text shown in the header</p>
+          </div>
+
+          <div>
+            <label htmlFor="resumeUrl" className="block text-sm font-medium text-white">
+              Resume URL <span className="text-zinc-500 font-normal">(optional)</span>
+            </label>
+            <input
+              id="resumeUrl"
+              type="url"
+              value={resumeUrl}
+              onChange={(e) => setResumeUrl(e.target.value)}
+              className="mt-2 block w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-4 py-2.5 text-white placeholder-zinc-500 transition-colors hover:border-white/[0.15] focus:border-white/[0.2] focus:outline-none"
+              placeholder="https://drive.google.com/file/d/..."
               disabled={loading}
             />
           </div>

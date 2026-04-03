@@ -1,21 +1,26 @@
 import Link from "next/link";
 
-import { socialLinks } from "@/utils/data";
+type FooterProps = {
+  resumeUrl: string | null
+  siteName: string
+  siteTitle: string
+  socials: { label: string; href: string }[]
+}
 
-export const Footer = ({ resumeUrl }: { resumeUrl: string | null }) => {
+export const Footer = ({ resumeUrl, siteName, siteTitle, socials }: FooterProps) => {
   return (
     <footer className="border-t border-white/[0.04] py-16">
       <div className="mx-auto flex max-w-5xl flex-col gap-6 px-6 lg:px-8 md:flex-row md:items-center md:justify-between">
         <div>
           <p className="text-sm font-medium tracking-[0.1em] text-white">
-            Dharmvir Dharmacharya
+            {siteName}
           </p>
           <p className="mt-2 text-sm text-zinc-500">
-            &copy; {new Date().getFullYear()} Senior Frontend Engineer
+            &copy; {new Date().getFullYear()} {siteTitle}
           </p>
         </div>
         <div className="flex flex-wrap gap-4 text-sm text-zinc-500">
-          {socialLinks.map((social) => (
+          {socials.map((social) => (
             <Link
               key={social.label}
               href={social.href}

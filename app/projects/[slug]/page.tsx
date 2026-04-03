@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { SectionShell } from "@/components/sections/section-shell";
 import { Badge } from "@/components/ui/badge";
 import { getPublishedProjects, getProjectBySlug } from "@/lib/api/projects";
+import { getSiteSettings, DEFAULT_SITE_NAME } from "@/lib/api/contact";
 import { sanitizeHTML } from "@/lib/utils/html-sanitizer";
 import { cn } from "@/lib/utils";
 
@@ -27,13 +28,17 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const project = await getProjectBySlug(slug);
+  const [project, settings] = await Promise.all([
+    getProjectBySlug(slug),
+    getSiteSettings(),
+  ]);
+  const name = settings?.site_name ?? DEFAULT_SITE_NAME;
   if (!project) {
-    return { title: "Project not found · Dharmvir Dharmacharya" };
+    return { title: `Project not found · ${name}` };
   }
   const plainDescription = project.description?.replace(/<[^>]*>/g, "").slice(0, 160);
   return {
-    title: `${project.title} · Dharmvir Dharmacharya`,
+    title: `${project.title} · ${name}`,
     description: plainDescription,
   };
 }

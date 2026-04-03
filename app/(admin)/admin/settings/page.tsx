@@ -17,6 +17,10 @@ export default function SettingsPage() {
   const form = useForm<ContactSettings>({
     resolver: zodResolver(contactSettingsSchema),
     defaultValues: {
+      site_name: '',
+      site_title: '',
+      site_description: '',
+      site_logo: '',
       email: '',
       location: '',
       availability: '',
@@ -58,7 +62,7 @@ export default function SettingsPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-white">Settings</h1>
-        <p className="text-zinc-400 mt-1">Manage your contact information</p>
+        <p className="text-zinc-400 mt-1">Manage your site branding and contact information</p>
       </div>
 
       {successMessage && (
@@ -68,6 +72,78 @@ export default function SettingsPage() {
       )}
 
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        {/* Site Branding Card */}
+        <div className="rounded-lg border border-white/[0.06] bg-zinc-950 p-6 space-y-6">
+          <div>
+            <h3 className="text-lg font-semibold text-white">Site Branding</h3>
+            <p className="text-sm text-zinc-400 mt-1">
+              Your name, title, and logo shown across the site and in SEO metadata
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <FormField
+              label="Site Name"
+              required
+              error={form.formState.errors.site_name?.message}
+            >
+              <input
+                type="text"
+                {...form.register('site_name')}
+                className="w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-4 py-2.5 text-white placeholder-zinc-500 focus:border-white/[0.2] focus:outline-none"
+                placeholder="Jane Doe"
+                disabled={updateMutation.isPending}
+              />
+            </FormField>
+
+            <FormField
+              label="Site Title"
+              required
+              error={form.formState.errors.site_title?.message}
+            >
+              <input
+                type="text"
+                {...form.register('site_title')}
+                className="w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-4 py-2.5 text-white placeholder-zinc-500 focus:border-white/[0.2] focus:outline-none"
+                placeholder="Full-Stack Developer"
+                disabled={updateMutation.isPending}
+              />
+            </FormField>
+          </div>
+
+          <FormField
+            label="Site Description"
+            required
+            error={form.formState.errors.site_description?.message}
+          >
+            <textarea
+              {...form.register('site_description')}
+              className="w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-4 py-2.5 text-white placeholder-zinc-500 focus:border-white/[0.2] focus:outline-none"
+              placeholder="SEO meta description for your portfolio"
+              rows={2}
+              disabled={updateMutation.isPending}
+            />
+          </FormField>
+
+          <FormField
+            label="Site Logo"
+            required
+            error={form.formState.errors.site_logo?.message}
+          >
+            <input
+              type="text"
+              {...form.register('site_logo')}
+              className="w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-4 py-2.5 text-white placeholder-zinc-500 focus:border-white/[0.2] focus:outline-none"
+              placeholder="J"
+              maxLength={10}
+              disabled={updateMutation.isPending}
+            />
+            <p className="text-xs text-zinc-500 mt-1">
+              Initials or short text shown in the header navigation
+            </p>
+          </FormField>
+        </div>
+
         {/* Contact Information Card */}
         <div className="rounded-lg border border-white/[0.06] bg-zinc-950 p-6 space-y-6">
           <div>

@@ -161,5 +161,3 @@ export const contactDetails: ContactDetails = {
     "These are fallback defaults only",
   ],
 };
-
-export const socialLinks = contactDetails.socials;

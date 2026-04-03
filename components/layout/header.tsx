@@ -8,7 +8,7 @@ import { useState } from "react";
 import { navLinks } from "@/utils/data";
 import { cn } from "@/lib/utils";
 
-export const Header = ({ resumeUrl }: { resumeUrl: string | null }) => {
+export const Header = ({ resumeUrl, siteLogo }: { resumeUrl: string | null; siteLogo: string }) => {
   const pathname = usePathname();
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
 
@@ -24,7 +24,7 @@ export const Header = ({ resumeUrl }: { resumeUrl: string | null }) => {
           href="/"
           className="text-lg font-medium text-white bg-white/[0.06] rounded-full px-4 py-2 cursor-pointer transition-colors duration-200 hover:bg-white/[0.1] shrink-0"
         >
-          D
+          {siteLogo}
         </Link>
         <nav className="flex items-center gap-1.5">
           {navLinks.map((link) => (

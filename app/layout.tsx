@@ -8,6 +8,7 @@ import { RootLayoutContent } from "@/components/layout/root-layout-content";
 import { AuthProvider } from "@/lib/auth/auth-context";
 import { DynamicStylesProvider } from "@/components/dynamic-styles-provider";
 import { createClient } from "@/lib/supabase/server";
+import { getSiteSettings, DEFAULT_SITE_NAME } from "@/lib/api/contact";
 import { cn } from "@/lib/utils";
 
 const inter = Inter({
@@ -21,35 +22,35 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Dharmvir Dharmacharya · Senior Frontend Engineer",
-  description:
-    "Senior Frontend Engineer (SDE-3) with 4+ years building scalable, AI-powered enterprise applications. Expertise in React, Next.js, TypeScript, and AI integration (OpenAI, Claude, OpenRouter).",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  return {
+    title: settings
+      ? `${settings.site_name} · ${settings.site_title}`
+      : DEFAULT_SITE_NAME,
+    description: settings?.site_description ?? "A developer portfolio.",
+  };
+}
 
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Fetch active custom styles server-side to inject into page
+  // Fetch layout data server-side in parallel
   let customStyles: any[] = [];
-  let resumeUrl: string | null = null;
+  let settings: Awaited<ReturnType<typeof getSiteSettings>> = null;
   try {
     const supabase = await createClient();
-    const [stylesResult, contactResult] = await Promise.all([
+    const [siteSettings, stylesResult] = await Promise.all([
+      getSiteSettings(),
       supabase
         .from("custom_styles")
         .select("id, name, css_rules, is_active")
         .eq("is_active", true),
-      supabase
-        .from("contact_settings")
-        .select("resume_url")
-        .limit(1)
-        .single(),
     ]);
+    settings = siteSettings;
     customStyles = stylesResult.data || [];
-    resumeUrl = contactResult.data?.resume_url || null;
   } catch (error) {
     console.error("Failed to fetch layout data:", error);
   }
@@ -66,7 +67,13 @@ export default async function RootLayout({
         <DynamicStylesProvider styles={customStyles} />
         <AuthProvider>
           <ThemeProvider>
-            <RootLayoutContent resumeUrl={resumeUrl}>
+            <RootLayoutContent siteSettings={{
+              siteName: settings?.site_name ?? DEFAULT_SITE_NAME,
+              siteTitle: settings?.site_title ?? 'Developer',
+              siteLogo: settings?.site_logo ?? 'P',
+              resumeUrl: settings?.resume_url ?? null,
+              socials: settings?.socials ?? [],
+            }}>
               {children}
             </RootLayoutContent>
           </ThemeProvider>
