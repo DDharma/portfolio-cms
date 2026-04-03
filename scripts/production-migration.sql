@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS public.profiles (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+DROP TRIGGER IF EXISTS update_profiles_updated_at ON public.profiles;
 CREATE TRIGGER update_profiles_updated_at BEFORE UPDATE ON public.profiles
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
@@ -76,6 +77,7 @@ CREATE TABLE IF NOT EXISTS public.media (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+DROP TRIGGER IF EXISTS update_media_updated_at ON public.media;
 CREATE TRIGGER update_media_updated_at BEFORE UPDATE ON public.media
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
@@ -101,6 +103,7 @@ CREATE TABLE IF NOT EXISTS public.hero_content (
   custom_style_ids UUID[]
 );
 
+DROP TRIGGER IF EXISTS update_hero_content_updated_at ON public.hero_content;
 CREATE TRIGGER update_hero_content_updated_at BEFORE UPDATE ON public.hero_content
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
@@ -152,6 +155,7 @@ CREATE TABLE IF NOT EXISTS public.about_content (
   custom_style_ids UUID[]
 );
 
+DROP TRIGGER IF EXISTS update_about_content_updated_at ON public.about_content;
 CREATE TRIGGER update_about_content_updated_at BEFORE UPDATE ON public.about_content
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
@@ -195,6 +199,7 @@ CREATE TABLE IF NOT EXISTS public.skill_categories (
   published_at TIMESTAMPTZ
 );
 
+DROP TRIGGER IF EXISTS update_skill_categories_updated_at ON public.skill_categories;
 CREATE TRIGGER update_skill_categories_updated_at BEFORE UPDATE ON public.skill_categories
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
@@ -230,6 +235,7 @@ CREATE TABLE IF NOT EXISTS public.experience_items (
   sort_order INTEGER DEFAULT 0
 );
 
+DROP TRIGGER IF EXISTS update_experience_items_updated_at ON public.experience_items;
 CREATE TRIGGER update_experience_items_updated_at BEFORE UPDATE ON public.experience_items
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
@@ -276,6 +282,7 @@ CREATE TABLE IF NOT EXISTS public.projects (
   accent TEXT
 );
 
+DROP TRIGGER IF EXISTS update_projects_updated_at ON public.projects;
 CREATE TRIGGER update_projects_updated_at BEFORE UPDATE ON public.projects
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
@@ -320,6 +327,7 @@ CREATE TABLE IF NOT EXISTS public.project_case_studies (
   published_at TIMESTAMPTZ
 );
 
+DROP TRIGGER IF EXISTS update_case_studies_updated_at ON public.project_case_studies;
 CREATE TRIGGER update_case_studies_updated_at BEFORE UPDATE ON public.project_case_studies
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
@@ -367,6 +375,7 @@ CREATE TABLE IF NOT EXISTS public.blog_posts (
   sort_order INTEGER DEFAULT 0
 );
 
+DROP TRIGGER IF EXISTS update_blog_posts_updated_at ON public.blog_posts;
 CREATE TRIGGER update_blog_posts_updated_at BEFORE UPDATE ON public.blog_posts
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
@@ -404,6 +413,7 @@ CREATE TABLE IF NOT EXISTS public.research_papers (
   sort_order INTEGER DEFAULT 0
 );
 
+DROP TRIGGER IF EXISTS update_research_papers_updated_at ON public.research_papers;
 CREATE TRIGGER update_research_papers_updated_at BEFORE UPDATE ON public.research_papers
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
@@ -450,6 +460,7 @@ CREATE TABLE IF NOT EXISTS public.gallery_photos (
   published_at TIMESTAMPTZ
 );
 
+DROP TRIGGER IF EXISTS update_gallery_photos_updated_at ON public.gallery_photos;
 CREATE TRIGGER update_gallery_photos_updated_at BEFORE UPDATE ON public.gallery_photos
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
@@ -482,6 +493,7 @@ CREATE TABLE IF NOT EXISTS public.custom_styles (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+DROP TRIGGER IF EXISTS update_custom_styles_updated_at ON public.custom_styles;
 CREATE TRIGGER update_custom_styles_updated_at BEFORE UPDATE ON public.custom_styles
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
@@ -503,6 +515,7 @@ CREATE TABLE IF NOT EXISTS public.section_metadata (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+DROP TRIGGER IF EXISTS update_section_metadata_updated_at ON public.section_metadata;
 CREATE TRIGGER update_section_metadata_updated_at BEFORE UPDATE ON public.section_metadata
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
@@ -534,8 +547,16 @@ CREATE TABLE IF NOT EXISTS public.contact_settings (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+DROP TRIGGER IF EXISTS update_contact_settings_updated_at ON public.contact_settings;
 CREATE TRIGGER update_contact_settings_updated_at BEFORE UPDATE ON public.contact_settings
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- Add branding columns to existing contact_settings tables (idempotent upgrade)
+ALTER TABLE public.contact_settings ADD COLUMN IF NOT EXISTS site_name TEXT NOT NULL DEFAULT 'Your Name';
+ALTER TABLE public.contact_settings ADD COLUMN IF NOT EXISTS site_title TEXT NOT NULL DEFAULT 'Developer';
+ALTER TABLE public.contact_settings ADD COLUMN IF NOT EXISTS site_description TEXT NOT NULL DEFAULT 'A developer portfolio.';
+ALTER TABLE public.contact_settings ADD COLUMN IF NOT EXISTS site_logo TEXT NOT NULL DEFAULT 'P';
+ALTER TABLE public.contact_settings ADD COLUMN IF NOT EXISTS resume_url TEXT DEFAULT NULL;
 
 -- ============================================================================
 -- ROW LEVEL SECURITY (RLS)
@@ -955,6 +976,23 @@ DROP POLICY IF EXISTS "Admins can manage contact settings" ON public.contact_set
 CREATE POLICY "Admins can manage contact settings"
 ON public.contact_settings FOR ALL
 USING (public.is_admin());
+
+-- ============================================================================
+-- GRANTS
+-- ============================================================================
+-- service_role needs table-level grants even though it bypasses RLS.
+-- Tables created via raw SQL (not the Supabase dashboard) don't inherit
+-- default grants automatically.
+
+GRANT USAGE ON SCHEMA public TO service_role, anon, authenticated;
+
+GRANT ALL ON ALL TABLES IN SCHEMA public TO service_role;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO service_role;
+
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO anon;
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO authenticated;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO authenticated;
 
 -- ============================================================================
 -- MIGRATION COMPLETE

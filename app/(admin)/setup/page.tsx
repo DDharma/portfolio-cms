@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { Eye, EyeOff } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Cookies from 'js-cookie'
 
@@ -17,6 +18,8 @@ export default function SetupPage() {
   const [siteDescription, setSiteDescription] = useState('')
   const [siteLogo, setSiteLogo] = useState('')
   const [resumeUrl, setResumeUrl] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [checking, setChecking] = useState(true)
@@ -80,8 +83,8 @@ export default function SetupPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-zinc-950 via-zinc-900 to-black px-4">
-      <div className="w-full max-w-md space-y-8">
+    <div className="flex min-h-screen items-center justify-center px-4 py-8">
+      <div className="w-full max-w-2xl space-y-6">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-white">Welcome</h1>
           <p className="mt-2 text-sm text-zinc-400">
@@ -89,170 +92,188 @@ export default function SetupPage() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6 rounded-lg border border-white/[0.06] bg-zinc-950 p-8 backdrop-blur">
-          {error && (
-            <div className="rounded-lg bg-red-500/10 border border-red-500/20 p-4">
-              <p className="text-sm text-red-400">{error}</p>
+        <form onSubmit={handleSubmit} className="rounded-lg border border-white/6 backdrop-blur">
+          <div className="max-h-[50vh] overflow-y-auto p-8">
+            {error && (
+              <div className="rounded-lg bg-red-500/10 border border-red-500/20 p-4 mb-6">
+                <p className="text-sm text-red-400">{error}</p>
+              </div>
+            )}
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-white">
+                  Name
+                </label>
+                <input
+                  id="name"
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="mt-2 block w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-white placeholder-zinc-500 transition-colors hover:border-white/15 focus:border-white/20 focus:outline-none"
+                  placeholder="Your Name"
+                  disabled={loading}
+                />
+              </div>
+
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-white">
+                  Email
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="mt-2 block w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-white placeholder-zinc-500 transition-colors hover:border-white/15 focus:border-white/20 focus:outline-none"
+                  placeholder="admin@example.com"
+                  required
+                  disabled={loading}
+                />
+              </div>
+
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-white">
+                  Password
+                </label>
+                <div className="relative mt-2">
+                  <input
+                    id="password"
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="block w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 pr-10 text-white placeholder-zinc-500 transition-colors hover:border-white/15 focus:border-white/20 focus:outline-none"
+                    placeholder="Minimum 8 characters"
+                    required
+                    minLength={8}
+                    disabled={loading}
+                  />
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300">
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-white">
+                  Confirm Password
+                </label>
+                <div className="relative mt-2">
+                  <input
+                    id="confirmPassword"
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="block w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 pr-10 text-white placeholder-zinc-500 transition-colors hover:border-white/15 focus:border-white/20 focus:outline-none"
+                    placeholder="Repeat your password"
+                    required
+                    minLength={8}
+                    disabled={loading}
+                  />
+                  <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300">
+                    {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
+              </div>
             </div>
-          )}
 
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium text-white">
-              Name
-            </label>
-            <input
-              id="name"
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="mt-2 block w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-4 py-2.5 text-white placeholder-zinc-500 transition-colors hover:border-white/[0.15] focus:border-white/[0.2] focus:outline-none"
-              placeholder="Your Name"
+            <div className="border-t border-white/6 pt-6 mt-6">
+              <p className="text-sm font-medium text-white mb-4">Site Branding</p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="siteName" className="block text-sm font-medium text-white">
+                  Site Name
+                </label>
+                <input
+                  id="siteName"
+                  type="text"
+                  value={siteName}
+                  onChange={(e) => setSiteName(e.target.value)}
+                  className="mt-2 block w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-white placeholder-zinc-500 transition-colors hover:border-white/15 focus:border-white/20 focus:outline-none"
+                  placeholder="Jane Doe"
+                  required
+                  disabled={loading}
+                />
+              </div>
+
+              <div>
+                <label htmlFor="siteTitle" className="block text-sm font-medium text-white">
+                  Site Title
+                </label>
+                <input
+                  id="siteTitle"
+                  type="text"
+                  value={siteTitle}
+                  onChange={(e) => setSiteTitle(e.target.value)}
+                  className="mt-2 block w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-white placeholder-zinc-500 transition-colors hover:border-white/15 focus:border-white/20 focus:outline-none"
+                  placeholder="Full-Stack Developer"
+                  required
+                  disabled={loading}
+                />
+              </div>
+
+              <div>
+                <label htmlFor="siteLogo" className="block text-sm font-medium text-white">
+                  Site Logo
+                </label>
+                <input
+                  id="siteLogo"
+                  type="text"
+                  value={siteLogo}
+                  onChange={(e) => setSiteLogo(e.target.value)}
+                  className="mt-2 block w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-white placeholder-zinc-500 transition-colors hover:border-white/15 focus:border-white/20 focus:outline-none"
+                  placeholder="J"
+                  maxLength={10}
+                  required
+                  disabled={loading}
+                />
+                <p className="mt-1 text-xs text-zinc-500">Initials shown in the header</p>
+              </div>
+
+              <div>
+                <label htmlFor="resumeUrl" className="block text-sm font-medium text-white">
+                  Resume URL <span className="text-zinc-500 font-normal">(optional)</span>
+                </label>
+                <input
+                  id="resumeUrl"
+                  type="url"
+                  value={resumeUrl}
+                  onChange={(e) => setResumeUrl(e.target.value)}
+                  className="mt-2 block w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-white placeholder-zinc-500 transition-colors hover:border-white/15 focus:border-white/20 focus:outline-none"
+                  placeholder="https://drive.google.com/file/d/..."
+                  disabled={loading}
+                />
+              </div>
+
+              <div className="col-span-2">
+                <label htmlFor="siteDescription" className="block text-sm font-medium text-white">
+                  Site Description
+                </label>
+                <textarea
+                  id="siteDescription"
+                  value={siteDescription}
+                  onChange={(e) => setSiteDescription(e.target.value)}
+                  className="mt-2 block w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-white placeholder-zinc-500 transition-colors hover:border-white/15 focus:border-white/20 focus:outline-none"
+                  placeholder="SEO meta description for your portfolio"
+                  rows={2}
+                  required
+                  disabled={loading}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t border-white/6 p-6">
+            <Button
+              type="submit"
               disabled={loading}
-            />
+              className="w-full"
+            >
+              {loading ? 'Creating account...' : 'Create Admin Account'}
+            </Button>
           </div>
-
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-white">
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-2 block w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-4 py-2.5 text-white placeholder-zinc-500 transition-colors hover:border-white/[0.15] focus:border-white/[0.2] focus:outline-none"
-              placeholder="admin@example.com"
-              required
-              disabled={loading}
-            />
-          </div>
-
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-white">
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-2 block w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-4 py-2.5 text-white placeholder-zinc-500 transition-colors hover:border-white/[0.15] focus:border-white/[0.2] focus:outline-none"
-              placeholder="Minimum 8 characters"
-              required
-              minLength={8}
-              disabled={loading}
-            />
-          </div>
-
-          <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-white">
-              Confirm Password
-            </label>
-            <input
-              id="confirmPassword"
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="mt-2 block w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-4 py-2.5 text-white placeholder-zinc-500 transition-colors hover:border-white/[0.15] focus:border-white/[0.2] focus:outline-none"
-              placeholder="Repeat your password"
-              required
-              minLength={8}
-              disabled={loading}
-            />
-          </div>
-
-          <div className="border-t border-white/[0.06] pt-6 mt-2">
-            <p className="text-sm font-medium text-white mb-4">Site Branding</p>
-          </div>
-
-          <div>
-            <label htmlFor="siteName" className="block text-sm font-medium text-white">
-              Site Name
-            </label>
-            <input
-              id="siteName"
-              type="text"
-              value={siteName}
-              onChange={(e) => setSiteName(e.target.value)}
-              className="mt-2 block w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-4 py-2.5 text-white placeholder-zinc-500 transition-colors hover:border-white/[0.15] focus:border-white/[0.2] focus:outline-none"
-              placeholder="Jane Doe"
-              required
-              disabled={loading}
-            />
-          </div>
-
-          <div>
-            <label htmlFor="siteTitle" className="block text-sm font-medium text-white">
-              Site Title
-            </label>
-            <input
-              id="siteTitle"
-              type="text"
-              value={siteTitle}
-              onChange={(e) => setSiteTitle(e.target.value)}
-              className="mt-2 block w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-4 py-2.5 text-white placeholder-zinc-500 transition-colors hover:border-white/[0.15] focus:border-white/[0.2] focus:outline-none"
-              placeholder="Full-Stack Developer"
-              required
-              disabled={loading}
-            />
-          </div>
-
-          <div>
-            <label htmlFor="siteDescription" className="block text-sm font-medium text-white">
-              Site Description
-            </label>
-            <textarea
-              id="siteDescription"
-              value={siteDescription}
-              onChange={(e) => setSiteDescription(e.target.value)}
-              className="mt-2 block w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-4 py-2.5 text-white placeholder-zinc-500 transition-colors hover:border-white/[0.15] focus:border-white/[0.2] focus:outline-none"
-              placeholder="SEO meta description for your portfolio"
-              rows={2}
-              required
-              disabled={loading}
-            />
-          </div>
-
-          <div>
-            <label htmlFor="siteLogo" className="block text-sm font-medium text-white">
-              Site Logo
-            </label>
-            <input
-              id="siteLogo"
-              type="text"
-              value={siteLogo}
-              onChange={(e) => setSiteLogo(e.target.value)}
-              className="mt-2 block w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-4 py-2.5 text-white placeholder-zinc-500 transition-colors hover:border-white/[0.15] focus:border-white/[0.2] focus:outline-none"
-              placeholder="J"
-              maxLength={10}
-              required
-              disabled={loading}
-            />
-            <p className="mt-1 text-xs text-zinc-500">Initials or short text shown in the header</p>
-          </div>
-
-          <div>
-            <label htmlFor="resumeUrl" className="block text-sm font-medium text-white">
-              Resume URL <span className="text-zinc-500 font-normal">(optional)</span>
-            </label>
-            <input
-              id="resumeUrl"
-              type="url"
-              value={resumeUrl}
-              onChange={(e) => setResumeUrl(e.target.value)}
-              className="mt-2 block w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-4 py-2.5 text-white placeholder-zinc-500 transition-colors hover:border-white/[0.15] focus:border-white/[0.2] focus:outline-none"
-              placeholder="https://drive.google.com/file/d/..."
-              disabled={loading}
-            />
-          </div>
-
-          <Button
-            type="submit"
-            disabled={loading}
-            className="w-full"
-          >
-            {loading ? 'Creating account...' : 'Create Admin Account'}
-          </Button>
         </form>
 
         <div className="text-center text-sm text-zinc-400">

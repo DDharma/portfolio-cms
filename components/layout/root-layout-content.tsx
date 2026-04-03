@@ -14,7 +14,7 @@ type SiteSettings = {
 
 export function RootLayoutContent({ children, siteSettings }: { children: React.ReactNode; siteSettings: SiteSettings }) {
   const pathname = usePathname()
-  const isAdmin = pathname.startsWith('/admin')
+  const isAdmin = pathname.startsWith('/admin') || pathname === '/setup' || pathname === '/login'
 
   return (
     <div className="relative isolate flex h-screen flex-col overflow-hidden">
