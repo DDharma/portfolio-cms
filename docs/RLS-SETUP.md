@@ -1,11 +1,13 @@
-# Row-Level Security (RLS) Setup Guide
+# Row-Level Security (RLS) — How it works
+
+> **Most users don't need to do anything here.** RLS is fully configured by [`scripts/production-migration.sql`](../scripts/production-migration.sql) — the single migration you run in [Step 3 of the README](../README.md#step-3--run-the-database-migration). This document is a **reference** explaining the security model so self-hosters and contributors can audit it. If you've already followed the README, your CMS is already secure.
 
 ## Overview
 
-This document explains the RLS policy implementation for your portfolio CMS. The system uses a two-tier security model:
+The CMS uses a two-tier security model:
 
-1. **Admin Users**: Full access to create, update, and delete all content
-2. **Public Users**: Read-only access to published content
+1. **Admin users** — full access to create, update, and delete all content (via the server-side service-role client)
+2. **Public users** — read-only access to **published** content only (via the public anon client)
 
 ## Problem Solved
 
@@ -67,11 +69,11 @@ import { createAdminClient } from '@/lib/supabase/admin'
 const supabase = createAdminClient()
 ```
 
-### 3. Comprehensive RLS Policies (New)
+### 3. Comprehensive RLS Policies
 
-Created: `scripts/setup-admin-rls-policies.sql`
+Defined in: [`scripts/production-migration.sql`](../scripts/production-migration.sql)
 
-This SQL script sets up RLS policies for ALL tables:
+The migration sets up RLS policies for every content table:
 
 **Main Content Tables** (with published status):
 - hero_content
@@ -127,7 +129,9 @@ CREATE POLICY "Admins can manage [child]"
 USING (public.is_admin());
 ```
 
-## Next Steps: Apply RLS Policies
+## Applying / verifying RLS
+
+> **The production migration already does this for you.** This section is for re-running, debugging, or auditing.
 
 ### Step 1: Verify Environment Variables
 
@@ -137,24 +141,23 @@ Ensure your `.env.local` has the SERVICE_ROLE_KEY:
 # .env.local
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key  # ← Make sure this is set!
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key  # ← Required for admin operations
 ```
 
 ### Step 2: Apply RLS Policies in Supabase
 
-1. Go to your Supabase project dashboard
-2. Open the SQL Editor
-3. Copy the entire content of: `scripts/setup-admin-rls-policies.sql`
-4. Paste it into the SQL Editor
-5. Click "Run"
-6. Verify all queries execute successfully (no errors)
+If you ran [`scripts/production-migration.sql`](../scripts/production-migration.sql) during initial setup, **all RLS policies are already in place**. The migration enables RLS on every content table and creates the policies that allow admins (via service role) full access and the public (via anon key) read-only access to published rows.
 
-Alternatively, via Supabase CLI:
-```bash
-supabase db push  # If using local Supabase
-# or
-psql postgresql://user:password@db.supabase.co:5432/postgres < scripts/setup-admin-rls-policies.sql
+To verify, run this in Supabase SQL Editor:
+
+```sql
+select schemaname, tablename, rowsecurity
+from pg_tables
+where schemaname = 'public'
+order by tablename;
 ```
+
+Every content table should show `rowsecurity = true`. The `profiles` table intentionally has RLS disabled (auth is handled at the API level via custom JWT — see the security model below).
 
 ### Step 3: Test Admin Operations
 
@@ -248,35 +251,27 @@ curl -X PATCH http://localhost:3000/api/admin/about/[id] \
 - Check RLS policies were created correctly
 - Test with: `SELECT * FROM about_content WHERE status = 'published'`
 
-## Files Modified
+## Where this is implemented in the codebase
 
-**New Files:**
-- `lib/supabase/admin.ts` - Admin client factory
-- `scripts/setup-admin-rls-policies.sql` - Complete RLS policy setup
-
-**Modified API Routes:** (14 files)
-- All routes in `app/api/admin/*/route.ts`
-- All routes in `app/api/admin/*/[id]/route.ts`
-
-**No Changes Needed:**
-- Form components
-- Validation schemas
-- Public API routes
-- Middleware
+| Concern | File |
+|---|---|
+| Admin Supabase client (service role) | [`lib/supabase/admin.ts`](../lib/supabase/admin.ts) |
+| Public Supabase client (anon key) | [`lib/supabase/server.ts`](../lib/supabase/server.ts) |
+| JWT auth helpers | [`lib/auth/`](../lib/auth/) |
+| RLS-enabled tables and policies | [`scripts/production-migration.sql`](../scripts/production-migration.sql) |
+| Admin API routes (always use the admin client) | [`app/api/admin/*`](../app/api/admin) |
 
 ## Verification Checklist
 
-After applying RLS policies:
+If you suspect something is misconfigured, walk through:
 
-- [ ] SERVICE_ROLE_KEY is set in `.env.local`
-- [ ] RLS policies applied in Supabase (run SQL script)
-- [ ] API routes updated to use admin client
-- [ ] Browser admin panel can create new about content
-- [ ] Browser admin panel can edit existing about content
-- [ ] Browser admin panel can delete content
-- [ ] Public about page still works (shows published content)
-- [ ] Unpublished content not visible in public
-- [ ] All other sections (blog, research, etc.) work similarly
+- [ ] `SUPABASE_SERVICE_ROLE_KEY` is set in `.env.local` (or your hosting platform)
+- [ ] `pg_tables.rowsecurity = true` for every public content table (see SQL above)
+- [ ] Admin panel at `/admin/about` can create new content without errors
+- [ ] Admin panel can edit and delete content
+- [ ] Public homepage (`/`) shows **only** published content
+- [ ] Draft content does **not** appear on the public site
+- [ ] All sections (hero, about, skills, experience, projects, blog, research, gallery) behave consistently
 
 ## Additional Resources
 

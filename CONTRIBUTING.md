@@ -57,9 +57,9 @@ Example: `feat/project-card-variants` or `fix/gallery-section-layout`
 
 2. **Make your changes** and test locally:
    ```bash
-   npm run dev
-   npm run type-check  # Ensure TypeScript is clean
-   npm run lint        # Check for linting issues
+   npm run dev                   # Run the dev server
+   npx tsc --noEmit              # Type-check without emitting (no script alias yet)
+   npm run lint                  # Run ESLint
    ```
 
 3. **Commit with clear messages** (imperative mood):
@@ -96,20 +96,24 @@ Example: `feat/project-card-variants` or `fix/gallery-section-layout`
 - Keep custom CSS minimal and well-scoped
 
 ### Formatting
-We use Prettier for code formatting. Run before committing:
+The project doesn't enforce Prettier yet. If you want to auto-format your changes, run:
 ```bash
-npm run format  # If available
-# or
 npx prettier --write .
 ```
 
 ## Testing
 
-### Running Tests
-```bash
-npm test        # Run all tests (if test suite exists)
-npm run test:ui # Open test UI
-```
+The project has no automated test suite at the moment. **Manual verification is required** for every PR:
+
+1. `npm run lint` — must pass without new errors
+2. `npx tsc --noEmit` — must pass cleanly
+3. `npm run build` — must succeed
+4. Run `npm run dev` and click through the affected pages (admin + public) to confirm nothing regressed
+
+If your change touches a section, also verify:
+- The admin form saves drafts and publishes correctly
+- The public page renders the published content
+- Empty-state behavior still works (try with a fresh DB)
 
 ### Testing Database Changes
 1. Create your migration SQL
@@ -167,7 +171,7 @@ See [`docs/CMS_IMPROVEMENT_ROADMAP.md`](docs/CMS_IMPROVEMENT_ROADMAP.md) for the
 
 1. **Self-review** — Make sure your code is clean and works
 2. **Check the build** — Ensure `npm run build` succeeds
-3. **Type-check** — Run `npm run type-check`
+3. **Type-check** — Run `npx tsc --noEmit`
 4. **Test your changes** locally and in a test Supabase project if needed
 5. **Write a clear PR description**:
    ```markdown
