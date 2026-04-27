@@ -2,16 +2,24 @@ import Link from "next/link";
 
 import { socialLinks } from "@/utils/data";
 
-export const Footer = ({ resumeUrl }: { resumeUrl: string | null }) => {
+type FooterProps = {
+  resumeUrl: string | null;
+  displayName?: string | null;
+  tagline?: string | null;
+};
+
+export const Footer = ({ resumeUrl, displayName, tagline }: FooterProps) => {
+  const name = displayName?.trim() || "Your Name";
+  const role = tagline?.trim() || "Your Title";
   return (
     <footer className="border-t border-white/[0.04] py-16">
       <div className="mx-auto flex max-w-5xl flex-col gap-6 px-6 lg:px-8 md:flex-row md:items-center md:justify-between">
         <div>
           <p className="text-sm font-medium tracking-[0.1em] text-white">
-            Dharmvir Dharmacharya
+            {name}
           </p>
           <p className="mt-2 text-sm text-zinc-500">
-            &copy; {new Date().getFullYear()} Senior Frontend Engineer
+            &copy; {new Date().getFullYear()} {role}
           </p>
         </div>
         <div className="flex flex-wrap gap-4 text-sm text-zinc-500">

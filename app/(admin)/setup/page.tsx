@@ -5,18 +5,21 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import Cookies from 'js-cookie'
+import { isOnboardingEnabled } from '@/lib/config/onboarding'
 
 export default function SetupPage() {
   const router = useRouter()
+  const onboardingEnabled = isOnboardingEnabled()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
-  const [checking, setChecking] = useState(true)
+  const [checking, setChecking] = useState(onboardingEnabled)
 
   useEffect(() => {
+    if (!onboardingEnabled) return
     async function checkAdmin() {
       try {
         const res = await fetch('/api/auth/register')
@@ -31,7 +34,7 @@ export default function SetupPage() {
       }
     }
     checkAdmin()
-  }, [router])
+  }, [router, onboardingEnabled])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -64,6 +67,23 @@ export default function SetupPage() {
       setError(err instanceof Error ? err.message : 'Registration failed')
       setLoading(false)
     }
+  }
+
+  if (!onboardingEnabled) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-zinc-950 via-zinc-900 to-black px-4">
+        <div className="w-full max-w-md space-y-6 text-center">
+          <h1 className="text-3xl font-bold text-white">Setup disabled</h1>
+          <p className="text-sm text-zinc-400">
+            The public onboarding flow has been disabled on this deployment.
+            Seed your first admin account directly via the database.
+          </p>
+          <Link href="/login" className="text-white hover:underline">
+            Go to sign in
+          </Link>
+        </div>
+      </div>
+    )
   }
 
   if (checking) {

@@ -67,6 +67,7 @@ npm install
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY` — From Project Settings > API Keys > Legacy anon > anon key
    - `SUPABASE_SERVICE_ROLE_KEY` — From Project Settings > API > Service Role Key
    - `JWT_SECRET` — Generate a random 32+ character string (Go to this https://randomkeygen.com/jwt-secret and copy any key)
+   - `NEXT_PUBLIC_ENABLE_ONBOARDING` *(optional, defaults to `true`)* — set to `"false"` to disable the public `/setup` admin-creation flow on hardened deployments where you seed the first admin directly via SQL.
 
 ### 5. Run the Development Server
 ```bash
@@ -80,6 +81,10 @@ Visit `http://localhost:3000` — your portfolio is live.
 Access the admin CMS at `http://localhost:3000/admin`
 
 **First-time setup:** Visit `/setup` to create your admin account. This page is only available when no admin exists.
+
+**Disabling the public setup route:** If you'd rather seed your first admin directly via SQL (e.g. on a hardened production deployment), set `NEXT_PUBLIC_ENABLE_ONBOARDING=false` in your environment. The `/setup` page will then render a "Setup disabled" message and `POST /api/auth/register` will return `403`. Login behavior is unaffected.
+
+> **Branding note:** all portfolio content (your name, tagline, contact info, projects, blog posts, etc.) is managed via the admin dashboard — no code edits required. The footer pulls its tagline from your published hero subtitle and falls back to placeholder text (`Your Name` / `Your Title`) until that content is configured.
 
 Once logged in, you'll see:
 - **Dashboard** — Quick stats on all content

@@ -36,20 +36,30 @@ export default async function RootLayout({
   // static generation where cookies() is unavailable
   let resumeUrl: string | null = null;
   let customStyles: any[] = [];
+  let ownerTagline: string | null = null;
   try {
     const supabase = createSupabaseClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     );
-    const [contactResult, stylesResult] = await Promise.all([
+    const [contactResult, stylesResult, heroResult] = await Promise.all([
       supabase.from("contact_settings").select("*").limit(1).single(),
       supabase
         .from("custom_styles")
         .select("id, name, css_rules, is_active")
         .eq("is_active", true),
+      supabase
+        .from("hero_content")
+        .select("subtitle")
+        .eq("status", "published")
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .single(),
     ]);
     resumeUrl = contactResult.data?.resume_url ?? null;
     customStyles = stylesResult.data || [];
+    const subtitle = heroResult.data?.subtitle;
+    ownerTagline = typeof subtitle === "string" ? subtitle : null;
   } catch {
     // Layout renders fine without this data
   }
@@ -66,7 +76,7 @@ export default async function RootLayout({
         <DynamicStylesProvider styles={customStyles} />
         <AuthProvider>
           <ThemeProvider>
-            <RootLayoutContent resumeUrl={resumeUrl}>
+            <RootLayoutContent resumeUrl={resumeUrl} ownerTagline={ownerTagline}>
               {children}
             </RootLayoutContent>
           </ThemeProvider>

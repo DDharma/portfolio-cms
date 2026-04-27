@@ -1,3 +1,22 @@
+/**
+ * Static type definitions and minimal fallback shapes for the public site.
+ *
+ * All real portfolio content (hero, about, skills, experience, projects, blog,
+ * contact) is sourced from Supabase via the admin CMS — see /admin and the
+ * fetchers in lib/api/*. The exports below are kept for two reasons:
+ *
+ *   1. Type definitions (e.g. `Project`, `ExperienceItem`, `IconName`) are
+ *      imported across components and must not be removed.
+ *   2. `navLinks` is real navigation config (not dummy data).
+ *   3. `contactDetails` / `socialLinks` are the *fallback template* rendered
+ *      when the `contact_settings` table is empty — the placeholder URLs are
+ *      intentional so first-run admins can see which fields to fill in.
+ *
+ * The sample data arrays (`experienceTimeline`, `projects`, `skillCategories`,
+ * `blogPosts`) are intentionally empty — manage this content via the admin
+ * dashboard at /admin instead of editing this file.
+ */
+
 export type IconName = "Sparkles" | "Layers" | "Server" | "Bot" | "Cloud";
 
 export type NavLink = {
@@ -43,24 +62,8 @@ export type SkillCategory = {
   tools: string[];
 };
 
-export const skillCategories: SkillCategory[] = [
-  {
-    title: "Frontend Development",
-    description:
-      "Building modern, responsive user interfaces with clean component architecture.",
-    icon: "Sparkles",
-    skills: ["React", "Next.js", "TypeScript", "Tailwind CSS"],
-    tools: ["Next.js", "TypeScript", "Tailwind CSS", "React Query"],
-  },
-  {
-    title: "Backend Development",
-    description:
-      "Reliable server-side services and API design.",
-    icon: "Server",
-    skills: ["Node.js", "REST APIs", "PostgreSQL", "Authentication"],
-    tools: ["Node.js", "Express", "Supabase", "PostgreSQL"],
-  },
-];
+// Manage skill categories via the admin dashboard at /admin/skills.
+export const skillCategories: SkillCategory[] = [];
 
 export type ExperienceItem = {
   company: string;
@@ -72,34 +75,8 @@ export type ExperienceItem = {
   stack: string[];
 };
 
-export const experienceTimeline: ExperienceItem[] = [
-  {
-    company: "Example Corp",
-    role: "Senior Developer",
-    period: "Jan 2023 — Present",
-    location: "Remote",
-    summary:
-      "Leading frontend architecture and building scalable web applications.",
-    achievements: [
-      "Led migration to Next.js, improving performance by 40%",
-      "Built component library used across 3 products",
-    ],
-    stack: ["Next.js", "TypeScript", "React Query", "Tailwind CSS"],
-  },
-  {
-    company: "Startup Inc",
-    role: "Frontend Developer",
-    period: "Jun 2021 — Dec 2022",
-    location: "Remote",
-    summary:
-      "Built customer-facing dashboards and internal tools.",
-    achievements: [
-      "Developed admin dashboard from scratch",
-      "Improved page load times by 60%",
-    ],
-    stack: ["React", "JavaScript", "Redux", "REST APIs"],
-  },
-];
+// Manage experience timeline via the admin dashboard at /admin/experience.
+export const experienceTimeline: ExperienceItem[] = [];
 
 export type Project = {
   slug: string;
@@ -112,30 +89,8 @@ export type Project = {
   links: { label: string; href: string }[];
 };
 
-export const projects: Project[] = [
-  {
-    slug: "portfolio-cms",
-    title: "Developer Portfolio CMS",
-    category: "Full-Stack App",
-    description:
-      "A self-hosted portfolio CMS with admin dashboard, rich text editing, media uploads, and custom styling. Built with Next.js, Supabase, and TypeScript.",
-    year: "2024",
-    tags: ["Next.js", "TypeScript", "Supabase", "Tailwind CSS"],
-    accent: "from-emerald-400/70 via-cyan-400/70 to-sky-500/60",
-    links: [],
-  },
-  {
-    slug: "example-saas-app",
-    title: "Example SaaS Dashboard",
-    category: "SaaS",
-    description:
-      "A multi-tenant dashboard with role-based access control, real-time data visualization, and responsive design.",
-    year: "2023",
-    tags: ["React", "TypeScript", "Tailwind", "Chart.js"],
-    accent: "from-violet-400/70 via-purple-500/70 to-indigo-500/60",
-    links: [],
-  },
-];
+// Manage projects via the admin dashboard at /admin/projects.
+export const projects: Project[] = [];
 
 export type ContactDetails = {
   email: string;
@@ -145,6 +100,8 @@ export type ContactDetails = {
   callouts: string[];
 };
 
+// Fallback template rendered only when `contact_settings` is empty in the DB.
+// Manage real contact info via the admin dashboard at /admin/settings.
 export const contactDetails: ContactDetails = {
   email: "your-email@example.com",
   location: "Your City, Country",

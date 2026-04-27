@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { generateToken } from '@/lib/auth/jwt'
+import { isOnboardingEnabled } from '@/lib/config/onboarding'
 
 // Check if any admin account exists
 export async function GET() {
@@ -27,6 +28,13 @@ export async function GET() {
 // Create the first admin account (disabled after one admin exists)
 export async function POST(request: NextRequest) {
   try {
+    if (!isOnboardingEnabled()) {
+      return NextResponse.json(
+        { error: 'Onboarding is disabled on this deployment.' },
+        { status: 403 }
+      )
+    }
+
     const body = await request.json()
     const { email, password, name } = body
 
