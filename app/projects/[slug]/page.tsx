@@ -5,21 +5,11 @@ import { ArrowLeft, ArrowUpRight } from "lucide-react";
 
 import { SectionShell } from "@/components/sections/section-shell";
 import { Badge } from "@/components/ui/badge";
-import { getPublishedProjects, getProjectBySlug } from "@/lib/api/projects";
+import { getProjectBySlug } from "@/lib/api/projects";
 import { sanitizeHTML } from "@/lib/utils/html-sanitizer";
 import { cn } from "@/lib/utils";
 
-export const revalidate = 3600;
-export const dynamicParams = true;
-
-export async function generateStaticParams() {
-  try {
-    const projects = await getPublishedProjects();
-    return projects.map((project: any) => ({ slug: project.slug }));
-  } catch {
-    return [];
-  }
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,

@@ -4,6 +4,8 @@ import { ContactSection } from "@/components/sections/contact-section";
 import { SectionShell } from "@/components/sections/section-shell";
 import { SectionHeading } from "@/components/sections/section-heading";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Contact · Dharmvir Dharmacharya",
   description:

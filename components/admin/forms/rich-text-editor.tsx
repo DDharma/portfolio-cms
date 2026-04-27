@@ -1,10 +1,14 @@
 'use client'
 
-import { useEditor, EditorContent, type Editor } from '@tiptap/react'
+import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import ImageExt from '@tiptap/extension-image'
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
+import { common, createLowlight } from 'lowlight'
 import { Mark, mergeAttributes } from '@tiptap/core'
-import { Bold, Italic, Underline, Code, Heading1, Heading2, List, ListOrdered, Trash2, Plus, Code2, X, Image as ImageIcon } from 'lucide-react'
+import { Bold, Italic, Code, Heading1, Heading2, List, ListOrdered, Trash2, Plus, Code2, X, Image as ImageIcon } from 'lucide-react'
+
+const lowlight = createLowlight(common)
 import { useEffect, useState, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 
@@ -80,13 +84,11 @@ export function RichTextEditor({
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
-        heading: {
-          levels: [1, 2, 3],
-        },
+        heading: { levels: [1, 2, 3] },
+        codeBlock: false,
       }),
-      ImageExt.configure({
-        allowBase64: true,
-      }),
+      CodeBlockLowlight.configure({ lowlight }),
+      ImageExt.configure({ allowBase64: true }),
       CustomClass,
     ],
     content: value,
@@ -236,9 +238,18 @@ export function RichTextEditor({
           onClick={() => editor.chain().focus().toggleCode().run()}
           active={editor.isActive('code')}
           disabled={disabled}
-          title="Code"
+          title="Inline Code"
         >
           <Code className="h-4 w-4" />
+        </ToolbarButton>
+
+        <ToolbarButton
+          onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+          active={editor.isActive('codeBlock')}
+          disabled={disabled}
+          title="Code Block"
+        >
+          <Code2 className="h-4 w-4" />
         </ToolbarButton>
 
         <div className="h-6 w-px bg-white/[0.1]" />

@@ -20,6 +20,7 @@ export default function SettingsPage() {
       email: '',
       location: '',
       availability: '',
+      resume_url: '',
       socials: [],
       callouts: [],
     },
@@ -119,6 +120,23 @@ export default function SettingsPage() {
               rows={3}
               disabled={updateMutation.isPending}
             />
+          </FormField>
+
+          {/* Resume URL */}
+          <FormField
+            label="Resume URL"
+            error={form.formState.errors.resume_url?.message}
+          >
+            <input
+              type="url"
+              {...form.register('resume_url')}
+              className="w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-4 py-2.5 text-white placeholder-zinc-500 focus:border-white/[0.2] focus:outline-none"
+              placeholder="https://drive.google.com/your-resume.pdf"
+              disabled={updateMutation.isPending}
+            />
+            <p className="text-xs text-zinc-500 mt-1">
+              Link to your resume/CV. Opens in a new tab when clicked. Also accessible at /resume.
+            </p>
           </FormField>
         </div>
 

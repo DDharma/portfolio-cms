@@ -4,22 +4,9 @@ import Link from "next/link";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 
 import { SectionShell } from "@/components/sections/section-shell";
-import { getBlogPosts, getBlogPostBySlug } from "@/lib/api/blog";
+import { getBlogPostBySlug } from "@/lib/api/blog";
 
-export const revalidate = 3600;
-export const dynamicParams = true;
-
-export async function generateStaticParams() {
-  try {
-    const posts = await getBlogPosts();
-    return posts.map((post) => ({ slug: post.slug }));
-  } catch (error) {
-    // During build time, cookies may not be available
-    // Return empty array and let Next.js generate pages on-demand
-    console.warn("Could not fetch blog posts for static generation:", error);
-    return [];
-  }
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,

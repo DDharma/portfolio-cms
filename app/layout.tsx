@@ -7,7 +7,7 @@ import { ThemeProvider } from "@/components/theme/theme-provider";
 import { RootLayoutContent } from "@/components/layout/root-layout-content";
 import { AuthProvider } from "@/lib/auth/auth-context";
 import { DynamicStylesProvider } from "@/components/dynamic-styles-provider";
-import { createClient } from "@/lib/supabase/server";
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { cn } from "@/lib/utils";
 
 const inter = Inter({
@@ -32,18 +32,26 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Fetch active custom styles server-side to inject into page
+  // Use a plain anon client (no cookies) so the layout works during
+  // static generation where cookies() is unavailable
+  let resumeUrl: string | null = null;
   let customStyles: any[] = [];
   try {
-    const supabase = await createClient();
-    const { data } = await supabase
-      .from("custom_styles")
-      .select("id, name, css_rules, is_active")
-      .eq("is_active", true);
-    customStyles = data || [];
-  } catch (error) {
-    console.error("Failed to fetch custom styles:", error);
-    // Continue with empty styles array if fetch fails
+    const supabase = createSupabaseClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+    const [contactResult, stylesResult] = await Promise.all([
+      supabase.from("contact_settings").select("*").limit(1).single(),
+      supabase
+        .from("custom_styles")
+        .select("id, name, css_rules, is_active")
+        .eq("is_active", true),
+    ]);
+    resumeUrl = contactResult.data?.resume_url ?? null;
+    customStyles = stylesResult.data || [];
+  } catch {
+    // Layout renders fine without this data
   }
 
   return (
@@ -58,7 +66,7 @@ export default async function RootLayout({
         <DynamicStylesProvider styles={customStyles} />
         <AuthProvider>
           <ThemeProvider>
-            <RootLayoutContent>
+            <RootLayoutContent resumeUrl={resumeUrl}>
               {children}
             </RootLayoutContent>
           </ThemeProvider>

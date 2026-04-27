@@ -523,11 +523,15 @@ CREATE TABLE IF NOT EXISTS public.contact_settings (
   email TEXT NOT NULL,
   location TEXT NOT NULL,
   availability TEXT NOT NULL,
+  resume_url TEXT,
   socials JSONB DEFAULT '[]'::JSONB,
   callouts JSONB DEFAULT '[]'::JSONB,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Add resume_url column if table already exists (incremental migration)
+ALTER TABLE public.contact_settings ADD COLUMN IF NOT EXISTS resume_url TEXT;
 
 CREATE TRIGGER update_contact_settings_updated_at BEFORE UPDATE ON public.contact_settings
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();

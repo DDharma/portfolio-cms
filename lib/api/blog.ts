@@ -1,20 +1,27 @@
 import { createClient } from '@/lib/supabase/server'
 import { BlogPost } from '@/lib/validations/blog.schema'
 
-export async function getBlogPosts(): Promise<BlogPost[]> {
+export async function getBlogPosts(
+  page = 1,
+  pageSize = 10
+): Promise<{ data: any[]; count: number }> {
   const supabase = await createClient()
-  const { data, error } = await supabase
+  const from = (page - 1) * pageSize
+  const to = from + pageSize - 1
+
+  const { data, error, count } = await supabase
     .from('blog_posts')
-    .select('*, blog_post_tags(*)')
+    .select('*, blog_post_tags(*)', { count: 'planned' })
     .eq('status', 'published')
     .order('created_at', { ascending: false })
+    .range(from, to)
 
   if (error) {
-    console.error('Error fetching blog posts:', error)
-    return []
+    console.error('[getBlogPosts]', error.message)
+    return { data: [], count: 0 }
   }
 
-  return data || []
+  return { data: data || [], count: count ?? 0 }
 }
 
 export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
@@ -81,7 +88,6 @@ export async function updateBlogPost(id: string, data: BlogPost) {
 
   if (postError) throw new Error(postError.message)
 
-  // Delete and recreate tags
   await supabase.from('blog_tags').delete().eq('blog_id', id)
 
   if (tags && tags.length > 0) {

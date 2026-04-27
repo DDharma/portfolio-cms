@@ -10,6 +10,10 @@ export const contactSettingsSchema = z.object({
   email: z.string().email('Invalid email address'),
   location: z.string().min(1, 'Location is required'),
   availability: z.string().min(1, 'Availability is required'),
+  resume_url: z.union([z.string().url('Must be a valid URL'), z.literal('')])
+    .transform(val => val === '' ? null : val)
+    .nullable()
+    .optional(),
   socials: z.array(socialSchema),
   callouts: z.array(z.string().min(1, 'Callout cannot be empty')),
 })
