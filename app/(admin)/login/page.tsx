@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/use-auth'
 import { Button } from '@/components/ui/button'
+import { isOnboardingEnabled } from '@/lib/config/onboarding'
 
 export default function LoginPage() {
   const { login } = useAuth()
@@ -11,6 +12,19 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [showSetupLink, setShowSetupLink] = useState(false)
+
+  useEffect(() => {
+    if (!isOnboardingEnabled()) return
+    let cancelled = false
+    fetch('/api/auth/register')
+      .then((res) => res.json())
+      .then((data) => {
+        if (!cancelled && data?.adminExists === false) setShowSetupLink(true)
+      })
+      .catch(() => { /* leave the link hidden on failure */ })
+    return () => { cancelled = true }
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -83,9 +97,11 @@ export default function LoginPage() {
         </form>
 
         <div className="flex flex-col items-center gap-2 text-sm text-zinc-400">
-          <Link href="/setup" className="text-zinc-400 hover:text-white hover:underline">
-            First time? Set up admin account
-          </Link>
+          {showSetupLink && (
+            <Link href="/setup" className="text-zinc-400 hover:text-white hover:underline">
+              First time? Set up admin account
+            </Link>
+          )}
           <Link href="/" className="text-white hover:underline">
             Back to home
           </Link>

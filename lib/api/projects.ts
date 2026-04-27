@@ -1,22 +1,33 @@
 import { createClient } from '@/lib/supabase/server'
 import { Project } from '@/lib/validations/projects.schema'
 
-export async function getPublishedProjects() {
+export async function getPublishedProjects(
+  page = 1,
+  pageSize = 12
+): Promise<{ data: any[]; count: number }> {
   const supabase = await createClient()
-  const { data, error } = await supabase
+  const from = (page - 1) * pageSize
+  const to = from + pageSize - 1
+
+  const { data, error, count } = await supabase
     .from('projects')
     .select(
       `
       *,
       project_tags(*, sort_order),
       project_links(*, sort_order)
-    `
+    `,
+      { count: 'planned' }
     )
     .eq('status', 'published')
     .order('sort_order')
+    .range(from, to)
 
-  if (error) return []
-  return data || []
+  if (error) {
+    console.error('[getPublishedProjects]', error.message)
+    return { data: [], count: 0 }
+  }
+  return { data: data || [], count: count ?? 0 }
 }
 
 export async function getProjectBySlug(slug: string) {
@@ -109,7 +120,6 @@ export async function updateProject(id: string, data: Project) {
 
   if (projectError) throw new Error(projectError.message)
 
-  // Delete and recreate child records
   await Promise.all([
     supabase.from('project_tags').delete().eq('project_id', id),
     supabase.from('project_links').delete().eq('project_id', id),

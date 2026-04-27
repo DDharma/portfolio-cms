@@ -3,6 +3,7 @@ import { AboutSection } from '@/components/sections/about-section'
 import { SkillsSection } from '@/components/sections/skills-section'
 import { ExperienceSection } from '@/components/sections/experience-section'
 import { ProjectsSection } from '@/components/sections/projects-section'
+import { BlogSection } from '@/components/sections/blog-section'
 import { GallerySection } from '@/components/sections/gallery-section'
 import { ContactSection } from '@/components/sections/contact-section'
 
@@ -12,6 +13,7 @@ import { getPublishedSkills } from '@/lib/api/skills'
 import { getPublishedExperience } from '@/lib/api/experience'
 import { getPublishedProjects } from '@/lib/api/projects'
 import { getPublishedGalleryPhotos } from '@/lib/api/gallery'
+import { getBlogPosts } from '@/lib/api/blog'
 import { getSectionMetadata } from '@/lib/api/section-metadata'
 import { getContactSettings } from '@/lib/api/contact'
 
@@ -25,8 +27,9 @@ export default async function Home() {
     about,
     skills,
     experience,
-    projects,
-    gallery,
+    projectsResult,
+    galleryResult,
+    blogResult,
     skillsHeading,
     experienceHeading,
     projectsHeading,
@@ -38,6 +41,7 @@ export default async function Home() {
     getPublishedExperience(),
     getPublishedProjects(),
     getPublishedGalleryPhotos(),
+    getBlogPosts(1, 4),
     getSectionMetadata('skills'),
     getSectionMetadata('experience'),
     getSectionMetadata('projects'),
@@ -47,12 +51,13 @@ export default async function Home() {
   return (
     <>
       <HeroSection data={hero} />
+      <BlogSection posts={blogResult.data} />
       <AboutSection data={about} />
       <SkillsSection data={skills} sectionHeading={skillsHeading} />
       <ExperienceSection data={experience} sectionHeading={experienceHeading} />
-      <ProjectsSection data={projects} sectionHeading={projectsHeading} />
+      <ProjectsSection data={galleryResult.data} sectionHeading={projectsHeading} />
+      <GallerySection data={galleryResult} />
       <ContactSection data={contact} />
-      {/* <GallerySection photos={gallery} /> */}
     </>
   )
 }

@@ -12,8 +12,8 @@ export const dynamicParams = true
 
 export async function generateStaticParams() {
   try {
-    const posts = await getBlogPosts()
-    return posts.map((post) => ({ slug: post.slug }))
+    const { data: posts } = await getBlogPosts()
+    return posts.map((post: any) => ({ slug: post.slug }))
   } catch (error) {
     // During build time, cookies may not be available
     // Return empty array and let Next.js generate pages on-demand

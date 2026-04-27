@@ -4,11 +4,14 @@ import { ArrowUpRight, Calendar, Clock } from 'lucide-react'
 
 import { SectionShell } from '@/components/sections/section-shell'
 import { SectionHeading } from '@/components/sections/section-heading'
+import { Pagination } from '@/components/ui/pagination'
 import { getBlogPosts } from '@/lib/api/blog'
 import { getSiteSettings, DEFAULT_SITE_NAME } from '@/lib/api/contact'
 import { Badge } from '@/components/ui/badge'
 
 export const revalidate = 3600
+
+const PAGE_SIZE = 10
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings()
@@ -19,8 +22,15 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export default async function BlogPage() {
-  const blogPosts = await getBlogPosts()
+export default async function BlogPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>
+}) {
+  const params = await searchParams
+  const page = Math.max(1, Number(params.page) || 1)
+  const { data: blogPosts, count } = await getBlogPosts(page, PAGE_SIZE)
+  const totalPages = Math.ceil(count / PAGE_SIZE)
 
   return (
     <SectionShell id="blog-page">
@@ -31,7 +41,7 @@ export default async function BlogPage() {
       />
       <div className="mt-12 grid gap-6 md:grid-cols-2">
         {blogPosts && blogPosts.length > 0 ? (
-          blogPosts.map((post) => (
+          blogPosts.map((post: any) => (
             <article
               key={post.slug}
               className="group relative rounded-2xl border border-black overflow-hidden transition-colors duration-300 hover:border-white/[0.1]"
@@ -41,11 +51,9 @@ export default async function BlogPage() {
                 backgroundPosition: 'center',
               }}
             >
-              {/* Gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-transparent rounded-2xl" />
 
               <Link href={`/blog/${post.slug}`} className="relative block p-5 lg:p-6">
-                {/* Meta row: date · reading time */}
                 <div className="flex items-center gap-3 text-xs text-black">
                   {post.created_at && (
                     <div className="flex items-center gap-1.5">
@@ -70,7 +78,6 @@ export default async function BlogPage() {
                   )}
                 </div>
 
-                {/* Title row with animated arrow */}
                 <div className="mt-3 flex items-start justify-between gap-4">
                   <h3 className="text-xl font-medium tracking-[-0.01em] text-white transition-colors">
                     {post.title}
@@ -78,16 +85,14 @@ export default async function BlogPage() {
                   <ArrowUpRight className="h-5 w-5 shrink-0 text-zinc-600 transition-all duration-200 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </div>
 
-                {/* Description */}
                 <div
                   className="mt-2.5 text-sm leading-relaxed text-zinc-400 prose prose-invert prose-sm max-w-none [&_p]:m-0 [&_strong]:font-semibold [&_em]:italic line-clamp-3"
                   dangerouslySetInnerHTML={{ __html: post.description }}
                 />
 
-                {/* Tags */}
                 {post.tags && post.tags.length > 0 && (
                   <div className="mt-4 flex flex-wrap gap-2">
-                    {post.tags.map((tag) => (
+                    {post.tags.map((tag: any) => (
                       <Badge key={tag.id || tag.tag} variant="outline">
                         {tag.tag}
                       </Badge>
@@ -103,6 +108,7 @@ export default async function BlogPage() {
           </div>
         )}
       </div>
+      {totalPages > 1 && <Pagination currentPage={page} totalPages={totalPages} basePath="/blog" />}
     </SectionShell>
   )
 }
